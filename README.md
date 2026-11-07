@@ -13,10 +13,12 @@ notebooks/*.html            marimo exports (build.py injects an INDEX/PREV/NEXT 
 ```
 
 ## Adding / updating a notebook
+(first, `pip install playwright && playwright install chromium` if you want card previews)
 1. Export/save the HTML into `notebooks/`
 2. Add it to `GROUPS` in `build.py`
-3. `python build.py`
-4. `git add . && git commit -m "update" && git push`
+3. `python tools/make_previews.py`  (optional: refreshes card screenshots + headlines)
+4. `python build.py`
+5. `git add . && git commit -m "update" && git push`
 
 ## First-time deploy
 1. Create a new repo on GitHub (e.g. `memo-archive`)
@@ -24,3 +26,6 @@ notebooks/*.html            marimo exports (build.py injects an INDEX/PREV/NEXT 
 3. `git branch -M main && git remote add origin https://github.com/<you>/memo-archive.git && git push -u origin main`
 4. Repo → Settings → Pages → Source: "Deploy from a branch" → `main` / `/ (root)` → Save
 5. Site appears at `https://<you>.github.io/memo-archive/` in a minute or two
+
+## Secrets & shortcuts
+`Ctrl+K` jump palette · `` ` `` terminal (`help`) · `/` filter · type words anywhere: `matrix` `crt` `retro` `rainbow` `glitch` · Konami code.

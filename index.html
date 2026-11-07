@@ -4,17 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MEMO ARCHIVE</title>
+<meta name="description" content="Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key.">
+<meta property="og:title" content="MEMO ARCHIVE"><meta property="og:description" content="Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2048%2048%27%3E%3Crect%20width%3D%2748%27%20height%3D%2748%27%20fill%3D%27%23080b12%27/%3E%3Cpolygon%20points%3D%2724%2C3%2043%2C14%2043%2C34%2024%2C45%205%2C34%205%2C14%27%20fill%3D%27none%27%20stroke%3D%27%2300f5ff%27%20stroke-width%3D%273%27/%3E%3Cpath%20d%3D%27M14%2033V15l10%2011%2010-11v18%27%20fill%3D%27none%27%20stroke%3D%27%23ff2d78%27%20stroke-width%3D%273%27/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/cyberpunk-marimo.css">
 <link rel="stylesheet" href="assets/site.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
 <div class="boot" id="boot" aria-hidden="true"><pre id="boot-log"></pre><span class="caret"></span><div class="skip">PRESS ANY KEY TO SKIP</div></div>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="wipe" id="wipe"></div>
 <div class="shell">
   <div class="rail" role="navigation" aria-label="Directory">
-    <a class="brand" href="#top">MEMO ARCHIVE<small>// DIRECTORY</small></a>
+    <a class="brand" href="#top"><svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><polygon class="hex" points="24,3 43,14 43,34 24,45 5,34 5,14"/><path class="mm" d="M14 33V15l10 11 10-11v18"/></svg><span class="brand-name">MEMO ARCHIVE</span><small>// DIRECTORY</small></a>
     <div class="cp-label">Notebooks</div>
     <div class="rail-group"><div class="rail-group-name"><a href="#memo-1" style="color:inherit !important;border:none !important">Memo 01</a></div><a class="rail-link" href="notebooks/memo1_original.html">Original</a><a class="rail-link" href="notebooks/memo1_amendment_1.html">Amendment 1</a><a class="rail-link" href="notebooks/memo1_amendment_2.html">Amendment 2</a></div><div class="rail-group"><div class="rail-group-name"><a href="#memo-2" style="color:inherit !important;border:none !important">Memo 02</a></div><a class="rail-link" href="notebooks/memo2_original.html">Original</a><a class="rail-link" href="notebooks/memo2_supp.html">Supplement</a></div><div class="rail-group"><div class="rail-group-name"><a href="#memo-3" style="color:inherit !important;border:none !important">Memo 03</a></div><a class="rail-link" href="notebooks/memo3.html">Workbook</a></div>
+    <div class="rail-group"><div class="rail-group-name">Extras</div>
+      <a class="rail-link" href="#timeline">Timeline</a><a class="rail-link" href="#about">About</a><a class="rail-link" href="#changelog">Changelog</a></div>
+    <div class="cp-label">FX</div>
+    <div class="pills">
+      <i class="pill" role="button" tabindex="0" data-fx="rain">Rain</i>
+      <i class="pill" role="button" tabindex="0" data-fx="sound">Sound</i>
+      <i class="pill" role="button" tabindex="0" data-fx="crt">CRT</i>
+    </div>
     <div class="cp-label">Hue</div>
     <div class="swatches">
       <i class="swatch on" role="button" tabindex="0" data-hue="cyan" title="Cyan" style="background:#00f5ff;color:#00f5ff"></i>
@@ -22,19 +35,20 @@
       <i class="swatch" role="button" tabindex="0" data-hue="amber" title="Amber" style="background:#ffb000;color:#ffb000"></i>
       <i class="swatch" role="button" tabindex="0" data-hue="green" title="Green" style="background:#00ff9f;color:#00ff9f"></i>
     </div>
-    <div class="rail-hint"><kbd>CTRL</kbd>+<kbd>K</kbd> <a id="open-pal" href="#" onclick="return false" style="border:none !important">JUMP TO&hellip;</a><br><kbd>/</kbd> FILTER</div>
+    <div class="rail-hint"><kbd>CTRL</kbd>+<kbd>K</kbd> <a id="open-pal" href="#" onclick="return false" style="border:none !important">JUMP TO&hellip;</a><br>
+      <kbd>`</kbd> <a id="open-term" href="#" onclick="return false" style="border:none !important">TERMINAL</a><br><kbd>/</kbd> FILTER</div>
   </div>
 
   <main class="main" id="top">
     <header class="hero">
       <h1>MEMO ARCHIVE</h1>
       <span class="cp-type cp-type--hot tagline" style="--w:36ch;--n:36">&gt; marimo notebooks // static exports</span>
-      <p class="lede">Read-only HTML snapshots of my marimo work. Pick a notebook from the directory.</p>
+      <p class="lede">Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key.</p>
     </header>
 
     <div class="hud">
       <div class="hud-tile"><div class="hud-k">Notebooks</div><div class="hud-v">06</div></div>
-      <div class="hud-tile"><div class="hud-k">Payload</div><div class="hud-v">37.8 MB</div></div>
+      <div class="hud-tile"><div class="hud-k">Payload</div><div class="hud-v">37.9 MB</div></div>
       <div class="hud-tile"><div class="hud-k">Time</div><div class="hud-v" id="hud-clock">--:--:--</div></div>
       <div class="hud-tile"><div class="hud-k">Status</div><div class="hud-v"><span class="dot"></span>ONLINE</div></div>
     </div>
@@ -45,49 +59,63 @@
       <span class="result-count" id="count">6 / 6</span>
     </div>
 
-    <section class="group" id="memo-1"><h2>Memo 01<span class="count">3 FILES</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo1_original.html" data-search="memo 01 original  memo1_original.html"><div class="card-tag">Memo 01</div><div class="card-name">Original</div><div class="card-meta"><span class="size">644 KB</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo1_amendment_1.html" data-search="memo 01 amendment 1  memo1_amendment_1.html"><div class="card-tag">Memo 01</div><div class="card-name">Amendment 1</div><div class="card-meta"><span class="size">13.2 MB</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo1_amendment_2.html" data-search="memo 01 amendment 2  memo1_amendment_2.html"><div class="card-tag">Memo 01</div><div class="card-name">Amendment 2</div><div class="card-meta"><span class="size">14.3 MB</span><span class="go">OPEN &#9654;</span></div></a></div></section><section class="group" id="memo-2"><h2>Memo 02<span class="count">2 FILES</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo2_original.html" data-search="memo 02 original  memo2_original.html"><div class="card-tag">Memo 02</div><div class="card-name">Original</div><div class="card-meta"><span class="size">2.0 MB</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo2_supp.html" data-search="memo 02 supplement  memo2_supp.html"><div class="card-tag">Memo 02</div><div class="card-name">Supplement</div><div class="card-meta"><span class="size">1.5 MB</span><span class="go">OPEN &#9654;</span></div></a></div></section><section class="group" id="memo-3"><h2>Memo 03<span class="count">1 FILE</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo3.html" data-search="memo 03 workbook  memo3.html"><div class="card-tag">Memo 03</div><div class="card-name">Workbook</div><div class="card-meta"><span class="size">6.3 MB</span><span class="go">OPEN &#9654;</span></div></a></div></section>
+    <section class="group" id="memo-1" data-nb="1"><h2>Memo 01<span class="count">3 FILES</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo1_original.html" data-search="memo 01 original operation emberlight — my sat workbook memo1_original.html original"><div class="card-shot"><img src="assets/previews/memo1_original.jpg" alt="" loading="lazy"><span class="badge st-original">ORIGINAL</span></div><div class="card-tag">Memo 01</div><div class="card-name">Original</div><div class="card-desc">Operation Emberlight — My SAT Workbook</div><div class="card-meta"><span class="size">646 KB &middot; 17 SECTIONS</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo1_amendment_1.html" data-search="memo 01 amendment 1 operation emberlight -- amendment memo a1 workbook memo1_amendment_1.html amendment"><div class="card-shot"><img src="assets/previews/memo1_amendment_1.jpg" alt="" loading="lazy"><span class="badge st-amendment">AMENDED</span></div><div class="card-tag">Memo 01</div><div class="card-name">Amendment 1</div><div class="card-desc">Operation Emberlight -- Amendment Memo A1 Workbook</div><div class="card-meta"><span class="size">13.2 MB &middot; 16 SECTIONS</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo1_amendment_2.html" data-search="memo 01 amendment 2 operation emberlight -- amendment memo a02 workbook memo1_amendment_2.html amendment"><div class="card-shot"><img src="assets/previews/memo1_amendment_2.jpg" alt="" loading="lazy"><span class="badge st-amendment">AMENDED</span></div><div class="card-tag">Memo 01</div><div class="card-name">Amendment 2</div><div class="card-desc">Operation Emberlight -- Amendment Memo A02 Workbook</div><div class="card-meta"><span class="size">14.3 MB &middot; 12 SECTIONS</span><span class="go">OPEN &#9654;</span></div></a></div></section><section class="group" id="memo-2" data-nb="1"><h2>Memo 02<span class="count">2 FILES</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo2_original.html" data-search="memo 02 original operation emberlight -- memo 02 workbook memo2_original.html original"><div class="card-shot"><img src="assets/previews/memo2_original.jpg" alt="" loading="lazy"><span class="badge st-original">ORIGINAL</span></div><div class="card-tag">Memo 02</div><div class="card-name">Original</div><div class="card-desc">Operation Emberlight -- Memo 02 Workbook</div><div class="card-meta"><span class="size">2.0 MB &middot; 15 SECTIONS</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo2_supp.html" data-search="memo 02 supplement operation emberlight -- memo 02 supplementary workbook memo2_supp.html supplement"><div class="card-shot"><img src="assets/previews/memo2_supp.jpg" alt="" loading="lazy"><span class="badge st-supplement">SUPPLEMENT</span></div><div class="card-tag">Memo 02</div><div class="card-name">Supplement</div><div class="card-desc">Operation Emberlight -- Memo 02 Supplementary Workbook</div><div class="card-meta"><span class="size">1.5 MB &middot; 12 SECTIONS</span><span class="go">OPEN &#9654;</span></div></a></div></section><section class="group" id="memo-3" data-nb="1"><h2>Memo 03<span class="count">1 FILE</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo3.html" data-search="memo 03 workbook operation emberlight -- memo 03 workbook memo3.html workbook"><div class="card-shot"><img src="assets/previews/memo3.jpg" alt="" loading="lazy"><span class="badge st-workbook">WORKBOOK</span></div><div class="card-tag">Memo 03</div><div class="card-name">Workbook</div><div class="card-desc">Operation Emberlight -- Memo 03 Workbook</div><div class="card-meta"><span class="size">6.3 MB &middot; 70 SECTIONS</span><span class="go">OPEN &#9654;</span></div></a></div></section>
     <div class="empty" id="empty">&gt; NO MATCHES FOUND</div>
+
+    <section class="group" id="timeline">
+      <h2>Timeline<span class="count">6 STEPS</span></h2>
+      <p class="blurb">How the work evolved, in order.</p>
+      <ol class="tl"><li><a href="notebooks/memo1_original.html"><div class="tl-step">STEP 01 // Memo 01 // Original</div><div class="tl-name">Operation Emberlight — My SAT Workbook</div><div class="tl-meta"><span class="badge st-original">ORIGINAL</span><span class="size">646 KB</span></div></a></li><li><a href="notebooks/memo1_amendment_1.html"><div class="tl-step">STEP 02 // Memo 01 // Amendment 1</div><div class="tl-name">Operation Emberlight -- Amendment Memo A1 Workbook</div><div class="tl-meta"><span class="badge st-amendment">AMENDED</span><span class="size">13.2 MB</span></div></a></li><li><a href="notebooks/memo1_amendment_2.html"><div class="tl-step">STEP 03 // Memo 01 // Amendment 2</div><div class="tl-name">Operation Emberlight -- Amendment Memo A02 Workbook</div><div class="tl-meta"><span class="badge st-amendment">AMENDED</span><span class="size">14.3 MB</span></div></a></li><li><a href="notebooks/memo2_original.html"><div class="tl-step">STEP 04 // Memo 02 // Original</div><div class="tl-name">Operation Emberlight -- Memo 02 Workbook</div><div class="tl-meta"><span class="badge st-original">ORIGINAL</span><span class="size">2.0 MB</span></div></a></li><li><a href="notebooks/memo2_supp.html"><div class="tl-step">STEP 05 // Memo 02 // Supplement</div><div class="tl-name">Operation Emberlight -- Memo 02 Supplementary Workbook</div><div class="tl-meta"><span class="badge st-supplement">SUPPLEMENT</span><span class="size">1.5 MB</span></div></a></li><li><a href="notebooks/memo3.html"><div class="tl-step">STEP 06 // Memo 03 // Workbook</div><div class="tl-name">Operation Emberlight -- Memo 03 Workbook</div><div class="tl-meta"><span class="badge st-workbook">WORKBOOK</span><span class="size">6.3 MB</span></div></a></li></ol>
+    </section>
+
+    <section class="group" id="about">
+      <h2>About<span class="count">// <span id="about-handle">OPERATOR</span></span></h2>
+      <div class="term-box"><div class="term-line"><span class="k">stack</span> <span class="dots">........</span> <span class="v">python + marimo</span></div><div class="term-line"><span class="k">hosting</span> <span class="dots">........</span> <span class="v">github pages</span></div><div class="term-line"><span class="k">theme</span> <span class="dots">........</span> <span class="v">cyberpunk-marimo.css</span></div><div class="term-line"><span class="k">mission</span> <span class="dots">........</span> <span class="v"><span class="cp-redacted cp-redacted--hot">OPERATION EMBERLIGHT</span></span></div><div class="term-line"><span class="k">clearance</span> <span class="dots">........</span> <span class="v"><span class="cp-redacted">LEVEL-5</span></span></div><div class="term-line"><span class="k">notebooks</span> <span class="dots">........</span> <span class="v">6</span></div></div>
+    </section>
+
+    <section class="group" id="changelog">
+      <h2>Changelog</h2>
+      <div class="term-box"><div class="term-line"><span class="k">v3.0</span> <span class="dots">//</span> <span class="v">2026-11-07</span> <span class="dots">//</span> previews, status badges, timeline, section jump-list, terminal, rain, sound, page wipes, 404</div><div class="term-line"><span class="k">v2.0</span> <span class="dots">//</span> <span class="v">2026-11-07</span> <span class="dots">//</span> boot sequence, HUD, spotlight cards, command palette, hue switcher</div><div class="term-line"><span class="k">v1.0</span> <span class="dots">//</span> <span class="v">2026-11-07</span> <span class="dots">//</span> landing page, directory rail, notebook nav widget</div></div>
+    </section>
 
     <footer class="foot"><span>BUILT 2026-11-07 // 6 NOTEBOOKS</span><span></span></footer>
   </main>
 </div>
 
+<script id="archive-data" type="application/json">{"items": [{"name": "Original", "tag": "Memo 01", "href": "notebooks/memo1_original.html", "file": "memo1_original.html", "size": "646 KB", "status": "ORIGINAL", "headline": "Operation Emberlight \u2014 My SAT Workbook"}, {"name": "Amendment 1", "tag": "Memo 01", "href": "notebooks/memo1_amendment_1.html", "file": "memo1_amendment_1.html", "size": "13.2 MB", "status": "AMENDED", "headline": "Operation Emberlight -- Amendment Memo A1 Workbook"}, {"name": "Amendment 2", "tag": "Memo 01", "href": "notebooks/memo1_amendment_2.html", "file": "memo1_amendment_2.html", "size": "14.3 MB", "status": "AMENDED", "headline": "Operation Emberlight -- Amendment Memo A02 Workbook"}, {"name": "Original", "tag": "Memo 02", "href": "notebooks/memo2_original.html", "file": "memo2_original.html", "size": "2.0 MB", "status": "ORIGINAL", "headline": "Operation Emberlight -- Memo 02 Workbook"}, {"name": "Supplement", "tag": "Memo 02", "href": "notebooks/memo2_supp.html", "file": "memo2_supp.html", "size": "1.5 MB", "status": "SUPPLEMENT", "headline": "Operation Emberlight -- Memo 02 Supplementary Workbook"}, {"name": "Workbook", "tag": "Memo 03", "href": "notebooks/memo3.html", "file": "memo3.html", "size": "6.3 MB", "status": "WORKBOOK", "headline": "Operation Emberlight -- Memo 03 Workbook"}], "title": "MEMO ARCHIVE", "about": [["stack", "python + marimo"], ["hosting", "github pages"], ["theme", "cyberpunk-marimo.css"], ["mission", "[CLASSIFIED]"], ["clearance", "[REDACTED]"], ["notebooks", "6"]], "handle": "OPERATOR"}</script>
 <script>
 (function () {
   var q = document.getElementById('q'), count = document.getElementById('count'), empty = document.getElementById('empty');
   var cards = [].slice.call(document.querySelectorAll('.card-link'));
-  var groups = [].slice.call(document.querySelectorAll('.group'));
+  var groups = [].slice.call(document.querySelectorAll('.group[data-nb]'));
   function filter() {
     var term = q.value.trim().toLowerCase(), shown = 0;
-    cards.forEach(function (c) {
-      var ok = !term || c.dataset.search.indexOf(term) !== -1;
-      c.hidden = !ok; if (ok) shown++;
-    });
+    cards.forEach(function (c) { var ok = !term || c.dataset.search.indexOf(term) !== -1; c.hidden = !ok; if (ok) shown++; });
     groups.forEach(function (g) { g.hidden = !g.querySelector('.card-link:not([hidden])'); });
     count.textContent = shown + ' / ' + cards.length;
     empty.classList.toggle('show', shown === 0);
   }
   q.addEventListener('input', filter);
-  // "/" focuses the filter box
   document.addEventListener('keydown', function (e) {
-    if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+    if (e.key === '/' && document.activeElement !== q && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
   });
-
-  // scroll-spy for the rail
   var links = {};
   [].forEach.call(document.querySelectorAll('.rail-group-name a'), function (a) { links[a.getAttribute('href').slice(1)] = a.closest('.rail-group'); });
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
       if (en.isIntersecting) {
         Object.keys(links).forEach(function (k) { links[k].querySelector('.rail-group-name').style.textShadow = ''; });
-        var el = links[en.target.id];
-        if (el) el.querySelector('.rail-group-name').style.textShadow = '0 0 10px rgba(180,77,255,.9)';
+        var el = links[en.target.id]; if (el) el.querySelector('.rail-group-name').style.textShadow = '0 0 10px rgba(180,77,255,.9)';
       }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
   groups.forEach(function (g) { io.observe(g); });
+  // timeline reveal
+  var tio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); tio.unobserve(e.target); } }); }, { threshold: .25 });
+  [].forEach.call(document.querySelectorAll('.tl li'), function (li) { tio.observe(li); });
 })();
 </script>
 <script src="assets/site.js"></script>
+<script src="assets/extras.js"></script>
 </body>
 </html>

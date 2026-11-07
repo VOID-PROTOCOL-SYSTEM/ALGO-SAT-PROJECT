@@ -96,6 +96,7 @@
       s.addEventListener('keydown', function (e) { if (e.key === 'Enter') apply(s.dataset.hue); });
     });
     apply(store.get('hue') || 'cyan');
+    (window.ArchiveFX = window.ArchiveFX || {}).hue = apply;
   }
 
   /* ── Command palette (Ctrl/Cmd+K) ── */
@@ -132,7 +133,7 @@
       if (e.key === 'Escape') close();
       else if (e.key === 'ArrowDown') { e.preventDefault(); sel = (sel + 1) % shown.length; render(); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); sel = (sel - 1 + shown.length) % shown.length; render(); }
-      else if (e.key === 'Enter' && shown[sel]) { location.href = shown[sel].href; }
+      else if (e.key === 'Enter' && shown[sel]) { var h = shown[sel].href; (window.ArchiveFX && ArchiveFX.go) ? ArchiveFX.go(h) : (location.href = h); }
     });
     var hint = $('#open-pal'); if (hint) hint.addEventListener('click', open);
   }
@@ -142,13 +143,13 @@
     var seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'], pos = 0;
     var toast = document.createElement('div'); toast.className = 'toast'; toast.textContent = '// OVERRIDE ACCEPTED — GLITCH STORM ENGAGED';
     document.body.appendChild(toast);
+    function storm() { var r = document.documentElement; r.classList.add('storm'); toast.classList.add('show');
+      setTimeout(function () { r.classList.remove('storm'); toast.classList.remove('show'); }, 6000); }
+    (window.ArchiveFX = window.ArchiveFX || {}).storm = storm;
     document.addEventListener('keydown', function (e) {
       var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
       pos = k === seq[pos] ? pos + 1 : (k === seq[0] ? 1 : 0);
-      if (pos === seq.length) {
-        pos = 0; var r = document.documentElement; r.classList.add('storm'); toast.classList.add('show');
-        setTimeout(function () { r.classList.remove('storm'); toast.classList.remove('show'); }, 6000);
-      }
+      if (pos === seq.length) { pos = 0; storm(); }
     });
   }
 

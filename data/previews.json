@@ -1,0 +1,32 @@
+{
+  "memo1_amendment_1.html": {
+    "headline": "Operation Emberlight -- Amendment Memo A1 Workbook",
+    "sections": 16,
+    "preview": "assets/previews/memo1_amendment_1.jpg"
+  },
+  "memo1_amendment_2.html": {
+    "headline": "Operation Emberlight -- Amendment Memo A02 Workbook",
+    "sections": 12,
+    "preview": "assets/previews/memo1_amendment_2.jpg"
+  },
+  "memo1_original.html": {
+    "headline": "Operation Emberlight \u2014 My SAT Workbook",
+    "sections": 17,
+    "preview": "assets/previews/memo1_original.jpg"
+  },
+  "memo2_original.html": {
+    "headline": "Operation Emberlight -- Memo 02 Workbook",
+    "sections": 15,
+    "preview": "assets/previews/memo2_original.jpg"
+  },
+  "memo2_supp.html": {
+    "headline": "Operation Emberlight -- Memo 02 Supplementary Workbook",
+    "sections": 12,
+    "preview": "assets/previews/memo2_supp.jpg"
+  },
+  "memo3.html": {
+    "headline": "Operation Emberlight -- Memo 03 Workbook",
+    "sections": 70,
+    "preview": "assets/previews/memo3.jpg"
+  }
+}

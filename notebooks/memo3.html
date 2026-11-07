@@ -1706,34 +1706,38 @@ runtime, termination status and any recorded error.</span></span><marimo-ui-elem
   var css = `
     :host { all: initial; }
     * { box-sizing: border-box; }
-    .wrap { position: fixed; left: 16px; bottom: 16px; z-index: 2147483000;
-            font-family: 'Share Tech Mono', ui-monospace, Consolas, monospace; }
-    .tab, .row a, .step a {
-      font: 400 11px 'Share Tech Mono', ui-monospace, Consolas, monospace;
-      letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
+    .wrap { position: fixed; left: 16px; bottom: 16px; z-index: 2147483000; font-family: 'Share Tech Mono', ui-monospace, Consolas, monospace; }
+    .tab, .row a, .step a, .sec, .sech {
+      font: 400 11px 'Share Tech Mono', ui-monospace, Consolas, monospace; letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
     }
-    .tab { cursor: pointer; padding: 9px 14px; color: #00f5ff; background: rgba(8,11,18,.94);
-           border: 1px solid rgba(0,245,255,.55); border-radius: 3px;
-           box-shadow: 0 0 12px rgba(0,245,255,.25); transition: all .15s; }
+    .tab { cursor: pointer; padding: 9px 14px; color: #00f5ff; background: rgba(8,11,18,.94); border: 1px solid rgba(0,245,255,.55);
+           border-radius: 3px; box-shadow: 0 0 12px rgba(0,245,255,.25); transition: all .15s; }
     .tab:hover { background: rgba(0,245,255,.12); box-shadow: 0 0 16px rgba(0,245,255,.5); }
-    .menu { display: none; margin-bottom: 10px; width: 290px; max-height: 70vh; overflow-y: auto;
-            background: rgba(8,11,18,.97); border: 1px solid rgba(0,245,255,.55); border-radius: 6px;
-            box-shadow: 0 0 22px rgba(0,245,255,.25); padding: 12px; }
+    .menu { display: none; margin-bottom: 10px; width: 300px; max-height: 72vh; overflow-y: auto; background: rgba(8,11,18,.97);
+            border: 1px solid rgba(0,245,255,.55); border-radius: 6px; box-shadow: 0 0 22px rgba(0,245,255,.25); padding: 12px; }
     .wrap.open .menu { display: block; }
     .grp { color: #b44dff; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; margin: 12px 0 5px; }
     .grp:first-of-type { margin-top: 2px; }
     .row a { display: block; padding: 7px 10px; color: #8a9ab8; border-left: 2px solid rgba(0,245,255,.15); transition: all .15s; }
     .row a:hover { color: #00f5ff; border-left-color: #00f5ff; background: rgba(0,245,255,.06); }
     .row a.cur { color: #ff2d78; border-left-color: #ff2d78; background: rgba(255,45,120,.07); pointer-events: none; }
-    .home { display: block; padding: 8px 10px; margin-bottom: 4px; color: #00ff9f; text-decoration: none;
-            font: 400 11px 'Share Tech Mono', monospace; letter-spacing: .14em; text-transform: uppercase;
-            border: 1px solid rgba(0,255,159,.4); border-radius: 3px; text-align: center; }
+    .home { display: block; padding: 8px 10px; margin-bottom: 4px; color: #00ff9f; text-decoration: none; font: 400 11px 'Share Tech Mono', monospace;
+            letter-spacing: .14em; text-transform: uppercase; border: 1px solid rgba(0,255,159,.4); border-radius: 3px; text-align: center; }
     .home:hover { background: rgba(0,255,159,.1); }
     .step { display: flex; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(0,245,255,.15); }
     .step a, .step span { flex: 1; text-align: center; padding: 7px 4px; border-radius: 3px; }
     .step a { color: #00f5ff; border: 1px solid rgba(0,245,255,.4); }
     .step a:hover { background: rgba(0,245,255,.1); }
-    .step span { color: #3b4658; border: 1px solid rgba(255,255,255,.07); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+    .step span { color: #3b4658; border: 1px solid rgba(255,255,255,.07); }
+    .sech { display: flex; justify-content: space-between; cursor: pointer; margin-top: 12px; padding: 8px 10px; color: #f7ff00;
+            border: 1px solid rgba(247,255,0,.3); border-radius: 3px; }
+    .sech:hover { background: rgba(247,255,0,.07); }
+    .secs { display: none; margin-top: 6px; max-height: 240px; overflow-y: auto; border-left: 1px solid rgba(247,255,0,.2); }
+    .secs.show { display: block; }
+    .sec { display: block; cursor: pointer; padding: 5px 8px; color: #8a9ab8; font-size: 10px; letter-spacing: .08em; text-transform: none;
+           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sec:hover { color: #f7ff00; background: rgba(247,255,0,.05); }
+    .sec.l2 { padding-left: 20px; } .sec.l3 { padding-left: 32px; opacity: .85; }
   `;
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]; }); }
@@ -1744,6 +1748,7 @@ runtime, termination status and any recorded error.</span></span><marimo-ui-elem
     if (m.group !== lastGroup) { html += '<div class="grp">' + esc(m.group) + '</div>'; lastGroup = m.group; }
     html += '<div class="row"><a href="' + esc(m.file) + '"' + (i === idx ? ' class="cur"' : '') + '>' + esc(m.label) + '</a></div>';
   });
+  html += '<div class="sech"><span>&sect; Sections</span><span class="sn">&hellip;</span></div><div class="secs"></div>';
   html += '<div class="step">' +
     (prev ? '<a href="' + esc(prev.file) + '">&#9664; Prev</a>' : '<span>&#9664; Prev</span>') +
     (next ? '<a href="' + esc(next.file) + '">Next &#9654;</a>' : '<span>Next &#9654;</span>') +
@@ -1751,11 +1756,48 @@ runtime, termination status and any recorded error.</span></span><marimo-ui-elem
 
   root.innerHTML = '<style>' + css + '</style><div class="wrap">' + html + '</div>';
 
-  var wrap = root.querySelector(".wrap");
-  var tab = root.querySelector(".tab");
-  function toggle() { wrap.classList.toggle("open"); }
+  var wrap = root.querySelector(".wrap"), tab = root.querySelector(".tab");
+  var secs = root.querySelector(".secs"), sech = root.querySelector(".sech"), sn = root.querySelector(".sn");
+  var built = false, heads = [];
+
+  function buildSections() {
+    heads = [].slice.call(document.querySelectorAll("h1,h2,h3")).filter(function (h) {
+      return h.textContent.trim() && !host.contains(h) && h.getClientRects().length;
+    }).slice(0, 120);
+    secs.innerHTML = "";
+    heads.forEach(function (h, i) {
+      var d = document.createElement("div");
+      d.className = "sec l" + h.tagName.charAt(1);
+      d.textContent = h.textContent.trim().replace(/\s+/g, " ");
+      d.addEventListener("click", function () { h.scrollIntoView({ behavior: "smooth", block: "start" }); wrap.classList.remove("open"); });
+      secs.appendChild(d);
+    });
+    sn.textContent = heads.length; built = true;
+  }
+  function toggle() {
+    wrap.classList.toggle("open");
+    if (wrap.classList.contains("open") && !built) buildSections();
+  }
   tab.addEventListener("click", toggle);
   tab.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  sech.addEventListener("click", function () { if (!built) buildSections(); secs.classList.toggle("show"); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") wrap.classList.remove("open"); });
+
+  /* page-transition wipe for links leaving this notebook */
+  function wipe(href) {
+    var o = document.createElement("div");
+    o.style.cssText = "position:fixed;inset:0;z-index:2147483600;background:#04060a;pointer-events:all;" +
+      "border-top:3px solid #00f5ff;box-shadow:0 0 40px #00f5ff;transform:translateY(-101%)";
+    document.body.appendChild(o);
+    if (!o.animate) { location.href = href; return; }
+    o.animate([{ transform: "translateY(-101%)" }, { transform: "translateY(0)" }], { duration: 260, easing: "ease-in", fill: "forwards" });
+    setTimeout(function () { location.href = href; }, 270);
+    window.addEventListener("pageshow", function () { o.remove(); }, { once: true });
+  }
+  root.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    e.preventDefault(); wipe(a.getAttribute("href"));
+  });
 })();
 </script><!-- memo-archive-nav:end --></body></html>
