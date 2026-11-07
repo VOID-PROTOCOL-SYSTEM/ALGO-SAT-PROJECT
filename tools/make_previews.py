@@ -18,6 +18,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 HIDE_JS = """
 () => {
   const host = document.getElementById('memo-archive-nav'); if (host) host.style.display = 'none';
+  const ld = document.getElementById('memo-archive-load'); if (ld) ld.style.display = 'none';
   document.querySelectorAll('table').forEach(t => t.style.visibility = 'hidden');
 }
 """

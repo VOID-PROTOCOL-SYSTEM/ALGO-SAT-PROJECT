@@ -83,6 +83,7 @@
   /* ── page wipe ── */
   var wipeEl = $('#wipe');
   function go(href) {
+    if (FX.transition) { FX.transition(href); return; }
     if (reduce || !wipeEl) { location.href = href; return; }
     wipeEl.classList.add('on'); setTimeout(function () { location.href = href; }, 280);
   }
@@ -114,7 +115,7 @@
     help: function () {
       ['commands:', '  ls                  list notebooks', '  open <n|name>       open a notebook  (e.g. open 3, open supp)',
        '  about               operator profile', '  theme <hue>         cyan | violet | amber | green', '  rain [on|off]       digital rain',
-       '  crt [on|off]        retro scanline mode', '  sound [on|off]      synth blips', '  date | whoami | status', '  clear | exit'].forEach(function (l) { print(l, 'dim'); });
+       '  crt [on|off]        retro scanline mode', '  sound [on|off]      synth blips', '  date | whoami | status', '  clear | exit'].concat(FX.helpExtra || []).forEach(function (l) { print(l, 'dim'); });
     },
     ls: function () {
       DATA.items.forEach(function (it, i) { print((i + 1 < 10 ? '0' : '') + (i + 1) + '  ' + pad(it.file, 26) + pad(it.size, 10) + it.status); });
@@ -140,6 +141,7 @@
     hack: function () { FX.storm && FX.storm(); print('// override accepted'); },
     matrix: function () { setRain(true); FX.hue && FX.hue('green'); print('wake up, runner...'); }
   };
+  FX.cmds = CMDS; FX.resolve = resolve; FX.print = print;
   function run(line) {
     line = line.trim(); if (!line) return;
     print('> ' + line, 'cmd'); hist.push(line); hi = hist.length;
@@ -148,7 +150,7 @@
   }
   function openTerm() { term.classList.add('open'); if (!out.childNodes.length) { print('MEMO_ARCHIVE terminal v3.0 — type "help" for commands', 'dim'); } inp.focus(); }
   function closeTerm() { term.classList.remove('open'); inp.blur(); }
-  FX.openTerm = openTerm;
+  FX.openTerm = openTerm; FX.closeTerm = closeTerm;
   $('#term-x').addEventListener('click', closeTerm);
   inp.addEventListener('keydown', function (e) {
     e.stopPropagation();
@@ -169,6 +171,7 @@
     rainbow: function () { root.classList.toggle('rainbow'); toast(root.classList.contains('rainbow') ? '// SPECTRUM OVERLOAD' : '// SPECTRUM NORMALISED'); },
     glitch: function () { FX.storm && FX.storm(); }
   };
+  FX.secrets = SECRETS;
   document.addEventListener('keydown', function (e) {
     var tag = (document.activeElement && document.activeElement.tagName) || '';
     if (/INPUT|TEXTAREA/.test(tag)) return;

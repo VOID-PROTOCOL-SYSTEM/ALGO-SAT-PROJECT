@@ -1,0 +1,152 @@
+/* ============================================================
+   FUN PACK: neural link, popups, bug, runner ID, hack overlay,
+   slice transition, reticle/trail, holo cards, skyline, thunder,
+   neon sign sparks, scroll aberration, synth pulse
+   ============================================================ */
+
+/* ── Slice transition ── */
+.slices { position: fixed; inset: 0; z-index: 10060; display: flex; flex-direction: column; pointer-events: all; }
+.slices i { flex: 1; display: block; background: #04060a; border-bottom: 1px solid rgba(0,245,255,.3); }
+.slices-msg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(440px, 80vw); text-align: center; opacity: 0; }
+.sm-t { font: 400 13px var(--cp-font-mono); letter-spacing: .12em; color: var(--cp-neon-cyan); text-shadow: 0 0 10px rgba(0,245,255,.6); margin-bottom: 14px; text-transform: uppercase; }
+.sm-bar { height: 4px; background: rgba(0,245,255,.15); border-radius: 2px; overflow: hidden; }
+.sm-bar b { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cp-neon-cyan), var(--cp-neon-magenta)); box-shadow: 0 0 12px var(--cp-neon-cyan); }
+
+/* ── Cursor trail + reticle ── */
+#trail { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 9996; pointer-events: none; }
+.reticle { position: fixed; left: 0; top: 0; width: 30px; height: 30px; margin: -15px 0 0 -15px; z-index: 9997; pointer-events: none;
+           border: 1px solid rgba(0,245,255,.55); border-radius: 50%; transition: width .18s, height .18s, margin .18s, border-color .18s, opacity .2s, background .18s; }
+.reticle i { position: absolute; background: var(--cp-neon-cyan); transition: background .18s; }
+.reticle i:nth-child(1) { left: 50%; top: -5px; width: 1px; height: 8px; }
+.reticle i:nth-child(2) { left: 50%; bottom: -5px; width: 1px; height: 8px; }
+.reticle i:nth-child(3) { top: 50%; left: -5px; height: 1px; width: 8px; }
+.reticle i:nth-child(4) { top: 50%; right: -5px; height: 1px; width: 8px; }
+.reticle.hot { width: 46px; height: 46px; margin: -23px 0 0 -23px; border-color: var(--cp-neon-magenta); background: rgba(255,45,120,.06); }
+.reticle.hot i { background: var(--cp-neon-magenta); }
+.reticle.down { width: 20px; height: 20px; margin: -10px 0 0 -10px; }
+
+/* ── Holographic foil on cards ── */
+a.card-link .holo { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; mix-blend-mode: color-dodge;
+  background: linear-gradient(115deg, transparent 18%, rgba(255,0,150,.55) 32%, rgba(0,255,255,.55) 46%, rgba(255,255,0,.45) 58%, rgba(140,80,255,.5) 70%, transparent 82%);
+  background-size: 260% 260%; background-position: var(--hx, 50%) var(--hy, 50%); transition: opacity .25s; }
+a.card-link:hover .holo { opacity: .42; }
+
+/* ── Neon sign + sparks ── */
+.hero h1.sign-off { color: #0b3a3f !important; text-shadow: none !important; }
+.spark { position: fixed; z-index: 9990; width: 3px; height: 3px; border-radius: 50%; pointer-events: none; background: #ffe27a; box-shadow: 0 0 6px 1px #ffb000; }
+
+/* ── Skyline ── */
+.skyline { position: relative; height: 190px; margin: 0 0 2rem; overflow: hidden; border-bottom: 1px solid var(--cp-neon-cyan);
+           background: linear-gradient(#080b12 0%, #0d0b1f 55%, #1a0f2e 100%);
+           -webkit-mask-image: linear-gradient(transparent, #000 38%); mask-image: linear-gradient(transparent, #000 38%); }
+.sky-sun { position: absolute; right: 12%; bottom: 26px; width: 150px; height: 150px; border-radius: 50%; opacity: .6;
+           background: linear-gradient(#ffd400, #ff2d78 60%, #b44dff);
+           -webkit-mask-image: linear-gradient(#000 0 52%, transparent 52% 56%, #000 56% 64%, transparent 64% 69%, #000 69% 77%, transparent 77% 83%, #000 83% 90%, transparent 90% 96%, #000 96%);
+           mask-image: linear-gradient(#000 0 52%, transparent 52% 56%, #000 56% 64%, transparent 64% 69%, #000 69% 77%, transparent 77% 83%, #000 83% 90%, transparent 90% 96%, #000 96%); }
+.sky-par { position: absolute; top: 0; bottom: 0; left: -40px; right: -40px; will-change: transform; transition: transform .25s ease-out; }
+.sky-layer { width: 100%; height: 100%; display: block; }
+.sky-win-blink { animation: win-blink 3s steps(1) infinite; }
+@keyframes win-blink { 0%, 100% { opacity: 1; } 45% { opacity: .1; } 55% { opacity: 1; } 80% { opacity: .2; } }
+.sky-beacon { animation: win-blink 1.6s steps(1) infinite; }
+.car { position: absolute; left: 0; width: 16px; height: 3px; border-radius: 2px; background: #fff; z-index: 3; opacity: .95;
+       box-shadow: 0 0 8px 2px var(--c, #00f5ff), -30px 0 14px -2px var(--c, #00f5ff);
+       animation: car-fly var(--dur, 14s) linear infinite; animation-delay: var(--del, 0s); }
+.car.rev { box-shadow: 0 0 8px 2px var(--c, #ff2d78), 30px 0 14px -2px var(--c, #ff2d78); animation-name: car-fly-rev; }
+@keyframes car-fly     { from { transform: translateX(-60px); } to { transform: translateX(var(--dist, 1400px)); } }
+@keyframes car-fly-rev { from { transform: translateX(var(--dist, 1400px)); } to { transform: translateX(-60px); } }
+
+/* ── Neural link (snark widget) ── */
+.nl { position: fixed; right: 20px; bottom: 20px; z-index: 9970; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; pointer-events: none; }
+.nl-bubble { max-width: 290px; padding: 10px 14px; background: rgba(8,11,18,.96); border: 1px solid var(--cp-neon-magenta); border-radius: 6px;
+             box-shadow: 0 0 18px rgba(255,45,120,.35); font: 400 12px/1.5 var(--cp-font-mono); color: var(--cp-neon-magenta); letter-spacing: .03em;
+             opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; }
+.nl-bubble.show { opacity: 1; transform: none; }
+.nl-bubble small { display: block; margin-bottom: 4px; font-size: 9px; letter-spacing: .2em; color: var(--cp-text-muted); }
+.nl-eye { pointer-events: all; width: 46px; height: 46px; padding: 0; cursor: pointer; background: rgba(8,11,18,.92); border: 1px solid rgba(255,45,120,.55);
+          border-radius: 50%; box-shadow: 0 0 14px rgba(255,45,120,.3); display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.nl-eye:hover { box-shadow: 0 0 22px rgba(255,45,120,.7); transform: scale(1.06); }
+.nl-eye svg { width: 28px; height: 28px; }
+.nl-eye .iris { fill: var(--cp-neon-magenta); transform-origin: 16px 16px; animation: nl-look 7s ease-in-out infinite; }
+@keyframes nl-look { 0%, 100% { transform: translate(0,0); } 20% { transform: translate(3px,-1px); } 45% { transform: translate(-3px,1px); } 70% { transform: translate(2px,2px); } }
+.nl.muted .nl-eye { opacity: .45; filter: grayscale(.8); }
+
+/* ── Popups ── */
+.popup { position: fixed; z-index: 9985; width: 300px; background: var(--cp-bg-surface); border: 1px solid var(--cp-neon-yellow);
+         box-shadow: 0 0 24px rgba(247,255,0,.3); border-radius: 4px; animation: pop-in .18s ease-out; }
+.popup.out { animation: pop-out .25s ease-in forwards; }
+@keyframes pop-in  { from { transform: scale(.85); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pop-out { 0% { transform: none; } 25% { transform: translateX(8px) skewX(8deg); filter: hue-rotate(90deg); } 60% { transform: translateX(-10px) skewX(-6deg); opacity: .6; } 100% { transform: scale(.6); opacity: 0; } }
+.pop-head { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; cursor: move; background: rgba(247,255,0,.1);
+            border-bottom: 1px solid rgba(247,255,0,.35); font: 700 10px var(--cp-font-display); letter-spacing: .14em; color: var(--cp-neon-yellow); text-transform: uppercase; }
+.pop-x { cursor: pointer; font-style: normal; font-size: 16px; line-height: 12px; padding: 0 4px; color: var(--cp-neon-magenta); animation: x-jit 2.2s steps(1) infinite; }
+@keyframes x-jit { 0%, 90%, 100% { transform: none; } 92% { transform: translate(2px,-1px); } 94% { transform: translate(-2px,1px); } 96% { transform: translate(1px,1px); } }
+.popup-body { display: flex; gap: 12px; padding: 14px 14px 10px; font: 400 13px/1.5 var(--cp-font-mono); color: var(--cp-text-primary); }
+.pop-ico { flex: none; width: 34px; height: 34px; border: 2px solid var(--cp-neon-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+           font: 700 18px var(--cp-font-display); color: var(--cp-neon-yellow); }
+.pop-btns { display: flex; gap: 8px; justify-content: flex-end; padding: 0 14px 12px; }
+.pop-btn { cursor: pointer; padding: 5px 12px; font: 400 10px var(--cp-font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--cp-neon-cyan);
+           border: 1px solid rgba(0,245,255,.5); border-radius: 2px; }
+.pop-btn:hover { background: rgba(0,245,255,.12); box-shadow: 0 0 10px rgba(0,245,255,.4); }
+
+/* ── Bug mascot ── */
+.bug { position: fixed; left: 0; top: 0; z-index: 9000; width: 30px; height: 30px; margin: -15px 0 0 -15px; cursor: pointer; will-change: transform; }
+.bug svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 5px rgba(0,255,159,.7)); }
+.bug .legs { animation: bug-legs .16s steps(2) infinite; }
+@keyframes bug-legs { from { transform: translateY(0); } to { transform: translateY(1px); } }
+.bug.mad svg { filter: drop-shadow(0 0 8px rgba(255,45,120,.9)) hue-rotate(-150deg) saturate(2); }
+.bug.mad { animation: bug-rage .12s linear infinite; }
+@keyframes bug-rage { 0% { margin-left: -16px; } 50% { margin-left: -14px; } 100% { margin-left: -16px; } }
+.splat { position: fixed; z-index: 8990; width: 46px; height: 46px; margin: -23px 0 0 -23px; pointer-events: none; opacity: .85; transition: opacity 3s ease-in 1.2s; }
+.splat.fade { opacity: 0; }
+#bug-count { color: var(--cp-neon-green); }
+
+/* ── Runner ID ── */
+.id-card { position: relative; display: flex; flex-wrap: wrap; gap: 1.4rem; align-items: center; margin-top: 1rem; padding: 1.4rem; overflow: hidden;
+           background: linear-gradient(135deg, #0b1520, #130c24); border: 1px solid var(--cp-neon-cyan); border-radius: var(--cp-radius-lg);
+           box-shadow: 0 0 22px rgba(0,245,255,.18); max-width: 640px; }
+.id-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: color-dodge; opacity: .18;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,0,150,.6) 35%, rgba(0,255,255,.6) 50%, rgba(255,255,0,.5) 62%, transparent 78%); background-size: 260% 260%; animation: id-holo 6s ease-in-out infinite; }
+@keyframes id-holo { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.id-face { width: 96px; height: 96px; flex: none; border: 1px solid var(--cp-border-glow); background: #05080d; image-rendering: pixelated; }
+.id-info { flex: 1; min-width: 220px; }
+.id-key { font: 400 9px var(--cp-font-mono); letter-spacing: .2em; color: var(--cp-text-muted); text-transform: uppercase; }
+.id-val { font: 700 15px var(--cp-font-display); letter-spacing: .06em; color: var(--cp-text-primary); margin: 1px 0 9px; text-transform: uppercase; }
+.id-val.big { font-size: 20px; color: var(--cp-neon-cyan); text-shadow: 0 0 10px rgba(0,245,255,.5); }
+.id-bar { width: 100%; height: 38px; display: block; margin-top: 4px; }
+.id-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+.id-actions { width: 100%; display: flex; gap: 10px; align-items: center; position: relative; z-index: 2; }
+
+/* ── Hack overlay ── */
+.hack { position: fixed; inset: 0; z-index: 10070; background: #020403; display: flex; flex-direction: column; justify-content: flex-end; padding: 4vh 5vw; overflow: hidden; }
+.hack-feed { margin: 0 !important; flex: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; background: none !important; border: none !important; padding: 0 !important;
+             font: 400 12px/1.35 var(--cp-font-mono) !important; color: rgba(0,255,159,.55) !important; white-space: pre; }
+.hack-phase { margin: 14px 0 8px; font: 700 clamp(14px, 2.4vw, 22px) var(--cp-font-display); letter-spacing: .12em; color: var(--cp-neon-green); text-shadow: 0 0 12px rgba(0,255,159,.7); text-transform: uppercase; }
+.hack-bar { height: 10px; border: 1px solid rgba(0,255,159,.5); border-radius: 2px; overflow: hidden; }
+.hack-bar b { display: block; height: 100%; width: 0; background: var(--cp-neon-green); box-shadow: 0 0 14px var(--cp-neon-green); }
+.hack-pct { margin-top: 6px; font: 400 11px var(--cp-font-mono); letter-spacing: .2em; color: var(--cp-text-muted); }
+.hack-big { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; font: 700 clamp(28px, 7vw, 80px) var(--cp-font-display);
+            letter-spacing: .1em; color: var(--cp-neon-green); text-shadow: 0 0 30px var(--cp-neon-green); background: rgba(2,4,3,.78); animation: glitch .6s steps(8) infinite; }
+.hack.done .hack-big { display: flex; }
+
+/* ── Scroll aberration ── */
+.main.aber { filter: drop-shadow(var(--ab, 3px) 0 0 rgba(255,0,80,.6)) drop-shadow(calc(var(--ab, 3px) * -1) 0 0 rgba(0,230,255,.6)); }
+
+/* ── Thunder ── */
+#thunder { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .6s; }
+#thunder.on { opacity: 1; }
+.flash { position: fixed; inset: 0; z-index: 9995; background: rgba(205,228,255,.5); pointer-events: none; opacity: 0; }
+html.lit .card-link, html.lit .hud-tile, html.lit .term-box, html.lit .id-card { box-shadow: 0 0 46px rgba(190,225,255,.75) !important; border-color: #dff0ff !important; }
+html.lit .shell { filter: brightness(1.3); }
+
+/* ── Synth pulse (driven by --beat 0..1) ── */
+body::after { opacity: calc(.55 + var(--beat, 0) * .9); }
+.logo .hex { filter: drop-shadow(0 0 calc(4px + var(--beat, 0) * 16px) var(--cp-neon-cyan)); }
+.hud-tile { box-shadow: 0 0 calc(var(--beat, 0) * 20px) rgba(0,245,255,.55); }
+.rail { border-right-color: rgba(0, 245, 255, calc(.35 + var(--beat, 0) * .65)); }
+
+@media (pointer: coarse) { .reticle, #trail { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .car, .sky-win-blink, .sky-beacon, .bug .legs, .nl-eye .iris, .pop-x, .id-card::after { animation: none !important; }
+  .reticle, #trail { display: none; }
+}
+@media (max-width: 860px) { .nl { right: 10px; bottom: 10px; } .skyline { height: 150px; } .popup { width: min(300px, 90vw); } }

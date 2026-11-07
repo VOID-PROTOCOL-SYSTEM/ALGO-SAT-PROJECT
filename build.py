@@ -21,7 +21,7 @@ NB_DIR = ROOT / "notebooks"
 
 SITE_TITLE   = "MEMO ARCHIVE"
 SITE_TAGLINE = "> marimo notebooks // static exports"
-SITE_LEDE    = "Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key."
+SITE_LEDE    = "Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key. Something here is watching you."
 REPO_URL     = ""   # optional link shown in the footer
 
 # ── EDIT ME ──────────────────────────────────────────────────
@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v4.0", "2026-11-07", "neural link AI, popups, bug mascot, runner ID, hack sequence, synth grid, thunder, skyline, holo cards, glitch transitions"),
     ("v3.0", "2026-11-07", "previews, status badges, timeline, section jump-list, terminal, rain, sound, page wipes, 404"),
     ("v2.0", "2026-11-07", "boot sequence, HUD, spotlight cards, command palette, hue switcher"),
     ("v1.0", "2026-11-07", "landing page, directory rail, notebook nav widget"),
@@ -207,15 +208,21 @@ WIDGET_JS = r"""
   sech.addEventListener("click", function () { if (!built) buildSections(); secs.classList.toggle("show"); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") wrap.classList.remove("open"); });
 
-  /* page-transition wipe for links leaving this notebook */
+  /* page-transition: glitch slices for links leaving this notebook */
   function wipe(href) {
-    var o = document.createElement("div");
-    o.style.cssText = "position:fixed;inset:0;z-index:2147483600;background:#04060a;pointer-events:all;" +
-      "border-top:3px solid #00f5ff;box-shadow:0 0 40px #00f5ff;transform:translateY(-101%)";
+    var N = 12, o = document.createElement("div"), kids = [], i;
+    o.style.cssText = "position:fixed;inset:0;z-index:2147483600;display:flex;flex-direction:column;pointer-events:all";
+    for (i = 0; i < N; i++) {
+      var sl = document.createElement("div");
+      sl.style.cssText = "flex:1;background:#04060a;border-bottom:1px solid rgba(0,245,255,.3);transform:translateX(" + (i % 2 ? 101 : -101) + "%)";
+      o.appendChild(sl); kids.push(sl);
+    }
     document.body.appendChild(o);
     if (!o.animate) { location.href = href; return; }
-    o.animate([{ transform: "translateY(-101%)" }, { transform: "translateY(0)" }], { duration: 260, easing: "ease-in", fill: "forwards" });
-    setTimeout(function () { location.href = href; }, 270);
+    kids.forEach(function (sl, i) {
+      sl.animate([{ transform: sl.style.transform }, { transform: "translateX(0)" }], { duration: 230, delay: i * 16, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" });
+    });
+    setTimeout(function () { location.href = href; }, N * 16 + 280);
     window.addEventListener("pageshow", function () { o.remove(); }, { once: true });
   }
   root.addEventListener("click", function (e) {
@@ -227,6 +234,39 @@ WIDGET_JS = r"""
 """
 
 
+
+LOAD_JS = r"""
+(function () {
+  var el = document.getElementById("memo-archive-load"); if (!el) return;
+  var M = ["reticulating splines","bribing the garbage collector","convincing marimo to cooperate","untangling the neon cables","defragmenting the vibes",
+    "asking the server nicely","compiling excuses","warming up the flux capacitor","downloading more RAM","teaching the pixels to behave",
+    "feeding the hamsters that power the cloud","polishing the scanlines","spinning up the hype engine","counting to infinity (twice)","negotiating with the firewall"];
+  var msg = el.querySelector("#mal-msg"), bar = el.querySelector("#mal-bar"), p = 4, t0 = Date.now(), gone = false;
+  function say() { msg.textContent = M[Math.floor(Math.random() * M.length)] + "\u2026"; } say();
+  var iv1 = setInterval(say, 750), iv2 = setInterval(function () { p += (92 - p) * .06; bar.style.width = p + "%"; }, 120);
+  function finish() {
+    if (gone) return; gone = true; clearInterval(iv1); clearInterval(iv2); bar.style.width = "100%"; msg.textContent = "ACCESS GRANTED";
+    setTimeout(function () { el.style.opacity = "0"; setTimeout(function () { el.remove(); }, 400); }, 250);
+  }
+  function ready() { var wait = Math.max(0, 700 - (Date.now() - t0)); setTimeout(finish, wait); }
+  if (document.readyState === "complete") ready(); else window.addEventListener("load", ready);
+  setTimeout(finish, 30000);
+})();
+"""
+
+LOAD_START, LOAD_END = "<!-- memo-archive-load:start -->", "<!-- memo-archive-load:end -->"
+LOAD_HTML = ('<div id="memo-archive-load" style="position:fixed;inset:0;z-index:2147483500;background:#04060a;display:flex;flex-direction:column;'
+             'align-items:center;justify-content:center;gap:18px;font-family:\'Share Tech Mono\',ui-monospace,Consolas,monospace;transition:opacity .4s">'
+             '<div id="mal-msg" style="color:#00f5ff;font-size:14px;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 0 10px rgba(0,245,255,.6)"></div>'
+             '<div style="width:min(420px,70vw);height:4px;background:rgba(0,245,255,.15);border-radius:2px;overflow:hidden">'
+             '<div id="mal-bar" style="height:100%;width:4%;background:linear-gradient(90deg,#00f5ff,#ff2d78);box-shadow:0 0 12px #00f5ff;transition:width .12s linear"></div></div>'
+             '<div style="color:#8a9ab8;font-size:10px;letter-spacing:.2em">MEMO_ARCHIVE // DECRYPTING NOTEBOOK</div></div>')
+
+
+def load_block():
+    return f"{LOAD_START}{LOAD_HTML}<script>{LOAD_JS}</script>{LOAD_END}"
+
+
 def widget_block():
     manifest = [{"file": i["file"], "label": i["label"], "group": i["group"]} for i in flat_items()]
     js = WIDGET_JS.replace("__MANIFEST__", json.dumps(manifest))
@@ -235,7 +275,11 @@ def widget_block():
 
 def inject(path, block):
     text = path.read_text(encoding="utf-8")
-    text = re.sub(re.escape(MARK_START) + r".*?" + re.escape(MARK_END), "", text, flags=re.S)
+    for a, b in ((MARK_START, MARK_END), (LOAD_START, LOAD_END)):
+        text = re.sub(re.escape(a) + r".*?" + re.escape(b), "", text, flags=re.S)
+    m = re.search(r"<body[^>]*>", text)
+    if m:
+        text = text[:m.end()] + load_block() + text[m.end():]
     i = text.rfind("</body>")
     text = text[:i] + block + text[i:] if i != -1 else text + block
     path.write_text(text, encoding="utf-8")
@@ -253,6 +297,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="icon" href="__FAVICON__">
 <link rel="stylesheet" href="assets/cyberpunk-marimo.css">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/fun.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -265,12 +310,14 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
     <div class="cp-label">Notebooks</div>
     __RAIL__
     <div class="rail-group"><div class="rail-group-name">Extras</div>
-      <a class="rail-link" href="#timeline">Timeline</a><a class="rail-link" href="#about">About</a><a class="rail-link" href="#changelog">Changelog</a></div>
+      <a class="rail-link" href="#timeline">Timeline</a><a class="rail-link" href="#about">About</a><a class="rail-link" href="#runner">Runner ID</a><a class="rail-link" href="#changelog">Changelog</a></div>
     <div class="cp-label">FX</div>
     <div class="pills">
       <i class="pill" role="button" tabindex="0" data-fx="rain">Rain</i>
       <i class="pill" role="button" tabindex="0" data-fx="sound">Sound</i>
       <i class="pill" role="button" tabindex="0" data-fx="crt">CRT</i>
+      <i class="pill" role="button" tabindex="0" data-fx="synth">Synth</i>
+      <i class="pill" role="button" tabindex="0" data-fx="storm">Storm</i>
     </div>
     <div class="cp-label">Hue</div>
     <div class="swatches">
@@ -280,15 +327,16 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
       <i class="swatch" role="button" tabindex="0" data-hue="green" title="Green" style="background:#00ff9f;color:#00ff9f"></i>
     </div>
     <div class="rail-hint"><kbd>CTRL</kbd>+<kbd>K</kbd> <a id="open-pal" href="#" onclick="return false" style="border:none !important">JUMP TO&hellip;</a><br>
-      <kbd>`</kbd> <a id="open-term" href="#" onclick="return false" style="border:none !important">TERMINAL</a><br><kbd>/</kbd> FILTER</div>
+      <kbd>`</kbd> <a id="open-term" href="#" onclick="return false" style="border:none !important">TERMINAL</a><br><kbd>/</kbd> FILTER<br>BUGS SQUASHED: <span id="bug-count">0</span></div>
   </div>
 
   <main class="main" id="top">
     <header class="hero">
-      <h1>__SITE_TITLE__</h1>
+      <h1 class="sign">__SITE_TITLE__</h1>
       <span class="cp-type cp-type--hot tagline" style="--w:__TLEN__ch;--n:__TLEN__">__TAGLINE__</span>
       <p class="lede">__LEDE__</p>
     </header>
+    <div class="skyline" id="skyline" aria-hidden="true"></div>
 
     <div class="hud">
       <div class="hud-tile"><div class="hud-k">Notebooks</div><div class="hud-v">__TOTAL2__</div></div>
@@ -315,6 +363,12 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
     <section class="group" id="about">
       <h2>About<span class="count">// <span id="about-handle">__HANDLE__</span></span></h2>
       <div class="term-box">__ABOUT__</div>
+    </section>
+
+    <section class="group" id="runner">
+      <h2>Runner ID</h2>
+      <p class="blurb">Issued to every visitor. Generated in your browser, never stored anywhere else.</p>
+      <div id="id-card"></div>
     </section>
 
     <section class="group" id="changelog">
@@ -361,6 +415,8 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 </script>
 <script src="assets/site.js"></script>
 <script src="assets/extras.js"></script>
+<script src="assets/fun.js"></script>
+<script src="assets/fun2.js"></script>
 </body>
 </html>
 """

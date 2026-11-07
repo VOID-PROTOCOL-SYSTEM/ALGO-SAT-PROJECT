@@ -28,4 +28,9 @@ notebooks/*.html            marimo exports (build.py injects an INDEX/PREV/NEXT 
 5. Site appears at `https://<you>.github.io/memo-archive/` in a minute or two
 
 ## Secrets & shortcuts
-`Ctrl+K` jump palette · `` ` `` terminal (`help`) · `/` filter · type words anywhere: `matrix` `crt` `retro` `rainbow` `glitch` · Konami code.
+`Ctrl+K` jump palette · `` ` `` terminal (`help`) · `/` filter · right-click the eye to mute the neural link.
+Terminal: `ls` `open <n|name>` `hack [name]` `synth` `thunder` `rain` `crt` `sound` `theme <hue>` `bug` `bugs` `error` `id [new]` `snark` `neon`.
+Type these words anywhere on the page: `matrix` `crt` `retro` `rainbow` `glitch` `hack` `thunder` `synth` `bug` `popup` `neon` · plus the Konami code.
+
+## File map
+`assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, neural link, popups, bug, runner ID, hack, synth, thunder.
