@@ -150,6 +150,7 @@ def inject(path: Path, block: str) -> None:
 def build_index() -> str:
     rail, sections = [], []
     total = 0
+    total_bytes = 0
     for g in GROUPS:
         links = "".join(
             f'<a class="rail-link" href="notebooks/{html.escape(it["file"])}">{html.escape(it["label"])}</a>'
@@ -164,6 +165,7 @@ def build_index() -> str:
             p = NB_DIR / it["file"]
             size = human_size(p.stat().st_size) if p.exists() else "missing"
             total += 1
+            total_bytes += p.stat().st_size if p.exists() else 0
             search = f'{g["name"]} {it["label"]} {it["desc"]} {it["file"]}'.lower()
             desc = f'<div class="card-desc">{html.escape(it["desc"])}</div>' if it["desc"] else ""
             cards.append(
@@ -188,21 +190,38 @@ def build_index() -> str:
 <title>{html.escape(SITE_TITLE)}</title>
 <link rel="stylesheet" href="assets/cyberpunk-marimo.css">
 <link rel="stylesheet" href="assets/site.css">
+<script>try{{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}}catch(e){{}}</script>
 </head>
 <body>
+<div class="boot" id="boot" aria-hidden="true"><pre id="boot-log"></pre><span class="caret"></span><div class="skip">PRESS ANY KEY TO SKIP</div></div>
 <div class="shell">
   <div class="rail" role="navigation" aria-label="Directory">
     <a class="brand" href="#top">{html.escape(SITE_TITLE)}<small>// DIRECTORY</small></a>
     <div class="cp-label">Notebooks</div>
     {"".join(rail)}
+    <div class="cp-label">Hue</div>
+    <div class="swatches">
+      <i class="swatch on" role="button" tabindex="0" data-hue="cyan" title="Cyan" style="background:#00f5ff;color:#00f5ff"></i>
+      <i class="swatch" role="button" tabindex="0" data-hue="violet" title="Violet" style="background:#b44dff;color:#b44dff"></i>
+      <i class="swatch" role="button" tabindex="0" data-hue="amber" title="Amber" style="background:#ffb000;color:#ffb000"></i>
+      <i class="swatch" role="button" tabindex="0" data-hue="green" title="Green" style="background:#00ff9f;color:#00ff9f"></i>
+    </div>
+    <div class="rail-hint"><kbd>CTRL</kbd>+<kbd>K</kbd> <a id="open-pal" href="#" onclick="return false" style="border:none !important">JUMP TO&hellip;</a><br><kbd>/</kbd> FILTER</div>
   </div>
 
   <main class="main" id="top">
     <header class="hero">
       <h1>{html.escape(SITE_TITLE)}</h1>
-      <span class="cp-type cp-type--hot cp-type--long">{html.escape(SITE_TAGLINE)}</span>
+      <span class="cp-type cp-type--hot tagline" style="--w:{len(SITE_TAGLINE)}ch;--n:{len(SITE_TAGLINE)}">{html.escape(SITE_TAGLINE)}</span>
       <p class="lede">{html.escape(SITE_LEDE)}</p>
     </header>
+
+    <div class="hud">
+      <div class="hud-tile"><div class="hud-k">Notebooks</div><div class="hud-v">{total:02d}</div></div>
+      <div class="hud-tile"><div class="hud-k">Payload</div><div class="hud-v">{human_size(total_bytes)}</div></div>
+      <div class="hud-tile"><div class="hud-k">Time</div><div class="hud-v" id="hud-clock">--:--:--</div></div>
+      <div class="hud-tile"><div class="hud-k">Status</div><div class="hud-v"><span class="dot"></span>ONLINE</div></div>
+    </div>
 
     <div class="search-row">
       <span class="cp-label">Filter</span>
@@ -253,6 +272,7 @@ def build_index() -> str:
   groups.forEach(function (g) {{ io.observe(g); }});
 }})();
 </script>
+<script src="assets/site.js"></script>
 </body>
 </html>
 """

@@ -159,3 +159,84 @@ a.card-link:hover .go { color: var(--cp-neon-magenta); text-shadow: 0 0 8px rgba
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .cp-type { width: 100% !important; }
 }
+
+/* ============================================================
+   SNAZZ PACK: boot, HUD, spotlight cards, palette, hue, easter egg
+   ============================================================ */
+
+/* ── Boot sequence ── */
+.boot { display: none; position: fixed; inset: 0; z-index: 10000; background: #04060a;
+        flex-direction: column; justify-content: center; padding: 8vw; }
+html.booting .boot { display: flex; }
+.boot pre { margin: 0 !important; background: none !important; border: none !important; padding: 0 !important;
+            font: 400 clamp(12px, 1.6vw, 15px)/1.7 var(--cp-font-mono) !important; color: var(--cp-neon-green) !important;
+            text-shadow: 0 0 8px rgba(0,255,159,.5); white-space: pre-wrap; }
+.boot .skip { position: absolute; bottom: 2rem; left: 8vw; font: 400 11px var(--cp-font-mono);
+              letter-spacing: .18em; color: var(--cp-text-muted); }
+.boot.out { opacity: 0; transition: opacity .45s ease; pointer-events: none; }
+.boot .caret { display: inline-block; width: 9px; height: 1em; background: var(--cp-neon-green);
+               vertical-align: -2px; animation: cursor-glow-blink 1s infinite; }
+
+/* ── HUD strip ── */
+.hud { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; margin: 0 0 2rem; }
+.hud-tile { position: relative; padding: .8rem 1rem; background: rgba(13,17,23,.85);
+            border: 1px solid var(--cp-border-subtle); border-top: 2px solid var(--cp-neon-cyan);
+            border-radius: var(--cp-radius-sm); }
+.hud-tile:nth-child(2) { border-top-color: var(--cp-neon-purple); }
+.hud-tile:nth-child(3) { border-top-color: var(--cp-neon-magenta); }
+.hud-tile:nth-child(4) { border-top-color: var(--cp-neon-green); }
+.hud-k { font: 400 10px var(--cp-font-mono); letter-spacing: .18em; color: var(--cp-text-muted); text-transform: uppercase; }
+.hud-v { margin-top: 4px; font: 700 20px var(--cp-font-display); letter-spacing: .04em; color: var(--cp-text-primary);
+         text-shadow: 0 0 10px rgba(0,245,255,.35); }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px;
+       background: var(--cp-neon-green); box-shadow: 0 0 8px var(--cp-neon-green);
+       animation: cursor-glow-blink 1.6s ease-in-out infinite; }
+
+/* ── Spotlight + tilt cards ── */
+a.card-link { position: relative; overflow: hidden; transform-style: preserve-3d; will-change: transform; }
+a.card-link::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(0,245,255,.16), transparent 65%); }
+a.card-link:hover::before { opacity: 1; }
+a.card-link::after { content: ''; position: absolute; left: 0; right: 0; height: 2px; top: -4px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--cp-neon-cyan), transparent); opacity: 0; }
+a.card-link:hover::after { opacity: .8; animation: card-scan 1.1s linear infinite; }
+@keyframes card-scan { from { top: -4px; } to { top: 100%; } }
+
+/* ── Command palette ── */
+.pal-wrap { position: fixed; inset: 0; z-index: 9990; display: none; align-items: flex-start; justify-content: center;
+            padding-top: 16vh; background: rgba(4,6,10,.72); backdrop-filter: blur(4px); }
+.pal-wrap.open { display: flex; }
+.pal { width: min(560px, 92vw); background: var(--cp-bg-surface); border: 1px solid var(--cp-neon-cyan);
+       border-radius: var(--cp-radius-md); box-shadow: 0 0 40px rgba(0,245,255,.3); overflow: hidden; }
+.pal input { width: 100% !important; border: none !important; border-bottom: 1px solid var(--cp-border-glow) !important;
+             border-radius: 0 !important; padding: 16px 18px !important; font-size: 16px !important; box-shadow: none !important; }
+.pal-list { max-height: 50vh; overflow-y: auto; }
+.pal-item { display: flex; justify-content: space-between; gap: 1rem; padding: 11px 18px; color: var(--cp-text-muted);
+            font: 500 16px var(--cp-font-ui); letter-spacing: .03em; border-left: 3px solid transparent; }
+.pal-item small { font: 400 11px var(--cp-font-mono); letter-spacing: .14em; color: var(--cp-neon-purple); text-transform: uppercase; }
+.pal-item.sel { background: rgba(255,45,120,.08); color: var(--cp-text-primary); border-left-color: var(--cp-neon-magenta); }
+.pal-foot { padding: 8px 18px; border-top: 1px solid var(--cp-border-subtle);
+            font: 400 10px var(--cp-font-mono); letter-spacing: .14em; color: var(--cp-text-muted); }
+kbd { font: 400 10px var(--cp-font-mono); padding: 2px 6px; border: 1px solid var(--cp-border-glow); border-radius: 3px; color: var(--cp-neon-cyan); }
+
+/* ── Hue swatches ── */
+.swatches { display: flex; gap: 10px; }
+.swatch { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; opacity: .75; transition: all .15s; display: inline-block; }
+.swatch:hover { opacity: 1; transform: scale(1.15); }
+.swatch.on { border-color: #fff; opacity: 1; box-shadow: 0 0 12px currentColor; }
+.rail-hint { margin-top: 1.75rem; font: 400 11px var(--cp-font-mono); letter-spacing: .1em; color: var(--cp-text-muted); line-height: 2; }
+html { transition: filter .5s ease; }
+
+/* ── Easter egg ── */
+html.storm .shell { animation: storm-shake .12s infinite; }
+html.storm h1, html.storm .brand, html.storm .card-name, html.storm .hud-v { animation: glitch .5s infinite !important; }
+@keyframes storm-shake { 0% { transform: translate(0,0); } 25% { transform: translate(2px,-1px); } 50% { transform: translate(-2px,1px); } 75% { transform: translate(1px,2px); } 100% { transform: translate(0,0); } }
+.toast { position: fixed; top: 22px; right: 22px; z-index: 9995; padding: 12px 18px; background: var(--cp-bg-surface);
+         border: 1px solid var(--cp-neon-magenta); color: var(--cp-neon-magenta); box-shadow: 0 0 20px rgba(255,45,120,.5);
+         font: 400 12px var(--cp-font-mono); letter-spacing: .2em; opacity: 0; transform: translateY(-10px); transition: all .3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: none; }
+
+/* Typewriter tagline that stops at its own text width (base cp-type grows to 100% of the column) */
+@keyframes tagline-type { from { width: 0; } to { width: var(--w); } }
+.hero .tagline { max-width: 100%;
+  animation: tagline-type 2.4s steps(var(--n), end) .4s forwards, typewriter-cursor-fade .8s step-end .4s infinite !important; }
