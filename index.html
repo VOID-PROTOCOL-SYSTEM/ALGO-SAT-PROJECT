@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEMO ARCHIVE</title>
+<link rel="stylesheet" href="assets/cyberpunk-marimo.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="shell">
+  <div class="rail" role="navigation" aria-label="Directory">
+    <a class="brand" href="#top">MEMO ARCHIVE<small>// DIRECTORY</small></a>
+    <div class="cp-label">Notebooks</div>
+    <div class="rail-group"><div class="rail-group-name"><a href="#memo-1" style="color:inherit !important;border:none !important">Memo 01</a></div><a class="rail-link" href="notebooks/memo1_original.html">Original</a><a class="rail-link" href="notebooks/memo1_amendment_1.html">Amendment 1</a><a class="rail-link" href="notebooks/memo1_amendment_2.html">Amendment 2</a></div><div class="rail-group"><div class="rail-group-name"><a href="#memo-2" style="color:inherit !important;border:none !important">Memo 02</a></div><a class="rail-link" href="notebooks/memo2_original.html">Original</a><a class="rail-link" href="notebooks/memo2_supp.html">Supplement</a></div><div class="rail-group"><div class="rail-group-name"><a href="#memo-3" style="color:inherit !important;border:none !important">Memo 03</a></div><a class="rail-link" href="notebooks/memo3.html">Workbook</a></div>
+  </div>
+
+  <main class="main" id="top">
+    <header class="hero">
+      <h1>MEMO ARCHIVE</h1>
+      <span class="cp-type cp-type--hot cp-type--long">&gt; marimo notebooks // static exports</span>
+      <p class="lede">Read-only HTML snapshots of my marimo work. Pick a notebook from the directory.</p>
+    </header>
+
+    <div class="search-row">
+      <span class="cp-label">Filter</span>
+      <input type="search" id="q" placeholder="type to filter notebooks…" autocomplete="off">
+      <span class="result-count" id="count">6 / 6</span>
+    </div>
+
+    <section class="group" id="memo-1"><h2>Memo 01<span class="count">3 FILES</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo1_original.html" data-search="memo 01 original  memo1_original.html"><div class="card-tag">Memo 01</div><div class="card-name">Original</div><div class="card-meta"><span class="size">642 KB</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo1_amendment_1.html" data-search="memo 01 amendment 1  memo1_amendment_1.html"><div class="card-tag">Memo 01</div><div class="card-name">Amendment 1</div><div class="card-meta"><span class="size">13.2 MB</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo1_amendment_2.html" data-search="memo 01 amendment 2  memo1_amendment_2.html"><div class="card-tag">Memo 01</div><div class="card-name">Amendment 2</div><div class="card-meta"><span class="size">14.3 MB</span><span class="go">OPEN &#9654;</span></div></a></div></section><section class="group" id="memo-2"><h2>Memo 02<span class="count">2 FILES</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo2_original.html" data-search="memo 02 original  memo2_original.html"><div class="card-tag">Memo 02</div><div class="card-name">Original</div><div class="card-meta"><span class="size">2.0 MB</span><span class="go">OPEN &#9654;</span></div></a><a class="card-link cp-card" href="notebooks/memo2_supp.html" data-search="memo 02 supplement  memo2_supp.html"><div class="card-tag">Memo 02</div><div class="card-name">Supplement</div><div class="card-meta"><span class="size">1.5 MB</span><span class="go">OPEN &#9654;</span></div></a></div></section><section class="group" id="memo-3"><h2>Memo 03<span class="count">1 FILE</span></h2><div class="cards"><a class="card-link cp-card" href="notebooks/memo3.html" data-search="memo 03 workbook  memo3.html"><div class="card-tag">Memo 03</div><div class="card-name">Workbook</div><div class="card-meta"><span class="size">6.3 MB</span><span class="go">OPEN &#9654;</span></div></a></div></section>
+    <div class="empty" id="empty">&gt; NO MATCHES FOUND</div>
+
+    <footer class="foot"><span>BUILT 2026-11-07 // 6 NOTEBOOKS</span><span></span></footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var q = document.getElementById('q'), count = document.getElementById('count'), empty = document.getElementById('empty');
+  var cards = [].slice.call(document.querySelectorAll('.card-link'));
+  var groups = [].slice.call(document.querySelectorAll('.group'));
+  function filter() {
+    var term = q.value.trim().toLowerCase(), shown = 0;
+    cards.forEach(function (c) {
+      var ok = !term || c.dataset.search.indexOf(term) !== -1;
+      c.hidden = !ok; if (ok) shown++;
+    });
+    groups.forEach(function (g) { g.hidden = !g.querySelector('.card-link:not([hidden])'); });
+    count.textContent = shown + ' / ' + cards.length;
+    empty.classList.toggle('show', shown === 0);
+  }
+  q.addEventListener('input', filter);
+  // "/" focuses the filter box
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+  });
+
+  // scroll-spy for the rail
+  var links = {};
+  [].forEach.call(document.querySelectorAll('.rail-group-name a'), function (a) { links[a.getAttribute('href').slice(1)] = a.closest('.rail-group'); });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) {
+        Object.keys(links).forEach(function (k) { links[k].querySelector('.rail-group-name').style.textShadow = ''; });
+        var el = links[en.target.id];
+        if (el) el.querySelector('.rail-group-name').style.textShadow = '0 0 10px rgba(180,77,255,.9)';
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  groups.forEach(function (g) { io.observe(g); });
+})();
+</script>
+</body>
+</html>

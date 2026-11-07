@@ -1,0 +1,161 @@
+/* ============================================================
+   MEMO ARCHIVE — landing page layout
+   Sits on top of cyberpunk-marimo.css (same tokens, same vibe).
+   NOTE: class names deliberately avoid the substrings "nav",
+   "panel", "action", "toolbar", "sidebar", "cell" because the
+   base theme has [class*="..."] !important rules for those.
+   ============================================================ */
+
+:root { --rail-w: 270px; }
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+
+.shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* ── Left rail (directory) ── */
+.rail {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  padding: 1.75rem 1.25rem;
+  background: rgba(8, 11, 18, 0.92);
+  border-right: 1px solid var(--cp-border-glow);
+  backdrop-filter: blur(6px);
+}
+
+.brand {
+  display: block;
+  font-family: var(--cp-font-display);
+  font-weight: 700; font-size: 15px; letter-spacing: 0.14em;
+  color: var(--cp-neon-cyan) !important;
+  text-shadow: 0 0 8px rgba(0,245,255,.7), 0 0 20px rgba(0,245,255,.3);
+  border-bottom: none !important;
+  margin-bottom: 0.4rem;
+}
+.brand small {
+  display: block; margin-top: 4px;
+  font: 400 11px var(--cp-font-mono); letter-spacing: .12em;
+  color: var(--cp-text-muted); text-shadow: none;
+}
+
+.rail .cp-label { margin: 1.75rem 0 .6rem; }
+
+.rail-group { margin-bottom: 1.1rem; }
+.rail-group-name {
+  font: 700 11px var(--cp-font-display);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cp-neon-purple); margin: 0 0 .35rem;
+}
+
+.rail-link {
+  display: block;
+  padding: 6px 10px 6px 12px;
+  font: 500 15px var(--cp-font-ui);
+  letter-spacing: .03em;
+  color: var(--cp-text-muted) !important;
+  border-bottom: none !important;
+  border-left: 2px solid var(--cp-border-subtle);
+  transition: color .15s, border-color .15s, background .15s, padding-left .15s;
+}
+.rail-link:hover {
+  color: var(--cp-neon-cyan) !important;
+  border-left-color: var(--cp-neon-cyan);
+  background: rgba(0,245,255,.05);
+  padding-left: 16px;
+}
+.rail-link.is-active {
+  color: var(--cp-neon-magenta) !important;
+  border-left-color: var(--cp-neon-magenta);
+  background: rgba(255,45,120,.06);
+}
+
+/* ── Main column ── */
+.main {
+  padding: 3.5rem clamp(1.25rem, 4vw, 4rem) 3rem;
+  max-width: 1120px; width: 100%; box-sizing: border-box;
+}
+
+.hero { margin-bottom: 2.5rem; }
+.hero h1 {
+  font-size: clamp(2rem, 5.5vw, 3.6rem) !important;
+  line-height: 1.05; margin: 0 0 1rem !important;
+  border-bottom: none !important;
+}
+.hero .cp-type { font-size: 14px; }
+.hero p.lede {
+  max-width: 60ch; margin: 1.25rem 0 0;
+  font-size: 18px; line-height: 1.5; color: var(--cp-text-muted);
+}
+
+/* ── Search ── */
+.search-row { display: flex; align-items: center; gap: .75rem; margin: 0 0 .5rem; flex-wrap: wrap; }
+.search-row .cp-label { white-space: nowrap; }
+.search-row input { flex: 1; min-width: 200px; max-width: 420px; }
+.result-count { font: 400 12px var(--cp-font-mono); color: var(--cp-text-muted); }
+
+/* ── Groups + cards ── */
+.group { margin-top: 2.75rem; scroll-margin-top: 1.5rem; }
+.group > h2 { margin: 0 0 .25rem !important; display: flex; align-items: baseline; gap: .75rem; }
+.group .count { font: 400 12px var(--cp-font-mono); color: var(--cp-text-muted); letter-spacing: .1em; }
+.group .blurb { margin: 0 0 1.1rem; color: var(--cp-text-muted); font-size: 16px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1rem; margin-top: 1rem; }
+
+a.card-link {
+  display: flex; flex-direction: column; gap: .55rem;
+  min-height: 150px;
+  border-bottom: 1px solid var(--cp-neon-cyan) !important;
+  transition: transform .18s, box-shadow .18s, border-color .18s !important;
+}
+a.card-link:hover {
+  transform: translateY(-3px);
+  border-color: var(--cp-neon-magenta) !important;
+  border-bottom-color: var(--cp-neon-magenta) !important;
+  box-shadow: 0 0 22px rgba(255,45,120,.28), inset 0 0 14px rgba(255,45,120,.05);
+}
+a.card-link[hidden], .group[hidden] { display: none !important; }
+
+.card-tag {
+  font: 400 11px var(--cp-font-mono); letter-spacing: .16em;
+  color: var(--cp-neon-purple); text-transform: uppercase;
+}
+.card-name {
+  font: 700 17px/1.25 var(--cp-font-display);
+  letter-spacing: .05em; text-transform: uppercase;
+  color: var(--cp-text-primary);
+}
+.card-desc { font-size: 15px; line-height: 1.4; color: var(--cp-text-muted); }
+.card-meta {
+  margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+  font: 400 12px var(--cp-font-mono); letter-spacing: .08em;
+}
+.card-meta .size { color: var(--cp-text-muted); }
+.card-meta .go { color: var(--cp-neon-green); text-shadow: 0 0 8px rgba(0,255,159,.5); }
+a.card-link:hover .go { color: var(--cp-neon-magenta); text-shadow: 0 0 8px rgba(255,45,120,.6); }
+
+.empty { display: none; margin-top: 2rem; font: 400 14px var(--cp-font-mono); color: var(--cp-neon-yellow); }
+.empty.show { display: block; }
+
+.foot {
+  margin-top: 4rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--cp-border-subtle);
+  font: 400 11px var(--cp-font-mono); letter-spacing: .1em; color: var(--cp-text-muted);
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem;
+}
+
+/* ── Mobile ── */
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--cp-border-glow); }
+  .rail-group { display: inline-block; vertical-align: top; margin-right: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .cp-type { width: 100% !important; }
+}
