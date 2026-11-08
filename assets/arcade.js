@@ -43,9 +43,15 @@
     { id: 'bugs', name: 'BUG HUNT', d: 'minesweeper. the mines are bugs. relatable.', c: 'click squash, right-click / F flag', mk: mkBugs },
     { id: 'merge', name: 'MERGE', d: 'slide and combine tiles. reach 2048.', c: 'arrows / swipe', mk: mkMerge },
     { id: 'lock', name: 'PATTERN LOCK', d: 'watch the sequence. repeat it. 12 rounds.', c: 'arrows / click the pads', mk: mkLock },
-    { id: 'stack', name: 'STACKTRIS', d: 'falling blocks. you know the drill.', c: '\u2190\u2192 move, \u2191 rotate, \u2193 soft, SPACE drop', mk: mkTetris }
+    { id: 'stack', name: 'STACKTRIS', d: 'falling blocks. you know the drill.', c: '\u2190\u2192 move, \u2191 rotate, \u2193 soft, SPACE drop', mk: mkTetris },
+    { id: 'maze', name: 'MAZE RUNNER', d: 'dfs built it. bfs can rescue you (H).', c: 'arrows, H = hint (-5s)', mk: mkMaze },
+    { id: 'dash', name: 'DIJKSTRA DASH', d: 'find the cheapest route. 5 rounds.', c: 'arrows, Z undo', mk: mkDash },
+    { id: 'whack', name: 'WHACK-A-BUG', d: 'squash bugs. spare the eye. 30 seconds.', c: 'click / keys 1-9 (numpad)', mk: mkWhack },
+    { id: 'lights', name: 'LIGHTS OUT', d: 'flip them all off. neighbours flip too.', c: 'click / arrows + SPACE', mk: mkLights },
+    { id: 'react', name: 'REACTION TEST', d: 'click on green. 5 rounds. no flinching.', c: 'click / SPACE', mk: mkReact },
+    { id: 'lanes', name: 'LANE CROSSER', d: 'why did the cursor cross the road?', c: 'arrows, step by step', mk: mkLanes }
   ];
-  var NLAB = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Q'];
+  var NLAB = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Q', 'E', 'R', 'T', 'Y', 'U', 'I'];
   function dailyIdx() { return parseInt(new Date().toISOString().slice(0, 10).split('-').join(''), 10) % GAMES.length; }
   function openArcade() {
     if (arcOpen) return; arcOpen = true; FX.arcadeActive = true; keys = {}; view = 'menu'; sel = 0;
@@ -72,7 +78,7 @@
       it.addEventListener('click', function () { sel = i; startGame(GAMES[i]); }); list.appendChild(it);
     });
     eyeEl = el('div', 'arc-eye', pick(EYE_MENU)); box.appendChild(eyeEl);
-    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', '\u2190\u2191\u2193\u2192 SELECT  \u00B7  ENTER PLAY  \u00B7  1-9 0 Q QUICK START')); f.appendChild(el('span', '', 'ESC EXIT')); box.appendChild(f);
+    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', '\u2190\u2191\u2193\u2192 SELECT  \u00B7  ENTER PLAY  \u00B7  1-9 0 Q E R T Y U I QUICK START')); f.appendChild(el('span', '', 'ESC EXIT')); box.appendChild(f);
   }
   function refreshSel() { $$('.arc-item').forEach(function (x, k) { x.classList.toggle('sel', k === sel); if (k === sel && x.scrollIntoView) x.scrollIntoView({ block: 'nearest' }); }); }
   function startGame(g) {
@@ -99,7 +105,7 @@
   }
   function loop(t) { raf = requestAnimationFrame(loop); var dt = Math.min(.05, (t - last) / 1000); last = t; if (cur && !dead) { cur.update(dt); cur.draw(); } else if (cur && dead) cur.draw && cur.draw(); }
   function stopGame() { cancelAnimationFrame(raf); raf = 0; if (cur && cur.destroy) cur.destroy(); cur = null; curG = null; }
-  var HELLO = { snake: ['eat. grow. try not to become a metaphor.'], pong: ['i am the cpu. i do not get tired. you do.'], breakout: ['the wall is just a memo with commitment issues.'], stare: ['i have no eyelids. well. one. do not move.'], typist: ['algorithm words. your fingers. go.'], flap: ['i have wings. technically. they are svg.'], drift: ['the rocks are not friendly. the rocks are rocks.'], bugs: ['first click is always safe. i am generous like that.'], merge: ['merge sort jokes are not allowed here. (merge conflicts are.)'], lock: ['watch closely. blinking is cheating.'], stack: ['you know the drill. i know you will not clear four lines.'] };
+  var HELLO = { snake: ['eat. grow. try not to become a metaphor.'], pong: ['i am the cpu. i do not get tired. you do.'], breakout: ['the wall is just a memo with commitment issues.'], stare: ['i have no eyelids. well. one. do not move.'], typist: ['algorithm words. your fingers. go.'], flap: ['i have wings. technically. they are svg.'], drift: ['the rocks are not friendly. the rocks are rocks.'], bugs: ['first click is always safe. i am generous like that.'], merge: ['merge sort jokes are not allowed here. (merge conflicts are.)'], lock: ['watch closely. blinking is cheating.'], stack: ['you know the drill. i know you will not clear four lines.'], maze: ['i built this maze with dfs. recursive backtracker. no regrets.'], dash: ['greedy is a trap. dijkstra is a lifestyle.'], whack: ['bugs: pop up, annoy, vanish. just like production.'], lights: ['every puzzle has a solution. this one has a lot of clicking.'], react: ['do not click until green. i know you want to.'], lanes: ['the cars are not sentient. the cars are not sentient.'] };
   var BAD = ['that was painful to watch. i watched all of it.', 'a bold attempt. a bad one. bold.', 'the cabinet saw that. the cabinet is disappointed.'];
   var GOOD = ['okay okay. that was actually good.', 'new high score. i am legally obligated to be impressed.', 'not bad, runner. not bad at all.'];
   function gameOver(score, win, line) {
@@ -124,7 +130,7 @@
       if (c === UP) mv = (sel - nc + n) % n; else if (c === DN) mv = (sel + nc) % n; else if (c === LT) mv = (sel + n - 1) % n; else if (c === RT) mv = (sel + 1) % n;
       if (mv !== null) { sel = mv; refreshSel(); beep(900, 0, .03, 'square', .015); }
       else if (k === 'Enter' || k === ' ') startGame(GAMES[sel]);
-      else { var qi = NLAB.indexOf(k === 'q' || k === 'Q' ? 'Q' : k); if (qi !== -1 && GAMES[qi]) { sel = qi; startGame(GAMES[sel]); } }
+      else { var qi = NLAB.indexOf(k.length === 1 ? k.toUpperCase() : k); if (qi !== -1 && GAMES[qi]) { sel = qi; startGame(GAMES[sel]); } }
       return;
     }
     if (dead) { if (k === 'Enter' || k === ' ') startGame(curG); return; }
@@ -420,6 +426,153 @@
         function cell(x, y, c) { ctx.fillStyle = a.C(CL[c], '#00f5ff'); ctx.fillRect(ox + x * S + 1, y * S + 1, S - 2, S - 2); }
         board.forEach(function (row, y) { row.forEach(function (v, x) { if (v) cell(x, y, v - 1); }); }); p.m.forEach(function (row, y) { row.forEach(function (v, x) { if (v) cell(p.x + x, p.y + y, p.c); }); });
         ctx.fillStyle = a.C('--cp-text-muted', '#8a9ab8'); ctx.font = '12px monospace'; ctx.textAlign = 'left'; ctx.fillText('NEXT', ox + cols * S + 20, 20); nx.m.forEach(function (row, y) { row.forEach(function (v, x) { if (v) { ctx.fillStyle = a.C(CL[nx.c], '#00f5ff'); ctx.fillRect(ox + cols * S + 20 + x * 14, 30 + y * 14, 12, 12); } }); });
+      }
+    };
+  }
+
+  /* ═════════ MAZE RUNNER (maze built with DFS; press H for a BFS hint) ═════════ */
+  function mkMaze(a) {
+    var ctx = a.ctx, SZ = [[8, 5], [12, 8], [16, 10], [24, 16]], lvl = 0, c, r, cell, ox, oy, w, px, py, trail, hint = 0, hintPath = [], time = 45, score = 0, tc;
+    function gen() {
+      c = SZ[lvl][0]; r = SZ[lvl][1]; cell = Math.floor(Math.min(480 / c, 320 / r)); ox = Math.floor((480 - c * cell) / 2); oy = Math.floor((320 - r * cell) / 2); w = []; var vis = [], st = [0], i; for (i = 0; i < c * r; i++) { w.push(15); vis.push(0); } vis[0] = 1;
+      while (st.length) { var cu = st[st.length - 1], x = cu % c, y = (cu / c) | 0, nb = []; if (y > 0 && !vis[cu - c]) nb.push([cu - c, 1, 4]); if (x < c - 1 && !vis[cu + 1]) nb.push([cu + 1, 2, 8]); if (y < r - 1 && !vis[cu + c]) nb.push([cu + c, 4, 1]); if (x > 0 && !vis[cu - 1]) nb.push([cu - 1, 8, 2]);
+        if (!nb.length) { st.pop(); continue; } var n = pick(nb); w[cu] &= ~n[1]; w[n[0]] &= ~n[2]; vis[n[0]] = 1; st.push(n[0]); }
+      px = 0; py = 0; trail = [0]; hint = 0; hintPath = [];
+    }
+    function bfs() { var prev = {}, q = [py * c + px], seen = {}; seen[q[0]] = 1; var goal = c * r - 1; while (q.length) { var u = q.shift(); if (u === goal) break; var x = u % c, y = (u / c) | 0;
+        [[1, 0, 2], [0, 1, 4], [-1, 0, 8], [0, -1, 1]].forEach(function (d) { if (w[u] & d[2]) return; var v = (y + d[1]) * c + x + d[0]; if (!seen[v]) { seen[v] = 1; prev[v] = u; q.push(v); } }); }
+      var p = [], u2 = goal; while (u2 !== undefined && u2 !== py * c + px) { p.push(u2); u2 = prev[u2]; } return p; }
+    function hudu() { a.hud('LEVEL ' + (lvl + 1) + '   TIME ' + Math.ceil(time) + '   SCORE ' + score); }
+    gen(); hudu(); a.msg('MAZE RUNNER', 'arrows to move \u00B7 H = BFS hint (costs 5s)');
+    return {
+      key: function (k) { a.msg(); var d = { ArrowUp: [0, -1, 1], ArrowRight: [1, 0, 2], ArrowDown: [0, 1, 4], ArrowLeft: [-1, 0, 8] }[k];
+        if (k === 'h') { time -= 5; hintPath = bfs(); hint = 2.2; a.beep(400, 700, .1, 'triangle', .03); return; } if (!d || (w[py * c + px] & d[2])) return;
+        px += d[0]; py += d[1]; trail.push(py * c + px); a.beep(300 + (trail.length % 8) * 30, 0, .02, 'square', .015);
+        if (px === c - 1 && py === r - 1) { score += 100 + Math.round(time); a.beep(660, 990, .2, 'square', .04); lvl++; time += 12; if (lvl >= SZ.length) { a.over(score, true, 'all four mazes. dfs built them. you beat dfs. think about that.'); return; } a.eye('level ' + (lvl + 1) + '. the walls are getting ideas.'); gen(); } hudu(); },
+      update: function (dt) { time -= dt; hint = Math.max(0, hint - dt); hudu(); if (time <= 0) a.over(score, false, 'time. the maze is still there. the maze is patient.'); },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320); ctx.fillStyle = 'rgba(128,128,128,.18)'; trail.forEach(function (t) { ctx.fillRect(ox + (t % c) * cell + 2, oy + ((t / c) | 0) * cell + 2, cell - 4, cell - 4); });
+        if (hint > 0) { ctx.fillStyle = a.C('--cp-neon-yellow', '#f7ff00'); hintPath.forEach(function (t) { ctx.fillRect(ox + (t % c) * cell + cell / 2 - 2, oy + ((t / c) | 0) * cell + cell / 2 - 2, 4, 4); }); }
+        ctx.fillStyle = a.C('--cp-neon-green', '#00ff9f'); ctx.fillRect(ox + (c - 1) * cell + 3, oy + (r - 1) * cell + 3, cell - 6, cell - 6);
+        ctx.strokeStyle = a.C('--cp-neon-cyan', '#00f5ff'); ctx.lineWidth = 2; ctx.beginPath(); for (var i = 0; i < c * r; i++) { var x = ox + (i % c) * cell, y = oy + ((i / c) | 0) * cell; if (w[i] & 1) { ctx.moveTo(x, y); ctx.lineTo(x + cell, y); } if (w[i] & 2) { ctx.moveTo(x + cell, y); ctx.lineTo(x + cell, y + cell); } if (w[i] & 4) { ctx.moveTo(x, y + cell); ctx.lineTo(x + cell, y + cell); } if (w[i] & 8) { ctx.moveTo(x, y); ctx.lineTo(x, y + cell); } } ctx.stroke();
+        ctx.fillStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.fillRect(ox + px * cell + cell * .25, oy + py * cell + cell * .25, cell * .5, cell * .5);
+      }
+    };
+  }
+
+  /* ═════════ DIJKSTRA DASH ═════════ */
+  function mkDash(a) {
+    var ctx = a.ctx, C = 10, Rw = 6, S = 48, oy = 16, cost, px, py, path, total, round = 0, sum = 0, phase = 'play', pt = 0, optv = 0, RO = 5, i;
+    function dij() { var N = C * Rw, d = [], done = [], k; for (k = 0; k < N; k++) d.push(1e9); d[0] = 0; for (;;) { var u = -1, b = 1e9; for (k = 0; k < N; k++) if (!done[k] && d[k] < b) { b = d[k]; u = k; } if (u < 0 || u === N - 1) break; done[u] = 1; var x = u % C, y = (u / C) | 0;
+        [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (q) { var nx = x + q[0], ny = y + q[1]; if (nx < 0 || ny < 0 || nx >= C || ny >= Rw) return; var v = ny * C + nx; if (d[u] + cost[v] < d[v]) d[v] = d[u] + cost[v]; }); } return d[N - 1]; }
+    function newRound() { cost = []; for (i = 0; i < C * Rw; i++) cost.push(1 + Math.floor(Math.random() * 9)); cost[0] = 0; px = 0; py = 0; path = [0]; total = 0; optv = dij(); phase = 'play'; a.hud('ROUND ' + (round + 1) + '/' + RO + '   COST ' + total + '   SCORE ' + sum); }
+    newRound(); a.msg('DIJKSTRA DASH', 'reach the green cell. every step costs its number. Z undoes.');
+    return {
+      key: function (k) { a.msg(); if (phase !== 'play') return;
+        if (k === 'z' || k === 'Backspace') { if (path.length > 1) { var l = path.pop(); total -= cost[l]; var p = path[path.length - 1]; px = p % C; py = (p / C) | 0; } a.hud('ROUND ' + (round + 1) + '/' + RO + '   COST ' + total + '   SCORE ' + sum); return; }
+        var d = { ArrowUp: [0, -1], ArrowRight: [1, 0], ArrowDown: [0, 1], ArrowLeft: [-1, 0] }[k]; if (!d) return; var nx = px + d[0], ny = py + d[1]; if (nx < 0 || ny < 0 || nx >= C || ny >= Rw) return;
+        px = nx; py = ny; path.push(py * C + px); total += cost[py * C + px]; a.beep(300 + cost[py * C + px] * 40, 0, .03, 'square', .02);
+        if (px === C - 1 && py === Rw - 1) { var pts = Math.round(100 * optv / total); sum += pts; phase = 'result'; pt = 2.2; a.eye(total === optv ? 'optimal! dijkstra would frame this. +' + pts : 'you paid ' + total + '. the optimal was ' + optv + '. +' + pts + ' points.'); }
+        a.hud('ROUND ' + (round + 1) + '/' + RO + '   COST ' + total + '   SCORE ' + sum); },
+      update: function (dt) { if (phase === 'result') { pt -= dt; if (pt <= 0) { round++; if (round >= RO) { a.over(sum, sum >= 400, sum >= 400 ? 'average efficiency above 80%. you are a human priority queue.' : 'greedy choices cost you. as they always do.'); return; } newRound(); } } },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = 'bold 18px monospace';
+        for (var y = 0; y < Rw; y++) for (var x = 0; x < C; x++) { var v = cost[y * C + x], onp = path.indexOf(y * C + x) !== -1; ctx.fillStyle = 'rgba(128,128,128,' + (.08 + v * .03) + ')'; ctx.fillRect(x * S + 2, oy + y * S + 2, S - 4, S - 4); if (onp) { ctx.fillStyle = a.C('--cp-neon-cyan', '#00f5ff'); ctx.globalAlpha = .35; ctx.fillRect(x * S + 2, oy + y * S + 2, S - 4, S - 4); ctx.globalAlpha = 1; }
+          if (x === C - 1 && y === Rw - 1) { ctx.fillStyle = a.C('--cp-neon-green', '#00ff9f'); ctx.globalAlpha = .5; ctx.fillRect(x * S + 2, oy + y * S + 2, S - 4, S - 4); ctx.globalAlpha = 1; }
+          if (v) { ctx.fillStyle = a.C('--cp-text-muted', '#8a9ab8'); ctx.fillText(String(v), x * S + S / 2, oy + y * S + S / 2); } }
+        ctx.fillStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.fillRect(px * S + 10, oy + py * S + 10, S - 20, S - 20);
+        if (phase === 'result') { ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(0, 130, 480, 60); ctx.fillStyle = a.C('--cp-neon-yellow', '#f7ff00'); ctx.font = 'bold 20px monospace'; ctx.fillText('YOU ' + total + '   OPTIMAL ' + optv, 240, 160); }
+      }
+    };
+  }
+
+  /* ═════════ WHACK-A-BUG ═════════ */
+  function mkWhack(a) {
+    var ctx = a.ctx, holes = [], T = 30, left = T, score = 0, spawn = .5, elapsed = 0, hits = 0, i, lx = 0, ly = 0, flash = [];
+    for (i = 0; i < 9; i++) holes.push({ x: 90 + (i % 3) * 150, y: 70 + Math.floor(i / 3) * 90, t: 0, kind: '', hit: 0 });
+    a.hud('TIME 30   SCORE 0'); a.msg('WHACK-A-BUG', 'click the bugs \u00B7 keys 1-9 (numpad layout) \u00B7 NOT the eye');
+    function whack(i) { var h = holes[i]; if (!h || h.t <= 0 || h.hit) return; h.hit = .25; if (h.kind === 'bug') { score += 10; hits++; a.beep(700 + hits * 6, 0, .05, 'square', .03); } else { score = Math.max(0, score - 15); a.beep(160, 80, .25, 'sawtooth', .05); a.eye('you hit my cousin. he has a family.'); } a.hud('TIME ' + Math.ceil(left) + '   SCORE ' + score); }
+    return {
+      pointer: function (x, y) { lx = x; ly = y; }, click: function () { a.msg(); holes.forEach(function (h, i) { if (Math.abs(lx - h.x) < 55 && Math.abs(ly - h.y) < 38) whack(i); }); },
+      key: function (c) { var n = parseInt(c, 10); if (n >= 1 && n <= 9) { a.msg(); whack((2 - Math.floor((n - 1) / 3)) * 3 + (n - 1) % 3); } },
+      update: function (dt) {
+        left -= dt; elapsed += dt; spawn -= dt; holes.forEach(function (h) { if (h.t > 0) { h.t -= dt; } h.hit = Math.max(0, h.hit - dt); });
+        if (spawn <= 0) { var free = holes.filter(function (h) { return h.t <= 0 && !h.hit; }); if (free.length) { var h = pick(free); h.t = Math.max(.5, 1.15 - elapsed * .02); h.kind = Math.random() < .2 ? 'eye' : 'bug'; h.hit = 0; } spawn = Math.max(.32, .85 - elapsed * .015); }
+        a.hud('TIME ' + Math.max(0, Math.ceil(left)) + '   SCORE ' + score); if (left <= 0) a.over(score, score >= 200, score >= 200 ? 'a plague of bugs and you are the cure.' : 'the bugs win this round. they will be back. they are always back.');
+      },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320);
+        holes.forEach(function (h) { ctx.fillStyle = 'rgba(128,128,128,.25)'; ctx.beginPath(); ctx.ellipse(h.x, h.y + 18, 46, 16, 0, 0, 7); ctx.fill();
+          if (h.t > 0 || h.hit) { var up = h.hit ? 0 : 1; ctx.save(); ctx.globalAlpha = h.hit ? .4 : 1;
+            if (h.kind === 'bug') { ctx.fillStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.beginPath(); ctx.arc(h.x, h.y, 17, 0, 7); ctx.fill(); ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 2; for (var l = 0; l < 3; l++) { ctx.beginPath(); ctx.moveTo(h.x - 26, h.y - 10 + l * 10); ctx.lineTo(h.x + 26, h.y - 10 + l * 10); ctx.stroke(); } ctx.fillStyle = '#000'; ctx.fillRect(h.x - 7, h.y - 5, 4, 4); ctx.fillRect(h.x + 3, h.y - 5, 4, 4); }
+            else { ctx.fillStyle = a.C('--cp-text-primary', '#e2eaf5'); ctx.beginPath(); ctx.ellipse(h.x, h.y, 24, 15, 0, 0, 7); ctx.fill(); ctx.fillStyle = a.C('--cp-neon-cyan', '#00f5ff'); ctx.beginPath(); ctx.arc(h.x, h.y, 8, 0, 7); ctx.fill(); ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(h.x, h.y, 3, 0, 7); ctx.fill(); }
+            ctx.restore(); } });
+      }
+    };
+  }
+
+  /* ═════════ LIGHTS OUT ═════════ */
+  function mkLights(a) {
+    var ctx = a.ctx, N = 5, S = 56, ox = 100, oy = 20, g = [], moves = 0, cx = 2, cy = 2, lx = 0, ly = 0, presses = 0, i;
+    function tog(x, y) { [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { var X = x + d[0], Y = y + d[1]; if (X >= 0 && Y >= 0 && X < N && Y < N) g[Y * N + X] ^= 1; }); }
+    for (i = 0; i < N * N; i++) g.push(0); var used = {}; while (presses < 9) { var q = Math.floor(Math.random() * 25); if (used[q]) continue; used[q] = 1; presses++; tog(q % N, (q / N) | 0); } if (!g.some(Boolean)) tog(2, 2);
+    a.hud('MOVES 0   PAR ' + presses); a.msg('LIGHTS OUT', 'press a cell: it flips itself and its neighbours \u00B7 turn them ALL off');
+    function press(x, y) { a.msg(); tog(x, y); moves++; a.beep(500 + (x + y) * 40, 0, .04, 'square', .03); a.hud('MOVES ' + moves + '   PAR ' + presses);
+      if (!g.some(Boolean)) a.over(Math.max(20, 260 - Math.max(0, moves - presses) * 12), true, moves <= presses ? 'at or under par. suspiciously efficient.' : 'solved in ' + moves + '. par was ' + presses + '. close enough.'); }
+    return {
+      pointer: function (x, y) { lx = x; ly = y; }, click: function () { var x = Math.floor((lx - ox) / S), y = Math.floor((ly - oy) / S); if (x >= 0 && y >= 0 && x < N && y < N) { cx = x; cy = y; press(x, y); } },
+      key: function (k) { if (k === UP) cy = Math.max(0, cy - 1); else if (k === DN) cy = Math.min(N - 1, cy + 1); else if (k === LT) cx = Math.max(0, cx - 1); else if (k === RT) cx = Math.min(N - 1, cx + 1); else if (k === ' ') press(cx, cy); },
+      update: function () { },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320);
+        for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) { var on = g[y * N + x]; ctx.fillStyle = on ? a.C('--cp-neon-yellow', '#f7ff00') : 'rgba(128,128,128,.18)'; ctx.fillRect(ox + x * S + 3, oy + y * S + 3, S - 6, S - 6); }
+        ctx.strokeStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.lineWidth = 3; ctx.strokeRect(ox + cx * S + 1, oy + cy * S + 1, S - 2, S - 2);
+      }
+    };
+  }
+
+  /* ═════════ REACTION TEST ═════════ */
+  function mkReact(a) {
+    var ctx = a.ctx, RO = 5, round = 0, phase = 'wait', t = R(1.4, 3.8), el0 = 0, goAt = 0, times = [], total = 0, show = 0, last = '';
+    var TAUNT = function (ms) { return ms < 180 ? 'that is robot-fast. are you a robot? am i?' : ms < 250 ? 'sharp. very sharp.' : ms < 330 ? 'average human. i say that with love.' : ms < 450 ? 'were you blinking? you were blinking.' : 'my grandma has faster reflexes. my grandma is a div.'; };
+    a.hud('ROUND 1/' + RO + '   SCORE 0'); a.msg('REACTION TEST', 'wait for GREEN, then click / SPACE as fast as you can');
+    function hit() { a.msg(); if (phase === 'wait') { times.push(600); last = 'TOO SOON (+600ms penalty)'; a.beep(150, 80, .3, 'sawtooth', .05); a.eye('too soon. patience is a virtue. a slow one.'); next(); }
+      else if (phase === 'go') { var ms = Math.round(performance.now() - goAt); times.push(ms); var pts = Math.max(0, Math.round((600 - ms) / 6)); total += pts; last = ms + ' ms'; a.beep(880, 0, .08, 'square', .04); a.eye(TAUNT(ms)); next(); } }
+    function next() { round++; phase = 'show'; show = 1.3; a.hud('ROUND ' + Math.min(RO, round + 1) + '/' + RO + '   SCORE ' + total); }
+    return {
+      click: hit, key: function (k) { if (k === ' ') hit(); },
+      update: function (dt) {
+        if (phase === 'wait') { t -= dt; if (t <= 0) { phase = 'go'; el0 = 0; goAt = performance.now(); } } else if (phase === 'go') { el0 += dt; if (performance.now() - goAt > 3000) { times.push(900); last = 'TOO SLOW'; next(); } }
+        else if (phase === 'show') { show -= dt; if (show <= 0) { if (round >= RO) { var avg = Math.round(times.reduce(function (s, x) { return s + x; }, 0) / times.length); a.over(total, avg < 300, 'average ' + avg + ' ms. ' + (avg < 300 ? 'fast hands. the cursor fears you.' : 'the average human is ~250. you are... a human.')); phase = 'done'; } else { phase = 'wait'; t = R(1.4, 3.8); } } }
+      },
+      draw: function () {
+        var bg = phase === 'go' ? a.C('--cp-neon-green', '#00ff9f') : phase === 'show' ? a.C('--cp-bg-raised', '#1a2234') : a.C('--cp-neon-magenta', '#ff2d78'); ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320);
+        ctx.globalAlpha = phase === 'wait' ? .55 : .9; ctx.fillStyle = bg; ctx.fillRect(40, 40, 400, 190); ctx.globalAlpha = 1; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = 'bold 32px monospace'; ctx.fillStyle = phase === 'go' ? a.C('--cp-bg-deep', '#04060a') : a.C('--cp-text-primary', '#e2eaf5');
+        ctx.fillText(phase === 'wait' ? 'WAIT...' : phase === 'go' ? 'CLICK!' : last, 240, 135);
+        ctx.font = '14px monospace'; ctx.fillStyle = a.C('--cp-text-muted', '#8a9ab8'); ctx.fillText(times.map(function (x) { return x; }).join('  '), 240, 270);
+      }
+    };
+  }
+
+  /* ═════════ LANE CROSSER ═════════ */
+  function mkLanes(a) {
+    var ctx = a.ctx, S = 32, cols = 15, rows = 10, px = 7, py = 9, lives = 3, score = 0, level = 1, furthest = 9, cars = [], inv = 0, mk;
+    function build() { cars = []; for (var r = 1; r <= 8; r++) { if (r === 5) continue; var dir = r % 2 ? 1 : -1, sp = (R(45, 85)) * (1 + (level - 1) * .12), n = 2 + (r % 3 === 0 ? 1 : 0), gap = (cols * S + 80) / n, len = pick([2, 2, 3]) * S - 6; for (var i = 0; i < n; i++) cars.push({ x: i * gap + R(0, 30), r: r, v: dir * sp, w: len }); } }
+    function reset() { px = 7; py = 9; furthest = 9; }
+    build(); a.hud('SCORE 0   LIVES 3   LEVEL 1');
+    function hurt() { if (inv > 0) return; lives--; a.beep(150, 50, .4, 'sawtooth', .05); a.hud('SCORE ' + score + '   LIVES ' + lives + '   LEVEL ' + level); reset(); inv = 1; if (lives <= 0) a.over(score, false, score >= 100 ? 'you crossed more roads than a chicken. a very tired chicken.' : 'the traffic does not stop. it never stops.'); }
+    return {
+      key: function (k) { var d = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[k]; if (!d) return; px = Math.max(0, Math.min(cols - 1, px + d[0])); py = Math.max(0, Math.min(rows - 1, py + d[1])); a.beep(400, 0, .02, 'square', .015);
+        if (py < furthest) { furthest = py; score += 1; } if (py === 0) { score += 10 * level; level++; build(); reset(); a.beep(660, 990, .2, 'square', .04); a.eye('level ' + level + '. the cars got faster. the chicken did not.'); } a.hud('SCORE ' + score + '   LIVES ' + lives + '   LEVEL ' + level); },
+      update: function (dt) {
+        inv = Math.max(0, inv - dt); cars.forEach(function (c) { c.x += c.v * dt; if (c.v > 0 && c.x > cols * S + 20) c.x = -c.w - 20; if (c.v < 0 && c.x < -c.w - 20) c.x = cols * S + 20; });
+        var X = px * S + 5, Y = py * S + 5; cars.forEach(function (c) { if (c.r === py && X + 22 > c.x && X < c.x + c.w) hurt(); });
+      },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320); ctx.fillStyle = 'rgba(128,128,128,.14)'; for (var r = 1; r <= 8; r++) if (r !== 5) ctx.fillRect(0, r * S, 480, S);
+        ctx.fillStyle = a.C('--cp-neon-green', '#00ff9f'); ctx.globalAlpha = .3; ctx.fillRect(0, 0, 480, S); ctx.fillRect(0, 5 * S, 480, S); ctx.fillRect(0, 9 * S, 480, S); ctx.globalAlpha = 1;
+        cars.forEach(function (c) { ctx.fillStyle = a.C(c.v > 0 ? '--cp-neon-magenta' : '--cp-neon-yellow', '#ff2d78'); ctx.fillRect(c.x, c.r * S + 5, c.w, S - 10); });
+        if (inv <= 0 || Math.floor(inv * 10) % 2) { ctx.fillStyle = a.C('--cp-neon-cyan', '#00f5ff'); ctx.fillRect(px * S + 5, py * S + 5, S - 10, S - 10); }
       }
     };
   }

@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v8.2", "2026-11-08", "arcade: +6 games (maze runner, dijkstra dash, whack-a-bug, lights out, reaction test, lane crosser) = 17 total"),
     ("v8.1", "2026-11-08", "arcade expansion: 6 new games (flap-eye, drift, bug hunt, merge, pattern lock, stacktris), two-column menu, daily 2x xp game, arcade champion bonus"),
     ("v8.0", "2026-11-08", "secret codes: ARCADE menu (up up down down b a) with 5 mini games, UPSIDE DOWN mode, MEMO BOY game boy theme"),
     ("v7.0", "2026-11-08", "merged: THE MEMO ARCHIVE text adventure (16 rooms, 6 puzzles, 5 endings) + neural link v6 (personas, missions, roast battles, games, chaos)"),

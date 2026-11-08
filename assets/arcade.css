@@ -105,3 +105,6 @@ html.gameboy input { background: var(--gb2) !important; color: var(--gb0) !impor
 .arc-list.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 @media (max-width: 640px) { .arc-list.two { grid-template-columns: 1fr; } }
 .arc-item .arc-b { white-space: nowrap; }
+
+.arc-box.wide .arc-item { padding: 6px 10px; }
+.arc-box.wide .arc-eye { margin-top: 10px; }
