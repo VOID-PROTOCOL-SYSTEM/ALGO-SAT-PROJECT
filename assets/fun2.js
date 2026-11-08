@@ -5,7 +5,7 @@
   var root = document.documentElement, DATA = { items: [] };
   try { DATA = JSON.parse($('#archive-data').textContent); } catch (e) {}
   function snd() { return FX.sound || { on: false, tone: function () {}, init: function () {} }; }
-  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight') || $('.adv')); }
+  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight')); }
 
   /* neural link lives in link.js; these are thin wrappers so other features can talk to it */
   function snark() { return FX.snark && FX.snark.apply(null, arguments); }
@@ -113,7 +113,7 @@
     for (i = 0; i < 5; i++) for (j = 0; j < 3; j++) if (r() > .5) { cells += '<rect x="' + j * 20 + '" y="' + i * 20 + '" width="20" height="20"/>'; if (j < 2) cells += '<rect x="' + (4 - j) * 20 + '" y="' + i * 20 + '" width="20" height="20"/>'; }
     var bars = '', x = 0, on = true; while (x < 220) { var w = 1 + Math.floor(r() * 3); if (on) bars += '<rect x="' + x + '" y="0" width="' + w + '" height="38"/>'; x += w; on = !on; }
     host.innerHTML = '<div class="id-card"><svg class="id-face" viewBox="0 0 100 100" shape-rendering="crispEdges" fill="' + col + '">' + cells + '</svg>' +
-      '<div class="id-info"><div class="id-key">Runner handle</div><div class="id-val big"></div>' + (lget('boss-beaten') === '1' ? '<div class="id-badge">\u2605 BOSS SLAYER</div>' : '') + (parseInt(lget('adv-best') || '0', 10) >= 100 ? '<div class="id-badge" style="margin-left:8px;color:#00f5ff;border-color:#00f5ff;text-shadow:0 0 8px rgba(0,245,255,.6)">\u2726 ARCHIVE EXPLORER</div>' : '') +
+      '<div class="id-info"><div class="id-key">Runner handle</div><div class="id-val big"></div>' + (lget('boss-beaten') === '1' ? '<div class="id-badge">\u2605 BOSS SLAYER</div>' : '') +
       '<div class="id-row"><div><div class="id-key">Clearance</div><div class="id-val"></div></div><div><div class="id-key">Issued</div><div class="id-val"></div></div>' +
       '<div><div class="id-key">Affiliation</div><div class="id-val"><span class="cp-redacted cp-redacted--hot"></span></div></div></div>' +
       '<svg class="id-bar" viewBox="0 0 220 38" preserveAspectRatio="none" fill="' + col + '">' + bars + '</svg></div>' +
