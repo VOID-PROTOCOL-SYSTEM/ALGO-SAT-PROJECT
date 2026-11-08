@@ -5,7 +5,7 @@
   var root = document.documentElement, DATA = { items: [] };
   try { DATA = JSON.parse($('#archive-data').textContent); } catch (e) {}
   function snd() { return FX.sound || { on: false, tone: function () {}, init: function () {} }; }
-  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight') || $('.adv')); }
+  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight') || $('.adv') || $('.arc')); }
   function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
 
   /* ═════════ persistent memory ═════════ */
@@ -88,7 +88,7 @@
     hideT = setTimeout(function () { bub.classList.remove('show'); }, 3800 + t.length * 45); speak(t);
   }
   function say(t, force, raw) {
-    if (FX.bossActive || FX.advActive) return; if (muted && !force) return; var n = Date.now();
+    if (FX.bossActive || FX.advActive || FX.arcadeActive) return; if (muted && !force) return; var n = Date.now();
     if (!force && n - lastSay < COOL[S.level]) return; lastSay = n;
     if (!raw) t = flair(t); output(t);
     if (!force) { ignored += .5; applyMood(true); }
@@ -399,6 +399,7 @@
   function rankOf(xp) { var r = RANKS[0]; RANKS.forEach(function (x) { if (xp >= x[0]) r = x; }); return r; }
   function nextRank(xp) { for (var i = 0; i < RANKS.length; i++) if (RANKS[i][0] > xp) return RANKS[i]; return null; }
   function gainXP(n) { var b = rankOf(S.xp)[1]; S.xp += n; var a = rankOf(S.xp)[1]; save(); return b !== a ? ' || PROMOTION: you are now a ' + a.toUpperCase() + '. do not let it go to your head. (let it. a little.)' : ''; }
+  FX.gainXP = gainXP;
   function rankLine() { var r = rankOf(S.xp), n = nextRank(S.xp), bar = ''; if (n) { var f = Math.round(10 * (S.xp - r[0]) / (n[0] - r[0])); for (var i = 0; i < 10; i++) bar += i < f ? '#' : '-'; }
     return 'rank: ' + r[1].toUpperCase() + ' // ' + S.xp + ' xp' + (n ? '\n[' + bar + '] ' + (n[0] - S.xp) + ' xp to ' + n[1].toUpperCase() : '\nmax rank. there is nowhere left to climb. touch grass.'); }
   function opens() { var n = 0; Object.keys(S.opened).forEach(function (k) { n += S.opened[k]; }); return n; }
@@ -620,6 +621,9 @@
   function chaosStop() { FX.rain && FX.rain(false); FX.crt && FX.crt(false); FX.thunder && FX.thunder(false); FX.synth && FX.synth(false); }
   function eyeDo(cls, ms) { nl.classList.add(cls); eye.classList.add(cls); setTimeout(function () { nl.classList.remove(cls); eye.classList.remove(cls); }, ms); }
   var RULES2 = [
+    [/\b(arcade|mini ?games?|play (snake|pong|breakout))\b/, function () { pending = { yes: function () { return { text: 'cabinet powering up. do not tell the konami police.', action: function () { closeChat(); FX.arcade && FX.arcade(); } }; }, no: 'fine. the code is up up down down b a. i never told you.' }; return { text: 'there is an arcade hidden behind a secret code. i cannot say the code. ...unless you say yes and i look the other way. (yes / no)' }; }],
+    [/upside ?down|stranger things/, function () { var on = FX.isUpside && FX.isUpside(); return { text: on ? 'flipping back. the demogorgon sends its regards.' : 'the upside down has a long code. i am not allowed to say it. watch this instead.', action: function () { closeChat(); FX.upsideDown && FX.upsideDown(); } }; }],
+    [/game ?boy|memo ?boy|four shades|handheld/, function () { var on = FX.isGameboy && FX.isGameboy(); return { text: on ? 'powering off the handheld.' : 'four shades of green, coming up.', action: function () { closeChat(); FX.gameboy && FX.gameboy(); } }; }],
     [/dossier|about me\b|what do you know|my stats|file on me/, function () { return { text: dossierPlus() }; }],
     [/^(mode|persona|personas|personality|talk like|act like|act as|be a|be an|be the|switch to|become|roulette|surprise persona)\b|\b(personas|personalities)\b/, function (m, t) {
       if (/roulette|surprise/.test(t)) return setPersona(pick(PKEYS.filter(function (k) { return k !== S.persona; })));
@@ -715,7 +719,7 @@
     'dijkstra walks into a bar and finds the shortest path to the stool.', 'why did the graph break up with the tree? too many cycles. wait. reverse that. the tree has none. the graph was the problem.');
   FACTS.push('the word "algorithm" comes from the name of the ninth-century scholar al-khwarizmi.', 'dijkstra said he designed his shortest-path algorithm in about twenty minutes, without pen and paper.', 'the p versus np question carries a one million dollar prize from the clay mathematics institute.',
     'ada lovelace wrote an algorithm for the analytical engine in the 1840s. she is often called the first programmer.', 'google was originally called backrub. nobody wanted a backrub search. fair.');
-  SECRETS.push('say "mission" and i will give you orders. i am VERY good at orders.', 'i have eleven personalities. say "personas" and see which one scares you.', 'say "roast battle". bring snacks and a thick skin.', 'tarot, horoscope, 8ball, scan me. i am a full mystical service.', 'say "chaos". then say "calm down". in that order. ...or not.', 'try "trivia". i will quiz you on algorithms. i have no mercy. i have 12 questions.');
+  SECRETS.push('the konami code has cousins. one opens an arcade. one flips the world. one is a handheld. i will not say which keys.', 'say "mission" and i will give you orders. i am VERY good at orders.', 'i have eleven personalities. say "personas" and see which one scares you.', 'say "roast battle". bring snacks and a thick skin.', 'tarot, horoscope, 8ball, scan me. i am a full mystical service.', 'say "chaos". then say "calm down". in that order. ...or not.', 'try "trivia". i will quiz you on algorithms. i have no mercy. i have 12 questions.');
   BANTER.push(function () { var cm = curMission(); return cm ? 'reminder, ' + addr() + ': you still have orders. ' + cm.t : 'you have no active mission. that is suspicious. say "mission".'; },
     function () { return rankLine().split('\n')[0] + '. keep grinding.'; }, function () { return 'daily roast: ' + statRoast(); }, function () { return pick(CARDS)[0] + ': ' + pick(CARDS)[1]; },
     function () { return lastUser && lastUser.length > 6 ? 'i am still thinking about when you said "' + lastUser.slice(0, 40) + '". no further comment. (further comment: hm.)' : pick(LINES.quip); },

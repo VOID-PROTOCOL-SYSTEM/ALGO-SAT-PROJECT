@@ -38,10 +38,17 @@ Konami code (or `boss` in the terminal / typed anywhere / "play" in chat) starts
 ## Text adventure: THE MEMO ARCHIVE
 Open it with the Adventure pill, `adventure` / `zork` in the terminal, by typing `adventure` or `xyzzy` anywhere, or by asking the neural link for a text adventure. 16 rooms, 6 puzzles, 5 endings (one of them is the real arcade boss fight), deaths, undo, autosave, hints (`hint`), a live map, and a corruption clock. Click highlighted words to examine them.
 
+## Secret codes (v8)
+`up up down down b a` -> ARCADE menu (Snake, Pong, Breakout, Stare Contest, Algo Typist). Pick a game with arrows/Enter or 1-5, Esc goes back.
+`up up down down right left right left b a` -> THE UPSIDE DOWN (page flips, red palette, spores; eye turns villain). Same code again to return.
+`left right left right a b` -> MEMO BOY (game boy 4-shade theme). Same code again to return.
+Phone: tap the logo 7 times for the arcade. Also: terminal `arcade` / `upsidedown` / `gameboy` / `theme gameboy|upside|normal`, or type those words anywhere.
+High scores live in localStorage (`arc-*`). New bests and wins give neural link XP.
+
 ## Neural link v6 (say these in the chat, or `ask <text>` in the terminal)
 `mission` / `done` / `skip` / `rank` (bossy xp system) · `roast me` / `roast <thing>` / `compliment me` · `banter` (5-round roast battle) · `trivia` / `riddle` · `tarot` / `horoscope <sign>` / `fortune` / `8ball ...` / `scan me` · `pick A or B` / `flip a coin` / `roll d20` / `rate <thing>` · `story` / `haiku` / `rap` / `pickup line` · `explain bfs|dfs|dijkstra|big o|dp|...` · `my favourite X is Y` / `i like Z` (it remembers) · `chaos` / `calm down` · `wink` `dance` `scream` `sleep`.
 Personas: `mode bossy|noir|pirate|bard|villain|gremlin|zen|hype|nan|robot|default` or `roulette`. Terminal: `persona <name>`, `mission`, `rank`, `roast`, `tarot`, `chaos`, `calm`.
 It also reacts to: leaving the tab, hitting the page bottom, copying text, resizing, time-on-site milestones, and hovering each notebook card.
 
 ## File map
-`assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, popups, bug, runner ID, hack, synth, thunder · `assets/link.js` neural link v6 · `assets/boss.js` boss fight · `assets/fun.css` + `fun3.css` styles.
+`assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, popups, bug, runner ID, hack, synth, thunder · `assets/link.js` neural link v6 · `assets/arcade.js` + `arcade.css` arcade, upside down, memo boy · `assets/boss.js` boss fight · `assets/fun.css` + `fun3.css` styles.

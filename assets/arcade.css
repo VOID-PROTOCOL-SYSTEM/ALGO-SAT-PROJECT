@@ -1,0 +1,101 @@
+/* MEMO ARCHIVE — arcade menu + mini games, UPSIDE DOWN mode, MEMO BOY (game boy) theme */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ═════════ arcade overlay ═════════ */
+.arc { position: fixed; inset: 0; z-index: 9985; display: flex; align-items: center; justify-content: center; background: rgba(4,6,10,.93); font-family: var(--cp-font-mono, monospace); color: var(--cp-neon-cyan, #00f5ff); animation: arc-in .18s ease-out; }
+@keyframes arc-in { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
+.arc::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px); }
+.arc-box { position: relative; width: min(94vw, 520px); max-height: 96vh; overflow: auto; padding: 18px 20px 14px; border: 1px solid var(--cp-neon-cyan, #00f5ff); box-shadow: 0 0 30px rgba(0,245,255,.35), inset 0 0 40px rgba(0,245,255,.06); background: rgba(8,11,18,.96); }
+.arc-title { font: 700 22px var(--cp-font-display, monospace); letter-spacing: .3em; text-align: center; color: var(--cp-neon-magenta, #ff2d78); text-shadow: 0 0 14px currentColor; margin: 0 0 2px; }
+.arc-sub { text-align: center; font-size: 11px; letter-spacing: .25em; color: var(--cp-text-muted, #8a9ab8); margin-bottom: 14px; animation: arc-blink 1.1s steps(2) infinite; }
+@keyframes arc-blink { 50% { opacity: .25; } }
+.arc-list { display: flex; flex-direction: column; gap: 6px; }
+.arc-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 1px solid rgba(0,245,255,.2); cursor: pointer; transition: background .12s, border-color .12s; }
+.arc-item .arc-n { width: 18px; color: var(--cp-text-muted, #8a9ab8); }
+.arc-item .arc-g { flex: 1; letter-spacing: .12em; font-size: 14px; }
+.arc-item .arc-d { font-size: 10px; color: var(--cp-text-muted, #8a9ab8); display: block; letter-spacing: .04em; margin-top: 2px; }
+.arc-item .arc-b { font-size: 11px; color: var(--cp-neon-yellow, #f7ff00); }
+.arc-item.sel, .arc-item:hover { background: rgba(0,245,255,.12); border-color: var(--cp-neon-cyan, #00f5ff); box-shadow: 0 0 14px rgba(0,245,255,.3); }
+.arc-item.sel .arc-g::before { content: '\25B6  '; color: var(--cp-neon-magenta, #ff2d78); }
+.arc-eye { margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(255,45,120,.4); font-size: 12px; color: var(--cp-neon-magenta, #ff2d78); min-height: 34px; }
+.arc-eye::before { content: '\25C9 NEURAL LINK: '; opacity: .7; }
+.arc-foot { margin-top: 8px; font-size: 10px; letter-spacing: .12em; color: var(--cp-text-muted, #8a9ab8); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.arc-x { position: absolute; top: 8px; right: 12px; cursor: pointer; color: var(--cp-text-muted, #8a9ab8); font-size: 20px; line-height: 1; }
+.arc-x:hover { color: var(--cp-neon-magenta, #ff2d78); }
+.arc-hud { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .14em; margin-bottom: 8px; color: var(--cp-neon-green, #00ff9f); }
+.arc-hud b { color: var(--cp-neon-yellow, #f7ff00); font-weight: 400; }
+.arc-cv { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; background: #04060a; border: 1px solid rgba(0,245,255,.4); image-rendering: pixelated; touch-action: none; }
+.arc-msg { position: absolute; left: 20px; right: 20px; top: 50%; transform: translateY(-50%); text-align: center; pointer-events: none; text-shadow: 0 0 12px #000, 0 0 4px #000; }
+.arc-msg h3 { margin: 0 0 6px; font: 700 20px var(--cp-font-display, monospace); letter-spacing: .2em; color: var(--cp-neon-magenta, #ff2d78); }
+.arc-msg p { margin: 0; font-size: 12px; color: var(--cp-text-primary, #e2eaf5); }
+.arc-stage { position: relative; }
+.arc-type { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 9px 12px; background: #04060a; color: var(--cp-neon-green, #00ff9f); border: 1px solid var(--cp-neon-green, #00ff9f); font: 16px var(--cp-font-mono, monospace); outline: none; letter-spacing: .1em; }
+.arc-pad { display: none; grid-template-columns: repeat(3, 54px); grid-template-rows: repeat(2, 46px); gap: 6px; justify-content: center; margin-top: 10px; }
+.arc-pad i { display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,245,255,.5); background: rgba(0,245,255,.08); color: var(--cp-neon-cyan, #00f5ff); font-style: normal; user-select: none; touch-action: none; }
+.arc-pad i:active { background: rgba(0,245,255,.3); }
+@media (pointer: coarse) { .arc-pad { display: grid; } }
+
+/* ═════════ UPSIDE DOWN ═════════ */
+html.upside .shell { transform: rotate(180deg); transform-origin: 50% 50%; transition: transform 1.4s cubic-bezier(.6,-.2,.2,1.2); }
+html:not(.upside) .shell { transition: transform 1.1s cubic-bezier(.6,-.2,.2,1.2); }
+html.upside { --cp-bg-deep: #0a0305; --cp-bg-surface: #12060a; --cp-bg-raised: #1c0a10; --cp-bg-card: #160709;
+  --cp-neon-cyan: #ff2a2a; --cp-neon-magenta: #ff6a1a; --cp-neon-purple: #8a1c3c; --cp-neon-yellow: #ff9a3c; --cp-neon-green: #c8402a;
+  --cp-text-primary: #e8c9c0; --cp-text-muted: #9a6a66; --cp-border-glow: rgba(255,42,42,.4); --cp-border-subtle: rgba(255,42,42,.14); }
+html.upside body { background: #060203; }
+html.upside::before { content: ''; position: fixed; inset: 0; z-index: 9100; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(90,0,0,.55) 100%), linear-gradient(rgba(255,40,20,.05), rgba(0,30,80,.12)); mix-blend-mode: multiply; animation: ud-flicker 6s infinite; }
+@keyframes ud-flicker { 0%, 17%, 20%, 52%, 56%, 100% { opacity: 1; } 18%, 54% { opacity: .55; } 19%, 55% { opacity: .85; } }
+html.upside .logo, html.upside h1 { animation: ud-buzz 4.5s infinite; }
+@keyframes ud-buzz { 0%, 90%, 100% { opacity: 1; } 92% { opacity: .3; } 94% { opacity: 1; } 96% { opacity: .5; } }
+#ud-fx { position: fixed; inset: 0; z-index: 9101; pointer-events: none; display: none; }
+html.upside #ud-fx { display: block; }
+.ud-title { position: fixed; left: 50%; top: 14%; transform: translateX(-50%); z-index: 9996; font: 700 clamp(18px, 4vw, 34px) var(--cp-font-display, monospace); letter-spacing: .4em; color: #ff2a2a; text-shadow: 0 0 20px #ff0000; opacity: 0; pointer-events: none; transition: opacity .8s; white-space: nowrap; }
+.ud-title.show { opacity: 1; }
+
+/* ═════════ MEMO BOY (game boy palette: #0f380f #306230 #8bac0f #9bbc0f) ═════════ */
+html.gameboy { --gb0: #0f380f; --gb1: #306230; --gb2: #8bac0f; --gb3: #9bbc0f;
+  --cp-bg-deep: var(--gb3); --cp-bg-surface: var(--gb3); --cp-bg-raised: var(--gb2); --cp-bg-card: var(--gb3);
+  --cp-neon-cyan: var(--gb0); --cp-neon-magenta: var(--gb0); --cp-neon-purple: var(--gb1); --cp-neon-yellow: var(--gb0); --cp-neon-green: var(--gb1);
+  --cp-text-primary: var(--gb0); --cp-text-muted: var(--gb1); --cp-border-glow: rgba(15,56,15,.75); --cp-border-subtle: rgba(15,56,15,.35);
+  --cp-radius-sm: 0; --cp-radius-md: 0; --cp-radius-lg: 0; filter: none !important; }
+html.gameboy body { background: var(--gb3); color: var(--gb0); }
+html.gameboy *, html.gameboy *::before, html.gameboy *::after { border-radius: 0 !important; text-shadow: none !important; }
+html.gameboy .shell, html.gameboy .main, html.gameboy .rail { background: var(--gb3) !important; }
+html.gameboy .rail { border-color: var(--gb0) !important; }
+html.gameboy h1, html.gameboy h2, html.gameboy .brand, html.gameboy .card-name, html.gameboy .cp-label, html.gameboy .hud-v, html.gameboy .pill { font-family: 'Press Start 2P', var(--cp-font-mono), monospace !important; letter-spacing: 0 !important; line-height: 1.5; }
+html.gameboy h1 { font-size: clamp(18px, 3.2vw, 34px) !important; }
+html.gameboy h2 { font-size: clamp(11px, 1.6vw, 15px) !important; }
+html.gameboy .card-name, html.gameboy .pill, html.gameboy .cp-label { font-size: 10px !important; }
+html.gameboy a.card-link, html.gameboy .hud > *, html.gameboy .term-box, html.gameboy .id-card, html.gameboy .pill, html.gameboy .swatch { background: var(--gb2) !important; border: 2px solid var(--gb0) !important; box-shadow: 4px 4px 0 var(--gb0) !important; color: var(--gb0) !important; }
+html.gameboy a.card-link:hover { background: var(--gb0) !important; color: var(--gb3) !important; transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--gb1) !important; }
+html.gameboy a.card-link:hover * { color: var(--gb3) !important; }
+html.gameboy .pill.on { background: var(--gb0) !important; color: var(--gb3) !important; }
+html.gameboy a { color: var(--gb0); border-color: var(--gb1); }
+html.gameboy img { filter: grayscale(1) contrast(1.15) sepia(1) hue-rotate(50deg) saturate(2.2) brightness(.85); image-rendering: pixelated; }
+html.gameboy #rain { display: none !important; }
+html.gameboy::after { display: none; }
+html.gameboy body::before { content: ''; position: fixed; inset: 0; z-index: 9997; pointer-events: none; opacity: .5;
+  background: repeating-linear-gradient(0deg, rgba(15,56,15,.18) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(15,56,15,.14) 0 1px, transparent 1px 3px); }
+html.gameboy .nl, html.gameboy .nl-chat { --nlc: #0f380f; --nlc-rgb: 15,56,15; }
+html.gameboy .nl-bubble, html.gameboy .nl-chat, html.gameboy .nl-eye, html.gameboy .term, html.gameboy .pal, html.gameboy .toast { background: var(--gb3) !important; color: var(--gb0) !important; border: 2px solid var(--gb0) !important; box-shadow: 4px 4px 0 var(--gb0) !important; }
+html.gameboy .nl-m.bot, html.gameboy .nl-m.usr { color: var(--gb0) !important; }
+html.gameboy .nl-in input, html.gameboy .term input { background: var(--gb2) !important; color: var(--gb0) !important; }
+html.gameboy .nl-eye .iris { fill: var(--gb0) !important; }
+html.gameboy .nl-eye svg path { stroke: var(--gb0) !important; }
+html.gameboy .arc { background: rgba(15,56,15,.94); color: var(--gb3); }
+html.gameboy .arc-box { background: var(--gb3); border: 3px solid var(--gb0); color: var(--gb0); box-shadow: 6px 6px 0 var(--gb0); }
+html.gameboy .arc-title, html.gameboy .arc-eye, html.gameboy .arc-hud, html.gameboy .arc-hud b, html.gameboy .arc-item .arc-b { color: var(--gb0); text-shadow: none; }
+html.gameboy .arc-item { border-color: var(--gb1); } html.gameboy .arc-item.sel, html.gameboy .arc-item:hover { background: var(--gb0); color: var(--gb3); box-shadow: none; } html.gameboy .arc-item.sel .arc-d, html.gameboy .arc-item.sel .arc-b, html.gameboy .arc-item.sel .arc-n { color: var(--gb3); }
+html.gameboy .arc-cv { background: var(--gb3); border-color: var(--gb0); }
+.gb-boot { position: fixed; inset: 0; z-index: 9999; background: #9bbc0f; display: flex; align-items: center; justify-content: center; flex-direction: column; font-family: 'Press Start 2P', monospace; color: #0f380f; overflow: hidden; }
+.gb-boot .gb-logo { font-size: clamp(16px, 4vw, 30px); animation: gb-drop 1.2s steps(12) forwards; transform: translateY(-60vh); }
+.gb-boot small { margin-top: 22px; font-size: 9px; opacity: 0; animation: gb-fade .1s 1.3s forwards; }
+@keyframes gb-drop { to { transform: translateY(0); } } @keyframes gb-fade { to { opacity: 1; } }
+
+/* gameboy: tint everything that is not themed through variables */
+html.gameboy .skyline, html.gameboy .card-shot, html.gameboy canvas#ud-fx { filter: grayscale(1) contrast(1.25) sepia(1) hue-rotate(52deg) saturate(2.6) brightness(.9); }
+html.gameboy .card-shot { background-color: var(--gb2) !important; border-bottom: 2px solid var(--gb0); }
+html.gameboy .card-desc, html.gameboy .card-meta, html.gameboy .card-tag, html.gameboy .hud *, html.gameboy .foot, html.gameboy .rail a, html.gameboy .rail-link { color: var(--gb0) !important; }
+html.gameboy .card-tag { background: var(--gb3) !important; border: 1px solid var(--gb0) !important; }
+html.gameboy .rail-group-name, html.gameboy .rail-hint { color: var(--gb1) !important; }
+html.gameboy input { background: var(--gb2) !important; color: var(--gb0) !important; border: 2px solid var(--gb0) !important; }

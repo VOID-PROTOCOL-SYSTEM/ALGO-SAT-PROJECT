@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v8.0", "2026-11-08", "secret codes: ARCADE menu (up up down down b a) with 5 mini games, UPSIDE DOWN mode, MEMO BOY game boy theme"),
     ("v7.0", "2026-11-08", "merged: THE MEMO ARCHIVE text adventure (16 rooms, 6 puzzles, 5 endings) + neural link v6 (personas, missions, roast battles, games, chaos)"),
     ("v6.1", "2026-11-08", "neural link v6: 11 personas, missions + ranks, roast battles, trivia/riddles, tarot/horoscope/8ball, chaos mode, algorithm banter, ambient reactions, smarter fallback"),
     ("v6.0", "2026-11-08", "THE MEMO ARCHIVE text adventure: 16 rooms, 6 puzzles, 5 endings, undo, hints, live map"),
@@ -304,6 +305,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/fun.css">
 <link rel="stylesheet" href="assets/fun3.css">
 <link rel="stylesheet" href="assets/adventure.css">
+<link rel="stylesheet" href="assets/arcade.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -427,6 +429,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/link.js"></script>
 <script src="assets/boss.js"></script>
 <script src="assets/adventure.js"></script>
+<script src="assets/arcade.js"></script>
 </body>
 </html>
 """
