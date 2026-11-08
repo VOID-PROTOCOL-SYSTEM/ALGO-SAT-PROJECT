@@ -99,3 +99,9 @@ html.gameboy .card-desc, html.gameboy .card-meta, html.gameboy .card-tag, html.g
 html.gameboy .card-tag { background: var(--gb3) !important; border: 1px solid var(--gb0) !important; }
 html.gameboy .rail-group-name, html.gameboy .rail-hint { color: var(--gb1) !important; }
 html.gameboy input { background: var(--gb2) !important; color: var(--gb0) !important; border: 2px solid var(--gb0) !important; }
+
+/* arcade: wide two-column menu */
+.arc-box.wide { width: min(94vw, 760px); }
+.arc-list.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+@media (max-width: 640px) { .arc-list.two { grid-template-columns: 1fr; } }
+.arc-item .arc-b { white-space: nowrap; }
