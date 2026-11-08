@@ -56,7 +56,9 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
-    ("v6.0", "2026-11-08", "neural link v6: 11 personas, missions + ranks, roast battles, trivia/riddles, tarot/horoscope/8ball, chaos mode, algorithm banter, ambient reactions, smarter fallback"),
+    ("v7.0", "2026-11-08", "merged: THE MEMO ARCHIVE text adventure (16 rooms, 6 puzzles, 5 endings) + neural link v6 (personas, missions, roast battles, games, chaos)"),
+    ("v6.1", "2026-11-08", "neural link v6: 11 personas, missions + ranks, roast battles, trivia/riddles, tarot/horoscope/8ball, chaos mode, algorithm banter, ambient reactions, smarter fallback"),
+    ("v6.0", "2026-11-08", "THE MEMO ARCHIVE text adventure: 16 rooms, 6 puzzles, 5 endings, undo, hints, live map"),
     ("v5.0", "2026-11-07", "GLITCH INVADERS boss fight (konami), neural link v2: memory, moods, chat, eye tracking, voice, dossier"),
     ("v4.0", "2026-11-07", "neural link AI, popups, bug mascot, runner ID, hack sequence, synth grid, thunder, skyline, holo cards, glitch transitions"),
     ("v3.0", "2026-11-07", "previews, status badges, timeline, section jump-list, terminal, rain, sound, page wipes, 404"),
@@ -301,6 +303,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/fun.css">
 <link rel="stylesheet" href="assets/fun3.css">
+<link rel="stylesheet" href="assets/adventure.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -321,6 +324,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
       <i class="pill" role="button" tabindex="0" data-fx="crt">CRT</i>
       <i class="pill" role="button" tabindex="0" data-fx="synth">Synth</i>
       <i class="pill" role="button" tabindex="0" data-fx="storm">Storm</i>
+      <i class="pill" role="button" tabindex="0" data-fx="adv" title="play the text adventure">Adventure</i>
     </div>
     <div class="cp-label">Hue</div>
     <div class="swatches">
@@ -422,6 +426,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/fun2.js"></script>
 <script src="assets/link.js"></script>
 <script src="assets/boss.js"></script>
+<script src="assets/adventure.js"></script>
 </body>
 </html>
 """

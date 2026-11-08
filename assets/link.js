@@ -5,7 +5,7 @@
   var root = document.documentElement, DATA = { items: [] };
   try { DATA = JSON.parse($('#archive-data').textContent); } catch (e) {}
   function snd() { return FX.sound || { on: false, tone: function () {}, init: function () {} }; }
-  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight')); }
+  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight') || $('.adv')); }
   function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
 
   /* ═════════ persistent memory ═════════ */
@@ -88,7 +88,7 @@
     hideT = setTimeout(function () { bub.classList.remove('show'); }, 3800 + t.length * 45); speak(t);
   }
   function say(t, force, raw) {
-    if (FX.bossActive) return; if (muted && !force) return; var n = Date.now();
+    if (FX.bossActive || FX.advActive) return; if (muted && !force) return; var n = Date.now();
     if (!force && n - lastSay < COOL[S.level]) return; lastSay = n;
     if (!raw) t = flair(t); output(t);
     if (!force) { ignored += .5; applyMood(true); }
@@ -252,7 +252,7 @@
     var days = Math.max(0, Math.floor((Date.now() - new Date(S.first)) / 86400000)), op = Object.keys(S.opened).length, bw = parseInt(lget('boss-wins') || '0', 10), bb = parseInt(lget('boss-best') || '0', 10);
     return ['DOSSIER // ' + addr().toUpperCase(), 'first seen ...... ' + S.first.slice(0, 10) + ' (' + days + 'd ago)', 'visits .......... ' + S.visits + ' (' + S.dayCount + ' today)',
       'time on site .... ' + Math.round(S.secs / 60) + ' min', 'notebooks ....... ' + op + '/' + DATA.items.length + ' opened', 'bugs squashed ... ' + (FX.bugCount ? FX.bugCount() : 0),
-      'popups closed ... ' + S.popups, 'chats ........... ' + S.chats, 'boss ............ ' + (bw ? bw + ' win(s), best ' + bb : 'undefeated (by you: never fought)'), 'my mood ......... ' + mood.toUpperCase()].join('\n');
+      'popups closed ... ' + S.popups, 'chats ........... ' + S.chats, 'boss ............ ' + (bw ? bw + ' win(s), best ' + bb : 'undefeated (by you: never fought)'), 'adventure ....... ' + (FX.advStats ? (FX.advStats().endings + '/5 endings, best ' + FX.advStats().best) : 'n/a'), 'my mood ......... ' + mood.toUpperCase()].join('\n');
   }
   FX.dossier = dossier;
   function statLine() {
@@ -285,6 +285,10 @@
     [/\bstat(s|istics)?\b|how (many|much)|numbers|total/, function () { return { text: statLine() }; }],
     [/(do you )?remember me|how many (times|visits)|how often|last time|been here/, function () { return { text: 'visit #' + S.visits + '. first seen ' + S.first.slice(0, 10) + '. total time: ' + Math.round(S.secs / 60) + ' minutes. i remember everything. it is a curse.' }; }],
     [/what time|the time|date today|what day|today/, function () { var d = new Date(); return { text: 'it is ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' on ' + d.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' }) + '. ' + (hr() < 5 ? 'go to sleep.' : 'time is a construct. deadlines are not.') }; }],
+    [/\b(adventure|text game|text adventure|explore|zork|interactive fiction)\b/, function () {
+      pending = { yes: function () { return { text: 'opening the archive... mind the bugs. and the duck. especially the duck.', action: function () { closeChat(); FX.adventure && FX.adventure(); } }; }, no: 'fair. the archive will wait. it has nothing else to do.' };
+      return { text: 'a text adventure through the archive itself! there is a robot, a duck, five endings and a lot of ways to die. want to play? (yes / no)' };
+    }],
     [/\b(play|game|boss|fight|shoot|invader|battle|glitch king)\b/, function () {
       pending = { yes: function () { return { text: 'booting the glitch king... defend the archive!', action: function () { closeChat(); FX.boss && FX.boss(); } }; }, no: 'chicken. the archive will remember this.' };
       return { text: 'a boss fight? the glitch invaders have been waiting. want to fight? (yes / no)' };
