@@ -35,5 +35,10 @@ Type these words anywhere on the page: `matrix` `crt` `retro` `rainbow` `glitch`
 ## Boss fight & neural link
 Konami code (or `boss` in the terminal / typed anywhere / "play" in chat) starts GLITCH INVADERS. Click the eye in the corner to chat; right-click it to mute. `chat`, `ask <text>`, `dossier`, `mood`, `snark quiet|normal|chatty` in the terminal.
 
+## Neural link v6 (say these in the chat, or `ask <text>` in the terminal)
+`mission` / `done` / `skip` / `rank` (bossy xp system) · `roast me` / `roast <thing>` / `compliment me` · `banter` (5-round roast battle) · `trivia` / `riddle` · `tarot` / `horoscope <sign>` / `fortune` / `8ball ...` / `scan me` · `pick A or B` / `flip a coin` / `roll d20` / `rate <thing>` · `story` / `haiku` / `rap` / `pickup line` · `explain bfs|dfs|dijkstra|big o|dp|...` · `my favourite X is Y` / `i like Z` (it remembers) · `chaos` / `calm down` · `wink` `dance` `scream` `sleep`.
+Personas: `mode bossy|noir|pirate|bard|villain|gremlin|zen|hype|nan|robot|default` or `roulette`. Terminal: `persona <name>`, `mission`, `rank`, `roast`, `tarot`, `chaos`, `calm`.
+It also reacts to: leaving the tab, hitting the page bottom, copying text, resizing, time-on-site milestones, and hovering each notebook card.
+
 ## File map
 `assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, popups, bug, runner ID, hack, synth, thunder · `assets/link.js` neural link v2 · `assets/boss.js` boss fight · `assets/fun.css` + `fun3.css` styles.

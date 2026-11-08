@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v6.0", "2026-11-08", "neural link v6: 11 personas, missions + ranks, roast battles, trivia/riddles, tarot/horoscope/8ball, chaos mode, algorithm banter, ambient reactions, smarter fallback"),
     ("v5.0", "2026-11-07", "GLITCH INVADERS boss fight (konami), neural link v2: memory, moods, chat, eye tracking, voice, dossier"),
     ("v4.0", "2026-11-07", "neural link AI, popups, bug mascot, runner ID, hack sequence, synth grid, thunder, skyline, holo cards, glitch transitions"),
     ("v3.0", "2026-11-07", "previews, status badges, timeline, section jump-list, terminal, rain, sound, page wipes, 404"),
