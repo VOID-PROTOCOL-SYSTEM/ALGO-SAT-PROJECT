@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v8.3", "2026-11-08", "arcade: sort-o-matic + tic-tac-minimax (19 games), trophy room with 21 achievements (4 hidden)"),
     ("v8.2", "2026-11-08", "arcade: +6 games (maze runner, dijkstra dash, whack-a-bug, lights out, reaction test, lane crosser) = 17 total"),
     ("v8.1", "2026-11-08", "arcade expansion: 6 new games (flap-eye, drift, bug hunt, merge, pattern lock, stacktris), two-column menu, daily 2x xp game, arcade champion bonus"),
     ("v8.0", "2026-11-08", "secret codes: ARCADE menu (up up down down b a) with 5 mini games, UPSIDE DOWN mode, MEMO BOY game boy theme"),

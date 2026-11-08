@@ -49,9 +49,11 @@
     { id: 'whack', name: 'WHACK-A-BUG', d: 'squash bugs. spare the eye. 30 seconds.', c: 'click / keys 1-9 (numpad)', mk: mkWhack },
     { id: 'lights', name: 'LIGHTS OUT', d: 'flip them all off. neighbours flip too.', c: 'click / arrows + SPACE', mk: mkLights },
     { id: 'react', name: 'REACTION TEST', d: 'click on green. 5 rounds. no flinching.', c: 'click / SPACE', mk: mkReact },
-    { id: 'lanes', name: 'LANE CROSSER', d: 'why did the cursor cross the road?', c: 'arrows, step by step', mk: mkLanes }
+    { id: 'lanes', name: 'LANE CROSSER', d: 'why did the cursor cross the road?', c: 'arrows, step by step', mk: mkLanes },
+    { id: 'sort', name: 'SORT-O-MATIC', d: 'sort the bars in the fewest swaps.', c: 'click two bars / arrows + SPACE', mk: mkSort },
+    { id: 'ttt', name: 'TIC-TAC-MINIMAX', d: 'a perfect-play AI. it blunders sometimes.', c: 'click / keys 1-9 / arrows + SPACE', mk: mkTTT }
   ];
-  var NLAB = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Q', 'E', 'R', 'T', 'Y', 'U', 'I'];
+  var NLAB = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Q', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
   function dailyIdx() { return parseInt(new Date().toISOString().slice(0, 10).split('-').join(''), 10) % GAMES.length; }
   function openArcade() {
     if (arcOpen) return; arcOpen = true; FX.arcadeActive = true; keys = {}; view = 'menu'; sel = 0;
@@ -69,7 +71,7 @@
     box.appendChild(el('div', 'arc-title', 'ARCADE')); box.appendChild(el('div', 'arc-sub', sub));
   }
   function menu() {
-    stopGame(); view = 'menu'; head('\u2014 INSERT COIN \u2014  ' + (parseInt(lget('arc-plays') || '0', 10)) + ' PLAYS'); box.className = 'arc-box wide';
+    stopGame(); view = 'menu'; dead = false; checkAch(); head('\u2014 INSERT COIN \u2014  ' + (parseInt(lget('arc-plays') || '0', 10)) + ' PLAYS'); box.className = 'arc-box wide';
     var list = el('div', 'arc-list two'); box.appendChild(list), dly = dailyIdx();
     GAMES.forEach(function (g, i) {
       var it = el('div', 'arc-item' + (i === sel ? ' sel' : '')), n = el('span', 'arc-n', NLAB[i]), gg = el('span', 'arc-g'), b = el('span', 'arc-b', (i === dly ? '\u2605 2x XP  ' : '') + (best(g.id) ? 'HI ' + best(g.id) : ''));
@@ -78,7 +80,7 @@
       it.addEventListener('click', function () { sel = i; startGame(GAMES[i]); }); list.appendChild(it);
     });
     eyeEl = el('div', 'arc-eye', pick(EYE_MENU)); box.appendChild(eyeEl);
-    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', '\u2190\u2191\u2193\u2192 SELECT  \u00B7  ENTER PLAY  \u00B7  1-9 0 Q E R T Y U I QUICK START')); f.appendChild(el('span', '', 'ESC EXIT')); box.appendChild(f);
+    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', '\u2190\u2191\u2193\u2192 SELECT  \u00B7  ENTER PLAY  \u00B7  1-9 0 Q E R T Y U I O P QUICK START')); var tb = el('span', 'arc-trophy', '\u2605 TROPHIES (K)'); tb.addEventListener('click', trophies); f.appendChild(tb); f.appendChild(el('span', '', 'ESC EXIT')); box.appendChild(f);
   }
   function refreshSel() { $$('.arc-item').forEach(function (x, k) { x.classList.toggle('sel', k === sel); if (k === sel && x.scrollIntoView) x.scrollIntoView({ block: 'nearest' }); }); }
   function startGame(g) {
@@ -105,12 +107,12 @@
   }
   function loop(t) { raf = requestAnimationFrame(loop); var dt = Math.min(.05, (t - last) / 1000); last = t; if (cur && !dead) { cur.update(dt); cur.draw(); } else if (cur && dead) cur.draw && cur.draw(); }
   function stopGame() { cancelAnimationFrame(raf); raf = 0; if (cur && cur.destroy) cur.destroy(); cur = null; curG = null; }
-  var HELLO = { snake: ['eat. grow. try not to become a metaphor.'], pong: ['i am the cpu. i do not get tired. you do.'], breakout: ['the wall is just a memo with commitment issues.'], stare: ['i have no eyelids. well. one. do not move.'], typist: ['algorithm words. your fingers. go.'], flap: ['i have wings. technically. they are svg.'], drift: ['the rocks are not friendly. the rocks are rocks.'], bugs: ['first click is always safe. i am generous like that.'], merge: ['merge sort jokes are not allowed here. (merge conflicts are.)'], lock: ['watch closely. blinking is cheating.'], stack: ['you know the drill. i know you will not clear four lines.'], maze: ['i built this maze with dfs. recursive backtracker. no regrets.'], dash: ['greedy is a trap. dijkstra is a lifestyle.'], whack: ['bugs: pop up, annoy, vanish. just like production.'], lights: ['every puzzle has a solution. this one has a lot of clicking.'], react: ['do not click until green. i know you want to.'], lanes: ['the cars are not sentient. the cars are not sentient.'] };
+  var HELLO = { snake: ['eat. grow. try not to become a metaphor.'], pong: ['i am the cpu. i do not get tired. you do.'], breakout: ['the wall is just a memo with commitment issues.'], stare: ['i have no eyelids. well. one. do not move.'], typist: ['algorithm words. your fingers. go.'], flap: ['i have wings. technically. they are svg.'], drift: ['the rocks are not friendly. the rocks are rocks.'], bugs: ['first click is always safe. i am generous like that.'], merge: ['merge sort jokes are not allowed here. (merge conflicts are.)'], lock: ['watch closely. blinking is cheating.'], stack: ['you know the drill. i know you will not clear four lines.'], maze: ['i built this maze with dfs. recursive backtracker. no regrets.'], dash: ['greedy is a trap. dijkstra is a lifestyle.'], whack: ['bugs: pop up, annoy, vanish. just like production.'], lights: ['every puzzle has a solution. this one has a lot of clicking.'], react: ['do not click until green. i know you want to.'], lanes: ['the cars are not sentient. the cars are not sentient.'], sort: ['selection sort makes n swaps. you can do better. or worse.'], ttt: ['i am minimax. i have already seen how this ends.'] };
   var BAD = ['that was painful to watch. i watched all of it.', 'a bold attempt. a bad one. bold.', 'the cabinet saw that. the cabinet is disappointed.'];
   var GOOD = ['okay okay. that was actually good.', 'new high score. i am legally obligated to be impressed.', 'not bad, runner. not bad at all.'];
   function gameOver(score, win, line) {
     if (dead) return; dead = true; var g = curG, nb = score > best(g.id), p = '', mult = GAMES[dailyIdx()] === g ? 2 : 1, had = GAMES.every(function (x) { return best(x.id) > 0; });
-    lset('arc-plays', String((parseInt(lget('arc-plays') || '0', 10) || 0) + 1));
+    lset('arc-plays', String((parseInt(lget('arc-plays') || '0', 10) || 0) + 1)); if (win) { lset('arc-wins', String((parseInt(lget('arc-wins') || '0', 10) || 0) + 1)); lset('arc-won-' + g.id, '1'); } if (mult === 2) lset('arc-daily', '1');
     if (nb && score > 0) { lset('arc-' + g.id, String(score)); p += FX.gainXP ? FX.gainXP(5 * mult) : ''; $('#arc-hi') && ($('#arc-hi').textContent = 'HI ' + score); }
     if (win) p += FX.gainXP ? FX.gainXP(10 * mult) : '';
     if (!had && GAMES.every(function (x) { return best(x.id) > 0; })) { p += FX.gainXP ? FX.gainXP(40) : ''; later.push('ARCADE CHAMPION. you have a score on every machine. +40 xp. go outside. (after one more round.)'); }
@@ -118,14 +120,17 @@
     eyeEl && (eyeEl.textContent = line || pick(nb || win ? GOOD : BAD)); if (p) later.push(p.replace(/^ \|\| /, '').replace(' || ', ' '));
     if (win) { beep(523, 0, .1, 'square', .04); beep(659, 0, .1, 'square', .04, .1); beep(784, 0, .2, 'square', .04, .2); } else beep(220, 70, .4, 'sawtooth', .04);
     if (curG && curG.id === 'typist' && typeEl) typeEl.blur();
+    checkAch();
   }
   function arcKey(e) {
     var k = e.key, c = norm(k), inType = typeEl && e.target === typeEl;
     e.stopImmediatePropagation();
-    if (k === 'Escape') { e.preventDefault(); view === 'game' ? menu() : closeArcade(); return; }
+    if (k === 'Escape') { e.preventDefault(); view === 'menu' ? closeArcade() : menu(); return; }
+    if (view === 'trophy') return;
     if (inType) { if (k === 'Enter' && cur && cur.submit) { e.preventDefault(); if (dead) startGame(curG); else cur.submit(); } return; }
     if ([UP, DN, LT, RT, ' '].indexOf(k) !== -1) e.preventDefault();
     if (view === 'menu') {
+      if (k === 'k' || k === 'K') { trophies(); return; }
       var n = GAMES.length, ls = $('.arc-list'), nc = ls ? (getComputedStyle(ls).gridTemplateColumns || '').split(' ').filter(Boolean).length || 1 : 1, mv = null;
       if (c === UP) mv = (sel - nc + n) % n; else if (c === DN) mv = (sel + nc) % n; else if (c === LT) mv = (sel + n - 1) % n; else if (c === RT) mv = (sel + 1) % n;
       if (mv !== null) { sel = mv; refreshSel(); beep(900, 0, .03, 'square', .015); }
@@ -577,6 +582,99 @@
     };
   }
 
+  /* ═════════ SORT-O-MATIC (fewest swaps wins) ═════════ */
+  function mkSort(a) {
+    var ctx = a.ctx, SIZES = [6, 8, 10], round = 0, arr, cur0 = 0, sel = -1, moves = 0, par = 0, sum = 0, phase = 'play', pt = 0, lx = 0, ly = 0;
+    function minSwaps(p) { var seen = [], sw = 0; for (var i = 0; i < p.length; i++) { if (seen[i]) continue; var j = i, len = 0; while (!seen[j]) { seen[j] = 1; j = p[j] - 1; len++; } sw += len - 1; } return sw; }
+    function newRound() { var n = SIZES[round]; do { arr = []; for (var i = 1; i <= n; i++) arr.push(i); arr.sort(function () { return Math.random() - .5; }); } while (minSwaps(arr) < 3); par = minSwaps(arr); moves = 0; sel = -1; cur0 = 0; phase = 'play'; hud(); }
+    function hud() { a.hud('ROUND ' + (round + 1) + '/3   SWAPS ' + moves + '   PAR ' + par + '   SCORE ' + sum); }
+    function done() { return arr.every(function (v, i) { return v === i + 1; }); }
+    function pick1(i) { a.msg(); if (phase !== 'play') return; if (sel === -1) { sel = i; a.beep(500, 0, .03, 'square', .02); return; } if (sel === i) { sel = -1; return; }
+      var t = arr[sel]; arr[sel] = arr[i]; arr[i] = t; sel = -1; moves++; a.beep(420, 640, .06, 'square', .03); hud();
+      if (done()) { var pts = Math.max(10, 100 - Math.max(0, moves - par) * 20); sum += pts; phase = 'result'; pt = 1.8; a.eye(moves <= par ? 'perfect. ' + par + ' swaps. selection sort is jealous. +' + pts : moves + ' swaps. par was ' + par + '. +' + pts); hud(); } }
+    newRound(); a.msg('SORT-O-MATIC', 'pick two bars to swap them. sort ascending in the FEWEST swaps.');
+    return {
+      pointer: function (x, y) { lx = x; ly = y; }, click: function () { var n = arr.length, w = 440 / n, i = Math.floor((lx - 20) / w); if (i >= 0 && i < n) { cur0 = i; pick1(i); } },
+      key: function (k) { var n = arr.length; if (k === LT) cur0 = Math.max(0, cur0 - 1); else if (k === RT) cur0 = Math.min(n - 1, cur0 + 1); else if (k === ' ') pick1(cur0); },
+      update: function (dt) { if (phase === 'result') { pt -= dt; if (pt <= 0) { round++; if (round >= 3) { a.over(sum, sum >= 240, sum >= 240 ? 'near-perfect swaps. you think like a permutation cycle.' : 'bubble-sort energy. it got there. eventually.'); return; } newRound(); } } },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320); var n = arr.length, w = 440 / n; ctx.textAlign = 'center'; ctx.font = 'bold 16px monospace'; ctx.textBaseline = 'middle';
+        arr.forEach(function (v, i) { var h = v / n * 230, x = 20 + i * w; ctx.fillStyle = i === sel ? a.C('--cp-neon-yellow', '#f7ff00') : v === i + 1 ? a.C('--cp-neon-green', '#00ff9f') : a.C('--cp-neon-cyan', '#00f5ff'); ctx.globalAlpha = v === i + 1 || i === sel ? 1 : .55; ctx.fillRect(x + 3, 275 - h, w - 6, h); ctx.globalAlpha = 1; ctx.fillStyle = a.C('--cp-text-primary', '#e2eaf5'); ctx.fillText(String(v), x + w / 2, 295); });
+        ctx.strokeStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.lineWidth = 2; ctx.strokeRect(20 + cur0 * w + 1, 20, w - 2, 280);
+      }
+    };
+  }
+
+  /* ═════════ TIC-TAC-MINIMAX ═════════ */
+  function mkTTT(a) {
+    var ctx = a.ctx, b = [], round = 0, sum = 0, turn = 'X', phase = 'play', pt = 0, cx = 1, cy = 1, lx = 0, ly = 0, wl = null, BL = .2, res = [], S = 96, ox = 96, oy = 16;
+    var LN = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    function win(bd) { for (var i = 0; i < 8; i++) { var l = LN[i]; if (bd[l[0]] && bd[l[0]] === bd[l[1]] && bd[l[1]] === bd[l[2]]) return { w: bd[l[0]], l: l }; } return null; }
+    function full(bd) { return bd.every(Boolean); }
+    function mm(bd, pl, d) { var w = win(bd); if (w) return w.w === 'O' ? 10 - d : d - 10; if (full(bd)) return 0; var best = pl === 'O' ? -99 : 99; for (var i = 0; i < 9; i++) if (!bd[i]) { bd[i] = pl; var v = mm(bd, pl === 'O' ? 'X' : 'O', d + 1); bd[i] = ''; best = pl === 'O' ? Math.max(best, v) : Math.min(best, v); } return best; }
+    function aiMove() { var free = []; for (var i = 0; i < 9; i++) if (!b[i]) free.push(i); var m; if (Math.random() < BL) m = pick(free); else { var bs = -99; free.forEach(function (i) { b[i] = 'O'; var v = mm(b, 'X', 1); b[i] = ''; if (v > bs) { bs = v; m = i; } }); } b[m] = 'O'; a.beep(330, 0, .06, 'square', .03); }
+    function reset() { b = ['', '', '', '', '', '', '', '', '']; turn = 'X'; phase = 'play'; wl = null; hud(); }
+    function hud() { a.hud('GAME ' + (round + 1) + '/3   SCORE ' + sum); }
+    function check() { var w = win(b); if (w) { wl = w.l; var pts = w.w === 'X' ? 100 : 0; sum += pts; res.push(w.w === 'X' ? 'W' : 'L'); phase = 'result'; pt = 1.6; a.beep(w.w === 'X' ? 880 : 180, w.w === 'X' ? 1200 : 80, .3, 'square', .04); a.eye(w.w === 'X' ? 'you beat minimax?! it blundered. (20% of the time it does. i am merciful.)' : 'minimax wins. it looked at every possible future. you looked at one.'); hud(); return true; }
+      if (full(b)) { sum += 40; res.push('D'); phase = 'result'; pt = 1.6; a.eye('a draw. against perfect play, a draw is a win. (it is not. but it is respectable.)'); hud(); return true; } return false; }
+    function play(i) { a.msg(); if (phase !== 'play' || b[i]) return; b[i] = 'X'; a.beep(520, 0, .05, 'square', .03); if (check()) return; aiMove(); check(); }
+    reset(); a.msg('TIC-TAC-MINIMAX', 'you are X. the AI searches every future. it sometimes blunders.');
+    return {
+      pointer: function (x, y) { lx = x; ly = y; }, click: function () { var x = Math.floor((lx - ox) / S), y = Math.floor((ly - oy) / S); if (x >= 0 && y >= 0 && x < 3 && y < 3) play(y * 3 + x); },
+      key: function (k) { var n = parseInt(k, 10); if (n >= 1 && n <= 9) { play((2 - Math.floor((n - 1) / 3)) * 3 + (n - 1) % 3); return; } if (k === UP) cy = Math.max(0, cy - 1); else if (k === DN) cy = Math.min(2, cy + 1); else if (k === LT) cx = Math.max(0, cx - 1); else if (k === RT) cx = Math.min(2, cx + 1); else if (k === ' ') play(cy * 3 + cx); },
+      update: function (dt) { if (phase === 'result') { pt -= dt; if (pt <= 0) { round++; if (round >= 3) { a.over(sum, sum >= 140, sum >= 140 ? 'you took a game off a perfect-play algorithm. legendary.' : 'minimax remains unbeaten. it will outlive us all.'); return; } reset(); } } },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320); ctx.strokeStyle = a.C('--cp-neon-cyan', '#00f5ff'); ctx.lineWidth = 3; ctx.beginPath(); for (var i = 1; i < 3; i++) { ctx.moveTo(ox + i * S, oy + 6); ctx.lineTo(ox + i * S, oy + 3 * S - 6); ctx.moveTo(ox + 6, oy + i * S); ctx.lineTo(ox + 3 * S - 6, oy + i * S); } ctx.stroke();
+        ctx.lineWidth = 6; b.forEach(function (v, i) { var x = ox + (i % 3) * S + S / 2, y = oy + Math.floor(i / 3) * S + S / 2; if (v === 'X') { ctx.strokeStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.beginPath(); ctx.moveTo(x - 24, y - 24); ctx.lineTo(x + 24, y + 24); ctx.moveTo(x + 24, y - 24); ctx.lineTo(x - 24, y + 24); ctx.stroke(); } else if (v === 'O') { ctx.strokeStyle = a.C('--cp-neon-yellow', '#f7ff00'); ctx.beginPath(); ctx.arc(x, y, 26, 0, 7); ctx.stroke(); } });
+        if (phase === 'play') { ctx.strokeStyle = 'rgba(128,128,128,.6)'; ctx.lineWidth = 2; ctx.strokeRect(ox + cx * S + 4, oy + cy * S + 4, S - 8, S - 8); }
+        if (wl) { ctx.strokeStyle = a.C('--cp-text-primary', '#e2eaf5'); ctx.lineWidth = 4; var p1 = wl[0], p2 = wl[2]; ctx.beginPath(); ctx.moveTo(ox + (p1 % 3) * S + S / 2, oy + Math.floor(p1 / 3) * S + S / 2); ctx.lineTo(ox + (p2 % 3) * S + S / 2, oy + Math.floor(p2 / 3) * S + S / 2); ctx.stroke(); }
+        ctx.fillStyle = a.C('--cp-text-muted', '#8a9ab8'); ctx.font = '13px monospace'; ctx.textAlign = 'center'; ctx.fillText(res.join('  '), 240, 312);
+      }
+    };
+  }
+
+  /* ═════════ TROPHY ROOM ═════════ */
+  function nl() { return FX.nlState ? FX.nlState() : { xp: 0, mDone: 0, won: 0 }; }
+  function plays() { return parseInt(lget('arc-plays') || '0', 10) || 0; }
+  function wonG(id) { return !!lget('arc-won-' + id); }
+  var ACH = [
+    { id: 'first', n: 'FIRST COIN', d: 'play any game', t: function () { return plays() >= 1; } },
+    { id: 'p10', n: 'REGULAR', d: 'play 10 games', t: function () { return plays() >= 10; } },
+    { id: 'p50', n: 'CABINET RESIDENT', d: 'play 50 games', t: function () { return plays() >= 50; } },
+    { id: 'win1', n: 'WINNER', d: 'win any game', t: function () { return parseInt(lget('arc-wins') || '0', 10) >= 1; } },
+    { id: 'win5', n: 'ON A ROLL', d: 'win 5 times', t: function () { return parseInt(lget('arc-wins') || '0', 10) >= 5; } },
+    { id: 'all', n: 'ARCADE CHAMPION', d: 'set a score on every machine', t: function () { return GAMES.every(function (g) { return best(g.id) > 0; }); } },
+    { id: 'daily', n: 'CREATURE OF HABIT', d: 'play the daily starred game', t: function () { return !!lget('arc-daily'); } },
+    { id: 'snake', n: 'LONG BOI', d: 'score 100 in snake', t: function () { return best('snake') >= 100; } },
+    { id: 'stare', n: 'NO BLINK', d: 'win the stare contest', t: function () { return wonG('stare'); } },
+    { id: 'merge', n: '2048 CLUB', d: 'reach 2048 in merge', t: function () { return wonG('merge'); } },
+    { id: 'maze', n: 'LOST NO MORE', d: 'finish every maze', t: function () { return wonG('maze'); } },
+    { id: 'dash', n: 'HUMAN DIJKSTRA', d: 'win dijkstra dash', t: function () { return wonG('dash'); } },
+    { id: 'ttt', n: 'MINIMAX SLAYER', d: 'beat the tic-tac-minimax match', t: function () { return wonG('ttt'); } },
+    { id: 'react', n: 'QUICK DRAW', d: 'average under 300 ms', t: function () { return wonG('react'); } },
+    { id: 'rank', n: 'CERTIFIED RUNNER', d: 'reach 300 xp with the eye', t: function () { return nl().xp >= 300; } },
+    { id: 'miss', n: 'YES BOSS', d: 'complete 5 missions', t: function () { return nl().mDone >= 5; } },
+    { id: 'roast', n: 'ROAST CHAMPION', d: 'beat the eye in a roast battle', t: function () { return nl().won >= 1; } },
+    { id: 'upside', n: '???', d: 'enter the upside down', h: 1, t: function () { return !!lget('arc-flag-upside'); } },
+    { id: 'gb', n: '???', d: 'power on the handheld', h: 1, t: function () { return !!lget('arc-flag-gameboy'); } },
+    { id: 'boss', n: 'KING SLAYER', d: 'defeat the glitch king', h: 1, t: function () { return parseInt(lget('boss-wins') || '0', 10) > 0; } },
+    { id: 'adv', n: 'ARCHIVIST', d: 'find 5 adventure endings', h: 1, t: function () { return !!(FX.advStats && FX.advStats().endings >= 5); } }
+  ];
+  var REAL = { upside: 'UPSIDE DOWNER', gb: 'MEMO BOY' };
+  function checkAch() {
+    var have = (lget('arc-ach') || '').split(',').filter(Boolean), fresh = [];
+    ACH.forEach(function (x) { if (have.indexOf(x.id) === -1 && x.t()) { have.push(x.id); fresh.push(x); } });
+    if (fresh.length) { lset('arc-ach', have.join(',')); fresh.forEach(function (x) { later.push('TROPHY UNLOCKED: ' + (REAL[x.id] || x.n) + '. +10 xp.'); if (FX.gainXP) FX.gainXP(10); }); }
+    return fresh;
+  }
+  function trophies() {
+    stopGame(); view = 'trophy'; dead = false; checkAch(); var have = (lget('arc-ach') || '').split(',').filter(Boolean); head('\u2605 TROPHIES  ' + have.length + '/' + ACH.length); box.className = 'arc-box wide';
+    var list = el('div', 'arc-list two'); box.appendChild(list);
+    ACH.forEach(function (x) { var ok = have.indexOf(x.id) !== -1, it = el('div', 'arc-item' + (ok ? ' sel' : '')), n = el('span', 'arc-n', ok ? '\u2605' : '\u00B7'), gg = el('span', 'arc-g'); gg.appendChild(document.createTextNode(ok ? (REAL[x.id] || x.n) : (x.h ? '? ? ?' : x.n))); gg.appendChild(el('span', 'arc-d', ok || !x.h ? x.d : 'a secret. find it.')); it.appendChild(n); it.appendChild(gg); list.appendChild(it); });
+    eyeEl = el('div', 'arc-eye', have.length === ACH.length ? 'every trophy. i have nothing left to give you. (a compliment. you are good.)' : 'trophies pay 10 xp each. hidden ones hide. i am not telling.'); box.appendChild(eyeEl);
+    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', 'ESC BACK')); box.appendChild(f);
+  }
+
   /* ═════════ UPSIDE DOWN ═════════ */
   var ud = false, udCv, udCx, udRaf, spores = [], prevPersona = null, flash = 0, origTitle = document.title, udTitle;
   function udLoop() {
@@ -586,7 +684,7 @@
   }
   function setUpside(on) {
     if (on === ud) return; ud = on; if (on && gb) setGB(false);
-    root.classList.toggle('upside', on); beep(on ? 110 : 330, on ? 40 : 660, .9, 'sawtooth', .04);
+    root.classList.toggle('upside', on); if (on) lset('arc-flag-upside', '1'); beep(on ? 110 : 330, on ? 40 : 660, .9, 'sawtooth', .04);
     if (!udCv) { udCv = el('canvas'); udCv.id = 'ud-fx'; document.body.appendChild(udCv); udTitle = el('div', 'ud-title', ''); document.body.appendChild(udTitle); }
     udTitle.textContent = on ? 'THE UPSIDE DOWN' : 'RIGHT SIDE UP'; udTitle.classList.add('show'); setTimeout(function () { udTitle.classList.remove('show'); }, 2600);
     if (on) {
@@ -604,7 +702,7 @@
   var gb = false, savedHue = 'cyan';
   function setGB(on) {
     if (on === gb) return; gb = on; if (on && ud) setUpside(false);
-    if (on) {
+    if (on) { lset('arc-flag-gameboy', '1');
       var cur0 = $('.swatch.on'); savedHue = (cur0 && cur0.dataset.hue) || 'cyan';
       var b = el('div', 'gb-boot'); b.appendChild(el('div', 'gb-logo', 'MEMO\u2022BOY')); b.appendChild(el('small', '', '\u00A9 MEMO ARCHIVE')); document.body.appendChild(b);
       beep(987, 0, .12, 'square', .05); beep(1318, 0, .6, 'square', .05, .13);

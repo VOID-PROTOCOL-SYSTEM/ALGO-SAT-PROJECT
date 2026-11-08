@@ -108,3 +108,7 @@ html.gameboy input { background: var(--gb2) !important; color: var(--gb0) !impor
 
 .arc-box.wide .arc-item { padding: 6px 10px; }
 .arc-box.wide .arc-eye { margin-top: 10px; }
+
+.arc-trophy { cursor: pointer; color: var(--cp-neon-yellow, #f7ff00); }
+.arc-trophy:hover { text-decoration: underline; }
+html.gameboy .arc-trophy { color: var(--gb0); }
