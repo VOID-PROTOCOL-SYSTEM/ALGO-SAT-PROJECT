@@ -337,7 +337,8 @@
     function quit() {
       cancelAnimationFrame(raf); clearInterval(sayType); clearTimeout(sayHide); removeEventListener('keydown', onKey, true); removeEventListener('keyup', onKey, true); removeEventListener('mouseup', onUp);
       removeEventListener('resize', resize); removeEventListener('blur', onBlur); ov.remove(); document.documentElement.style.overflow = prevOv; running = false; FX.bossActive = false;
-      if (lastGame) { var lg = lastGame; lastGame = null; setTimeout(function () { FX.snark && FX.snark(lg.win ? 'bossWin' : 'bossLose', null, true); }, 500); }
+      var lgm = lastGame; lastGame = null; if (FX.onBossEnd) setTimeout(function () { FX.onBossEnd(lgm); }, 250);
+      if (lgm && !FX.advActive) setTimeout(function () { FX.snark && FX.snark(lgm.win ? 'bossWin' : 'bossLose', null, true); }, 500);
     }
     FX._boss = { G: function () { return G; }, quit: quit, begin: begin };
   }
