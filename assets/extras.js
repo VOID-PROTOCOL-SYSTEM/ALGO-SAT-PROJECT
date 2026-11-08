@@ -146,7 +146,7 @@
     line = line.trim(); if (!line) return;
     print('> ' + line, 'cmd'); hist.push(line); hi = hist.length;
     var parts = line.split(/\s+/), c = parts.shift().toLowerCase();
-    if (CMDS[c]) CMDS[c](parts); else { Snd.err(); print('command not found: ' + c + '  (try "help")', 'err'); }
+    if (CMDS[c]) CMDS[c](parts); else { Snd.err(); print('command not found: ' + c + '  (try "help")', 'err'); FX.snark && FX.snark('badcmd'); }
   }
   function openTerm() { term.classList.add('open'); if (!out.childNodes.length) { print('MEMO_ARCHIVE terminal v3.0 — type "help" for commands', 'dim'); } inp.focus(); }
   function closeTerm() { term.classList.remove('open'); inp.blur(); }

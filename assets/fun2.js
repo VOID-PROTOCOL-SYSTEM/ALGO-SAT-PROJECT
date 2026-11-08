@@ -5,88 +5,11 @@
   var root = document.documentElement, DATA = { items: [] };
   try { DATA = JSON.parse($('#archive-data').textContent); } catch (e) {}
   function snd() { return FX.sound || { on: false, tone: function () {}, init: function () {} }; }
-  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices')); }
+  function busy() { return !!($('.term.open') || $('.pal-wrap.open') || $('.hack') || $('.slices') || $('.bossfight')); }
 
-  /* ═════════ NEURAL LINK (snark) ═════════ */
-  var LINES = {
-    greet: ['NEURAL LINK online. you found the archive. try not to break anything.', 'boot complete. i have opinions about your browsing. none of them good.'],
-    greetBack: ['welcome back, runner. i kept your seat warm. it was cold.', 'oh. you again. i missed you. (that is a lie. it is a feature.)'],
-    big: ['warning: this file weighs {s}. bring snacks.', '{s}?! that notebook has been eating well.', 'this one is {s}. your wifi may file a complaint.'],
-    small: ['a lightweight. suspicious.', 'tiny file. big energy. or no energy. unclear.'],
-    many: ['{n} sections. someone was thorough. or caffeinated.', '{n} sections?! that is not a notebook, that is a lifestyle.'],
-    first: ['bold choice.', 'interesting. most runners start with the other one.'],
-    idle1: ['are you still alive, runner?', 'hello? blink twice if you are being held hostage by a spreadsheet.'],
-    idle2: ['i have started counting your pixels. so far: all of them.', 'still here. still judging. still lovely.'],
-    idle3: ['going into low-power mode. wake me with a click.', 'i will be over here, contemplating the void. carry on.'],
-    term: ['ah, a hacker. or someone who lost the mouse.', 'terminal engaged. try "help". or "sudo". i dare you.'],
-    pal: ['ctrl+k. the fast lane. respect.', 'a power user. i can smell the keyboard shortcuts.'],
-    rain: ['ah. atmospheric.', 'rain on. now it is a mood.'],
-    crt: ['squint to enhance the nostalgia.', 'crt mode. 1987 called, it wants its pixels back.'],
-    sound: ['audio enabled. my beeps are best-in-class.', 'sound on. i have been practising my boops.'],
-    synth: ['dropping the beat. the grid is listening.', 'procedural bangers, no royalties. you are welcome.'],
-    storm: ['i did not order a thunderstorm. enjoy.', 'lightning: free. electricity bill: not my problem.'],
-    hue: ['ooh, new colors. same you.', 'a fresh coat of neon. suits you.'],
-    nomatch: ['zero matches. the void stares back.', 'nothing found. even the search is confused.'],
-    squash: ['bug squashed. the ecosystem weeps.', 'splat. that one had a family. probably.', 'one less bug. a thousand more in the codebase.'],
-    squash5: ['five bugs. you are basically a pest controller.'],
-    mega: ['you hurt the mega-bug. it is not happy.', 'it grew. it is angry. i recommend running.'],
-    megadead: ['the mega-bug is dead. long live the mega-bug.'],
-    popup: ['do not worry about those. they are mostly harmless. mostly.', 'popups are a feature. a bad one. but a feature.'],
-    popups: ['popups cleared. you monster.'],
-    speed: ['slow down, speed racer.', 'whoa. my retinas have chromatic aberration now.'],
-    logo: ['ow.', 'hands off the logo. it is sensitive.', 'that tickles.'],
-    hack: ['mainframe breached. i did not see anything. i am legally blind.', 'hacking in progress. this is a fictional crime.'],
-    id: ['identity issued. guard it with your life. or do not, it is fake.', 'new runner ID. now with 30% more attitude.'],
-    quip: ['i run on spite and 12 volts.', 'fun fact: i have no idea what is in these notebooks.', 'if you are reading this, you are procrastinating. nice.',
-           'i would offer you advice but i am a cartoon eye.', 'the archive is watching. i am the archive. hi.', 'every click is logged. (no it is not. i am just dramatic.)']
-  };
-  var used = {}, muted = lget('nl-muted') === '1', lastSay = 0, hideT, typeT;
-  var nl = document.createElement('div'); nl.className = 'nl' + (muted ? ' muted' : '');
-  nl.innerHTML = '<div class="nl-bubble"><small>NEURAL LINK</small><span class="nl-msg"></span></div>' +
-    '<div class="nl-eye" role="button" tabindex="0" title="Neural link — click for a quip"><svg viewBox="0 0 32 32"><path d="M2 16 Q16 3 30 16 Q16 29 2 16Z" fill="none" stroke="#ff2d78" stroke-width="1.6"/><circle class="iris" cx="16" cy="16" r="5"/><circle cx="17.5" cy="14.5" r="1.4" fill="#04060a"/></svg></div>';
-  document.body.appendChild(nl);
-  var bub = $('.nl-bubble', nl), msgEl = $('.nl-msg', nl);
-  function say(txt, force) {
-    if (muted && !force) return; var now = Date.now(); if (!force && now - lastSay < 6500) return; lastSay = now;
-    clearInterval(typeT); clearTimeout(hideT); msgEl.textContent = ''; bub.classList.add('show'); var i = 0;
-    typeT = setInterval(function () { msgEl.textContent = txt.slice(0, ++i); if (i >= txt.length) clearInterval(typeT); }, 20);
-    hideT = setTimeout(function () { bub.classList.remove('show'); }, 3800 + txt.length * 45);
-  }
-  function snark(cat, vars, force) {
-    var arr = LINES[cat]; if (!arr) return; used[cat] = ((used[cat] || 0) + 1) % arr.length;
-    var t = arr[used[cat]]; if (vars) Object.keys(vars).forEach(function (k) { t = t.replace('{' + k + '}', vars[k]); }); say(t, force);
-  }
-  FX.snark = snark; FX.say = say;
-  function setMuted(m) { muted = m; lset('nl-muted', m ? '1' : '0'); nl.classList.toggle('muted', m); if (m) bub.classList.remove('show'); }
-  $('.nl-eye', nl).addEventListener('click', function () {
-    if (muted) { setMuted(false); say('neural link restored. i was only sulking.', true); } else snark('quip', null, true);
-  });
-  $('.nl-eye', nl).addEventListener('contextmenu', function (e) { e.preventDefault(); setMuted(!muted); if (!muted) say('neural link restored.', true); });
-  // triggers
-  var visits = parseInt(lget('visits') || '0', 10) + 1; lset('visits', String(visits));
-  setTimeout(function () { snark(visits > 1 ? 'greetBack' : 'greet'); }, root.classList.contains('booting') ? 5200 : 2200);
-  var seenCards = {};
-  document.addEventListener('mouseover', function (e) {
-    var c = e.target.closest && e.target.closest('.card-link'); if (!c || seenCards[c.href]) return; seenCards[c.href] = 1;
-    var txt = ($('.size', c) || {}).textContent || '', mb = /([\d.]+)\s*MB/.exec(txt), sec = /(\d+)\s*SECTIONS/.exec(txt);
-    if (sec && +sec[1] >= 50) snark('many', { n: sec[1] }); else if (mb && +mb[1] >= 10) snark('big', { s: mb[0] });
-    else if (mb && +mb[1] < 1) snark('small'); else if (Object.keys(seenCards).length === 1) snark('first');
-  });
-  var idleN = 0, idleT; function idleReset() { clearTimeout(idleT); idleN = 0; idleT = setTimeout(idleTick, 45000); }
-  function idleTick() { idleN++; snark(['idle1', 'idle2', 'idle3'][Math.min(idleN, 3) - 1]); if (idleN < 3) idleT = setTimeout(idleTick, 45000); }
-  ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(function (ev) { addEventListener(ev, idleReset, { passive: true }); }); idleReset();
-  function watch(sel, cls, cat) {
-    var el = $(sel); if (!el) return;
-    new MutationObserver(function () { if (el.classList.contains(cls)) snark(cat); }).observe(el, { attributes: true, attributeFilter: ['class'] });
-  }
-  watch('#term', 'open', 'term'); watch('#empty', 'show', 'nomatch');
-  (function () { var iv = setInterval(function () { var p = $('.pal-wrap'); if (p) { clearInterval(iv); watch('.pal-wrap', 'open', 'pal'); } }, 400); setTimeout(function () { clearInterval(iv); }, 6000); })();
-  document.addEventListener('click', function (e) {
-    var p = e.target.closest && e.target.closest('.pill'), s = e.target.closest && e.target.closest('.swatch'), l = e.target.closest && e.target.closest('.logo');
-    if (p) setTimeout(function () { if (p.classList.contains('on')) snark(p.dataset.fx); }, 80);
-    if (s) snark('hue'); if (l) snark('logo');
-  });
-  var os = FX.storm; if (os) FX.storm = function () { os(); snark('storm'); };
+  /* neural link lives in link.js; these are thin wrappers so other features can talk to it */
+  function snark() { return FX.snark && FX.snark.apply(null, arguments); }
+  function say() { return FX.say && FX.say.apply(null, arguments); }
 
   /* ═════════ FAKE ERROR POPUPS ═════════ */
   var POPS = [['CRITICAL ERROR', 'coffee.exe not found. please insert caffeine.'], ['WARNING', 'memo.exe has stopped caring.'],
@@ -190,7 +113,7 @@
     for (i = 0; i < 5; i++) for (j = 0; j < 3; j++) if (r() > .5) { cells += '<rect x="' + j * 20 + '" y="' + i * 20 + '" width="20" height="20"/>'; if (j < 2) cells += '<rect x="' + (4 - j) * 20 + '" y="' + i * 20 + '" width="20" height="20"/>'; }
     var bars = '', x = 0, on = true; while (x < 220) { var w = 1 + Math.floor(r() * 3); if (on) bars += '<rect x="' + x + '" y="0" width="' + w + '" height="38"/>'; x += w; on = !on; }
     host.innerHTML = '<div class="id-card"><svg class="id-face" viewBox="0 0 100 100" shape-rendering="crispEdges" fill="' + col + '">' + cells + '</svg>' +
-      '<div class="id-info"><div class="id-key">Runner handle</div><div class="id-val big"></div>' +
+      '<div class="id-info"><div class="id-key">Runner handle</div><div class="id-val big"></div>' + (lget('boss-beaten') === '1' ? '<div class="id-badge">\u2605 BOSS SLAYER</div>' : '') +
       '<div class="id-row"><div><div class="id-key">Clearance</div><div class="id-val"></div></div><div><div class="id-key">Issued</div><div class="id-val"></div></div>' +
       '<div><div class="id-key">Affiliation</div><div class="id-val"><span class="cp-redacted cp-redacted--hot"></span></div></div></div>' +
       '<svg class="id-bar" viewBox="0 0 220 38" preserveAspectRatio="none" fill="' + col + '">' + bars + '</svg></div>' +
@@ -198,7 +121,7 @@
     var v = $$('.id-val', host); v[0].textContent = o.handle; v[1].textContent = 'LEVEL-' + o.level; v[2].textContent = o.issued; $('.cp-redacted', host).textContent = o.faction;
     $('#id-new', host).addEventListener('click', function () { newId(); renderId(); snark('id'); });
   }
-  renderId(); FX.id = function (fresh) { if (fresh) { newId(); renderId(); snark('id'); } return getId(); };
+  renderId(); FX.renderId = renderId; FX.id = function (fresh) { if (fresh) { newId(); renderId(); snark('id'); } return getId(); };
 
   /* ═════════ HACK SEQUENCE ═════════ */
   function hack(arg) {
@@ -216,7 +139,7 @@
       if (done) return; p = Math.min(100, p + rnd(.4, 1.3) * boost); var name = PH[0][1]; PH.forEach(function (q) { if (p >= q[0]) name = q[1]; });
       ph.textContent = '> ' + name + '…'; bar.style.width = p + '%'; pc.textContent = Math.floor(p) + '%  //  TARGET: ' + it.file.toUpperCase();
       if (p >= 100) { done = true; o.classList.add('done'); snd().tone(660, 0, .1, 'triangle', .06); snd().tone(990, 0, .2, 'triangle', .06, .1); snark('hack', null, true);
-        setTimeout(function () { clearInterval(iv); location.href = it.href; }, 1100); }
+        setTimeout(function () { clearInterval(iv); if (FX.noteOpen) FX.noteOpen(it.href); location.href = it.href; }, 1100); }
     }, 40);
     function key(e) { if (e.key === 'Escape') { clearInterval(iv); o.remove(); removeEventListener('keydown', key); } else boost = 4; }
     addEventListener('keydown', key); o.addEventListener('click', function () { boost = 4; });
@@ -326,7 +249,6 @@
   cmds.error = function () { spawnPop(); P('error dispatched.'); };
   cmds.neon = function () { FX.neon(); P('flickering sign...'); };
   cmds.id = function (a) { var o = FX.id(a[0] === 'new'); P('handle ........ ' + o.handle); P('clearance .... LEVEL-' + o.level); P('affiliation .. ' + o.faction); P('issued ........ ' + o.issued); };
-  cmds.snark = function (a) { var v = a[0] ? a[0] === 'on' : muted; setMuted(!v); P('neural link ' + (muted ? 'muted' : 'online')); if (!muted) say('i am back. miss me?', true); };
   FX.helpExtra = (FX.helpExtra || []).concat(['  hack [name]         breach the mainframe (opens a notebook)', '  synth               audio-reactive grid synth', '  thunder             storm + lightning',
     '  bug | bugs          release / count bugs', '  error               summon a popup', '  id [new]            your runner ID', '  snark [on|off]      neural link', '  neon                flicker the sign']);
   var sec = FX.secrets || {};

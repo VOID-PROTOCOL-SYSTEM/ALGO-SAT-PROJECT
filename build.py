@@ -21,7 +21,7 @@ NB_DIR = ROOT / "notebooks"
 
 SITE_TITLE   = "MEMO ARCHIVE"
 SITE_TAGLINE = "> marimo notebooks // static exports"
-SITE_LEDE    = "Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key. Something here is watching you."
+SITE_LEDE    = "Read-only HTML snapshots of my marimo work. Pick a notebook, hit Ctrl+K, or open the terminal with the ` key. Something here is watching you. Click its eye."
 REPO_URL     = ""   # optional link shown in the footer
 
 # ── EDIT ME ──────────────────────────────────────────────────
@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v5.0", "2026-11-07", "GLITCH INVADERS boss fight (konami), neural link v2: memory, moods, chat, eye tracking, voice, dossier"),
     ("v4.0", "2026-11-07", "neural link AI, popups, bug mascot, runner ID, hack sequence, synth grid, thunder, skyline, holo cards, glitch transitions"),
     ("v3.0", "2026-11-07", "previews, status badges, timeline, section jump-list, terminal, rain, sound, page wipes, 404"),
     ("v2.0", "2026-11-07", "boot sequence, HUD, spotlight cards, command palette, hue switcher"),
@@ -298,6 +299,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/cyberpunk-marimo.css">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/fun.css">
+<link rel="stylesheet" href="assets/fun3.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -417,6 +419,8 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/extras.js"></script>
 <script src="assets/fun.js"></script>
 <script src="assets/fun2.js"></script>
+<script src="assets/link.js"></script>
+<script src="assets/boss.js"></script>
 </body>
 </html>
 """

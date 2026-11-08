@@ -149,7 +149,7 @@
     document.addEventListener('keydown', function (e) {
       var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
       pos = k === seq[pos] ? pos + 1 : (k === seq[0] ? 1 : 0);
-      if (pos === seq.length) { pos = 0; storm(); }
+      if (pos === seq.length) { pos = 0; if (window.ArchiveFX && ArchiveFX.boss) ArchiveFX.boss(); else storm(); }
     });
   }
 

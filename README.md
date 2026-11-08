@@ -32,5 +32,8 @@ notebooks/*.html            marimo exports (build.py injects an INDEX/PREV/NEXT 
 Terminal: `ls` `open <n|name>` `hack [name]` `synth` `thunder` `rain` `crt` `sound` `theme <hue>` `bug` `bugs` `error` `id [new]` `snark` `neon`.
 Type these words anywhere on the page: `matrix` `crt` `retro` `rainbow` `glitch` `hack` `thunder` `synth` `bug` `popup` `neon` · plus the Konami code.
 
+## Boss fight & neural link
+Konami code (or `boss` in the terminal / typed anywhere / "play" in chat) starts GLITCH INVADERS. Click the eye in the corner to chat; right-click it to mute. `chat`, `ask <text>`, `dossier`, `mood`, `snark quiet|normal|chatty` in the terminal.
+
 ## File map
-`assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, neural link, popups, bug, runner ID, hack, synth, thunder.
+`assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, popups, bug, runner ID, hack, synth, thunder · `assets/link.js` neural link v2 · `assets/boss.js` boss fight · `assets/fun.css` + `fun3.css` styles.
