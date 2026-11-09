@@ -1,0 +1,15 @@
+/* MEMO ARCHIVE - v10.4 sleeper mode: prank link builder (colours !important: cyberpunk-marimo.css forces light text on spans/divs and cyan on buttons/inputs) */
+.sl-box { width: min(620px, 94vw); display: flex; flex-direction: column; gap: 10px; padding-bottom: 14px; background: #0a0c14; border: 1px solid #b44dff; box-shadow: 0 0 36px rgba(180, 77, 255, .3); }
+.sl-bar { padding: 8px 14px; display: flex; justify-content: space-between; background: #1c0a30; color: #d9a8ff !important; font-size: 12px; letter-spacing: .14em; }
+.sl-x { cursor: pointer; font-style: normal; }
+.sl-row { display: flex; align-items: center; gap: 12px; padding: 0 14px; }
+.sl-k { width: 90px; flex: none; color: #b8a0d8 !important; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.sl-box select, .sl-box input.sl-n { flex: 1; padding: 7px 8px !important; background: #05060c !important; color: #e8dcff !important; border: 1px solid #4a2a70 !important; font: 13px ui-monospace, Consolas, monospace !important; text-transform: none !important; letter-spacing: 0 !important; }
+.sl-box select option { background: #05060c; color: #e8dcff; }
+.sl-box input.sl-url { margin: 0 14px; padding: 8px !important; background: #05060c !important; color: #39ff14 !important; border: 1px solid #1d5a1d !important; font: 12px ui-monospace, Consolas, monospace !important; text-transform: none !important; letter-spacing: 0 !important; }
+.sl-box button { padding: 7px 14px !important; background: #b44dff !important; color: #fff !important; border: 0 !important; font: bold 12px ui-monospace, Consolas, monospace !important; letter-spacing: .08em !important; cursor: pointer; }
+.sl-box button.sl-add, .sl-box button.sl-test { background: #1c0a30 !important; color: #d9a8ff !important; border: 1px solid #b44dff !important; }
+.sl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sl-chip { padding: 3px 8px; background: #1c0a30; border: 1px solid #4a2a70; color: #d9a8ff !important; font-size: 11px; cursor: pointer; }
+.sl-box small { padding: 0 14px; color: #8a7aa8 !important; line-height: 1.5; }
+.sl-box small b { color: #d9a8ff !important; }

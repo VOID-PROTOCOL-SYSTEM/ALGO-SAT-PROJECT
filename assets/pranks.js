@@ -246,7 +246,7 @@
   cmds.bribe = run(bribe, 'opening the examiner\u2019s back door...');
   cmds.court = run(court, 'all rise...');
   cmds.pranks = function () {
-    ['winupdate        full-screen fake windows update that never finishes', 'crash [kind]      random fake crash: win (bsod) / mac / linux / snap', 'dodge             a button you cannot click', 'reticulate [on]   links take a scenic route with silly loading messages', 'bribe             clicker: bake cookies, buy the examiner, reach ATAR 99.95', 'court             paste code; a jury of sorting algorithms judges it'].forEach(function (l) { P('  ' + l); });
+    ['winupdate        full-screen fake windows update that never finishes', 'crash [kind]      random fake crash: win (bsod) / mac / linux / snap', 'dodge             a button you cannot click', 'reticulate [on]   links take a scenic route with silly loading messages', 'bribe             clicker: bake cookies, buy the examiner, reach ATAR 99.95', 'court             paste code; a jury of sorting algorithms judges it', 'prank             build a sleeper link: arms any prank to fire later (disarm cancels)'].forEach(function (l) { P('  ' + l); });
   };
   var buf = '', WORDS = { winupdate: 'winupdate', crash: 'crash', dodge: 'dodge', reticulate: 'reticulate', bribe: 'bribe', court: 'court' };
   document.addEventListener('keydown', function (e) {

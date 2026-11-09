@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v10.4", "2026-11-09", "sleeper mode: arm any prank from a link (#sleeper=panic:idle:90) so it fires later (random / delay / idle / click / scroll), plus a prank link builder (type prank) and disarm"),
     ("v10.3", "2026-11-09", "pranks: fake windows update, crash gallery (bsod / mac / linux / chrome), dodging buttons, reticulating loading messages, bribe the examiner (clicker), algorithm court (type pranks in the terminal)"),
     ("v10.2", "2026-11-09", "panic button: a 30 s fake system breach (red code rain, kernel logs, win95 popup spam, lockdown countdown, blackout, reveal); rickroll rebuilt as RICK ASTLEY OS with a never-gonna-___-you promise manifest, dancers and a real video player (assets/rickroll.mp4)"),
     ("v10.1", "2026-11-09", "chaos pack: railgun, cpu overheat + melt, gravity collapse, glass hammer, dvd skull, self-destruct, rickroll terminal, absurd captcha, infinite loading bar, hacker typer, audio driver error, insult compiler (type chaos in the terminal)"),
@@ -319,6 +320,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/chaos.css">
 <link rel="stylesheet" href="assets/panic.css">
 <link rel="stylesheet" href="assets/pranks.css">
+<link rel="stylesheet" href="assets/sleeper.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -448,6 +450,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/chaos.js"></script>
 <script src="assets/panic.js"></script>
 <script src="assets/pranks.js"></script>
+<script src="assets/sleeper.js"></script>
 </body>
 </html>
 """
