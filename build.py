@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v11.0", "2026-11-09", "TOP GEAR pack: the DO_NOT_PRESS_PRODUCTION_HAZARD.sh button hijacks the page into MEMO GEAR (or THE GRAND MEMO) with a dashboard, garage and 20 bits of mischief (type gear in the terminal)"),
     ("v10.0", "2026-11-09", "chaos pack: railgun, cpu overheat + melt, gravity collapse, glass hammer, dvd skull, self-destruct, rickroll terminal, absurd captcha, infinite loading bar, hacker typer, audio driver error, insult compiler (type chaos in the terminal)"),
     ("v9.0", "2026-11-08", "eye evolution: 8 forms that grow with your rank (evolve command); arcade: TRACE THE ALGORITHM (bfs/dfs/dijkstra predictor) = 20 games, 22 trophies"),
     ("v8.3", "2026-11-08", "arcade: sort-o-matic + tic-tac-minimax (19 games), trophy room with 21 achievements (4 hidden)"),
@@ -313,6 +314,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/arcade.css">
 <link rel="stylesheet" href="assets/evolve.css">
 <link rel="stylesheet" href="assets/chaos.css">
+<link rel="stylesheet" href="assets/topgear.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -439,6 +441,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/arcade.js"></script>
 <script src="assets/evolve.js"></script>
 <script src="assets/chaos.js"></script>
+<script src="assets/topgear.js"></script>
 </body>
 </html>
 """
