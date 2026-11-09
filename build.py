@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v9.0", "2026-11-08", "eye evolution: 8 forms that grow with your rank (evolve command); arcade: TRACE THE ALGORITHM (bfs/dfs/dijkstra predictor) = 20 games, 22 trophies"),
     ("v8.3", "2026-11-08", "arcade: sort-o-matic + tic-tac-minimax (19 games), trophy room with 21 achievements (4 hidden)"),
     ("v8.2", "2026-11-08", "arcade: +6 games (maze runner, dijkstra dash, whack-a-bug, lights out, reaction test, lane crosser) = 17 total"),
     ("v8.1", "2026-11-08", "arcade expansion: 6 new games (flap-eye, drift, bug hunt, merge, pattern lock, stacktris), two-column menu, daily 2x xp game, arcade champion bonus"),
@@ -309,6 +310,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/fun3.css">
 <link rel="stylesheet" href="assets/adventure.css">
 <link rel="stylesheet" href="assets/arcade.css">
+<link rel="stylesheet" href="assets/evolve.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -433,6 +435,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/boss.js"></script>
 <script src="assets/adventure.js"></script>
 <script src="assets/arcade.js"></script>
+<script src="assets/evolve.js"></script>
 </body>
 </html>
 """

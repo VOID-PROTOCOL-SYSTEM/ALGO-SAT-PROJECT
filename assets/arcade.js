@@ -51,9 +51,10 @@
     { id: 'react', name: 'REACTION TEST', d: 'click on green. 5 rounds. no flinching.', c: 'click / SPACE', mk: mkReact },
     { id: 'lanes', name: 'LANE CROSSER', d: 'why did the cursor cross the road?', c: 'arrows, step by step', mk: mkLanes },
     { id: 'sort', name: 'SORT-O-MATIC', d: 'sort the bars in the fewest swaps.', c: 'click two bars / arrows + SPACE', mk: mkSort },
-    { id: 'ttt', name: 'TIC-TAC-MINIMAX', d: 'a perfect-play AI. it blunders sometimes.', c: 'click / keys 1-9 / arrows + SPACE', mk: mkTTT }
+    { id: 'ttt', name: 'TIC-TAC-MINIMAX', d: 'a perfect-play AI. it blunders sometimes.', c: 'click / keys 1-9 / arrows + SPACE', mk: mkTTT },
+    { id: 'trace', name: 'TRACE THE ALGORITHM', d: 'predict the next node: bfs, dfs, dijkstra.', c: 'click or press 1-8 \u00B7 H hint \u00B7 V watch', mk: mkTrace }
   ];
-  var NLAB = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Q', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+  var NLAB = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Q', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'F'];
   function dailyIdx() { return parseInt(new Date().toISOString().slice(0, 10).split('-').join(''), 10) % GAMES.length; }
   function openArcade() {
     if (arcOpen) return; arcOpen = true; FX.arcadeActive = true; keys = {}; view = 'menu'; sel = 0;
@@ -80,7 +81,7 @@
       it.addEventListener('click', function () { sel = i; startGame(GAMES[i]); }); list.appendChild(it);
     });
     eyeEl = el('div', 'arc-eye', pick(EYE_MENU)); box.appendChild(eyeEl);
-    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', '\u2190\u2191\u2193\u2192 SELECT  \u00B7  ENTER PLAY  \u00B7  1-9 0 Q E R T Y U I O P QUICK START')); var tb = el('span', 'arc-trophy', '\u2605 TROPHIES (K)'); tb.addEventListener('click', trophies); f.appendChild(tb); f.appendChild(el('span', '', 'ESC EXIT')); box.appendChild(f);
+    var f = el('div', 'arc-foot'); f.appendChild(el('span', '', '\u2190\u2191\u2193\u2192 SELECT  \u00B7  ENTER PLAY  \u00B7  1-9 0 Q-P F QUICK START')); var tb = el('span', 'arc-trophy', '\u2605 TROPHIES (K)'); tb.addEventListener('click', trophies); f.appendChild(tb); f.appendChild(el('span', '', 'ESC EXIT')); box.appendChild(f);
   }
   function refreshSel() { $$('.arc-item').forEach(function (x, k) { x.classList.toggle('sel', k === sel); if (k === sel && x.scrollIntoView) x.scrollIntoView({ block: 'nearest' }); }); }
   function startGame(g) {
@@ -107,7 +108,7 @@
   }
   function loop(t) { raf = requestAnimationFrame(loop); var dt = Math.min(.05, (t - last) / 1000); last = t; if (cur && !dead) { cur.update(dt); cur.draw(); } else if (cur && dead) cur.draw && cur.draw(); }
   function stopGame() { cancelAnimationFrame(raf); raf = 0; if (cur && cur.destroy) cur.destroy(); cur = null; curG = null; }
-  var HELLO = { snake: ['eat. grow. try not to become a metaphor.'], pong: ['i am the cpu. i do not get tired. you do.'], breakout: ['the wall is just a memo with commitment issues.'], stare: ['i have no eyelids. well. one. do not move.'], typist: ['algorithm words. your fingers. go.'], flap: ['i have wings. technically. they are svg.'], drift: ['the rocks are not friendly. the rocks are rocks.'], bugs: ['first click is always safe. i am generous like that.'], merge: ['merge sort jokes are not allowed here. (merge conflicts are.)'], lock: ['watch closely. blinking is cheating.'], stack: ['you know the drill. i know you will not clear four lines.'], maze: ['i built this maze with dfs. recursive backtracker. no regrets.'], dash: ['greedy is a trap. dijkstra is a lifestyle.'], whack: ['bugs: pop up, annoy, vanish. just like production.'], lights: ['every puzzle has a solution. this one has a lot of clicking.'], react: ['do not click until green. i know you want to.'], lanes: ['the cars are not sentient. the cars are not sentient.'], sort: ['selection sort makes n swaps. you can do better. or worse.'], ttt: ['i am minimax. i have already seen how this ends.'] };
+  var HELLO = { snake: ['eat. grow. try not to become a metaphor.'], pong: ['i am the cpu. i do not get tired. you do.'], breakout: ['the wall is just a memo with commitment issues.'], stare: ['i have no eyelids. well. one. do not move.'], typist: ['algorithm words. your fingers. go.'], flap: ['i have wings. technically. they are svg.'], drift: ['the rocks are not friendly. the rocks are rocks.'], bugs: ['first click is always safe. i am generous like that.'], merge: ['merge sort jokes are not allowed here. (merge conflicts are.)'], lock: ['watch closely. blinking is cheating.'], stack: ['you know the drill. i know you will not clear four lines.'], maze: ['i built this maze with dfs. recursive backtracker. no regrets.'], dash: ['greedy is a trap. dijkstra is a lifestyle.'], whack: ['bugs: pop up, annoy, vanish. just like production.'], lights: ['every puzzle has a solution. this one has a lot of clicking.'], react: ['do not click until green. i know you want to.'], lanes: ['the cars are not sentient. the cars are not sentient.'], sort: ['selection sort makes n swaps. you can do better. or worse.'], ttt: ['i am minimax. i have already seen how this ends.'], trace: ['three algorithms. one brain. predict the next node.'] };
   var BAD = ['that was painful to watch. i watched all of it.', 'a bold attempt. a bad one. bold.', 'the cabinet saw that. the cabinet is disappointed.'];
   var GOOD = ['okay okay. that was actually good.', 'new high score. i am legally obligated to be impressed.', 'not bad, runner. not bad at all.'];
   function gameOver(score, win, line) {
@@ -651,6 +652,7 @@
     { id: 'maze', n: 'LOST NO MORE', d: 'finish every maze', t: function () { return wonG('maze'); } },
     { id: 'dash', n: 'HUMAN DIJKSTRA', d: 'win dijkstra dash', t: function () { return wonG('dash'); } },
     { id: 'ttt', n: 'MINIMAX SLAYER', d: 'beat the tic-tac-minimax match', t: function () { return wonG('ttt'); } },
+    { id: 'trace', n: 'HUMAN VISUALISER', d: 'finish trace the algorithm', t: function () { return wonG('trace'); } },
     { id: 'react', n: 'QUICK DRAW', d: 'average under 300 ms', t: function () { return wonG('react'); } },
     { id: 'rank', n: 'CERTIFIED RUNNER', d: 'reach 300 xp with the eye', t: function () { return nl().xp >= 300; } },
     { id: 'miss', n: 'YES BOSS', d: 'complete 5 missions', t: function () { return nl().mDone >= 5; } },
@@ -673,6 +675,66 @@
     ACH.forEach(function (x) { var ok = have.indexOf(x.id) !== -1, it = el('div', 'arc-item' + (ok ? ' sel' : '')), n = el('span', 'arc-n', ok ? '\u2605' : '\u00B7'), gg = el('span', 'arc-g'); gg.appendChild(document.createTextNode(ok ? (REAL[x.id] || x.n) : (x.h ? '? ? ?' : x.n))); gg.appendChild(el('span', 'arc-d', ok || !x.h ? x.d : 'a secret. find it.')); it.appendChild(n); it.appendChild(gg); list.appendChild(it); });
     eyeEl = el('div', 'arc-eye', have.length === ACH.length ? 'every trophy. i have nothing left to give you. (a compliment. you are good.)' : 'trophies pay 10 xp each. hidden ones hide. i am not telling.'); box.appendChild(eyeEl);
     var f = el('div', 'arc-foot'); f.appendChild(el('span', '', 'ESC BACK')); box.appendChild(f);
+  }
+
+  /* ═════════ TRACE THE ALGORITHM (algorithm visualiser: predict the next node) ═════════ */
+  function mkTrace(a) {
+    var ctx = a.ctx, ALG = ['BFS', 'DFS', 'DIJKSTRA'], RULE = { BFS: 'BFS: earliest-discovered node goes next (queue). ties: lowest #', DFS: 'DFS: go deep to the lowest unvisited neighbour; stuck? backtrack', DIJKSTRA: 'DIJKSTRA: smallest tentative distance goes next. ties: lowest #' };
+    var WHY = { BFS: 'bfs keeps a queue: nodes are visited in the order they were discovered.', DFS: 'dfs goes as deep as it can first, then backtracks to the most recent node with an unvisited neighbour.', DIJKSTRA: 'dijkstra always finalises the unvisited node with the smallest tentative distance.' };
+    var N = 8, round = 0, nodes, adj, w, ord, vis, step, dist, score = 0, mistakes = 0, phase = 'ask', pt = 0, flashOk = -1, flashBad = -1, lx = 0, ly = 0, hintTxt = '', watch = false, wt = 0, perfect = true, struct;
+    function key2(i, j) { return i < j ? i + '-' + j : j + '-' + i; }
+    function build() {
+      nodes = []; adj = []; w = {}; var i, j; for (i = 0; i < N; i++) { adj.push([]); nodes.push({ x: 62 + (i % 4) * 118 + R(-22, 22), y: 105 + Math.floor(i / 4) * 130 + R(-26, 26) }); }
+      function link(p, q) { if (adj[p].indexOf(q) === -1) { adj[p].push(q); adj[q].push(p); w[key2(p, q)] = 1 + Math.floor(Math.random() * 9); } }
+      function dd(p, q) { return Math.hypot(nodes[p].x - nodes[q].x, nodes[p].y - nodes[q].y); }
+      for (i = 1; i < N; i++) { var bj = 0, bd = 1e9; for (j = 0; j < i; j++) { var d = dd(i, j); if (d < bd) { bd = d; bj = j; } } link(i, bj); }
+      var tries = 0, extra = 0; while (extra < 4 && tries++ < 60) { var p = Math.floor(Math.random() * N), q = Math.floor(Math.random() * N); if (p !== q && adj[p].indexOf(q) === -1 && dd(p, q) < 210) { link(p, q); extra++; } }
+      adj.forEach(function (l) { l.sort(function (x, y) { return x - y; }); }); order(); vis = [0]; step = 1;
+    }
+    function order() {
+      var alg = ALG[round]; ord = []; struct = []; var seen = {}, k;
+      if (alg === 'BFS') { var q = [0]; seen[0] = 1; while (q.length) { struct.push(q.slice()); var u = q.shift(); ord.push(u); adj[u].forEach(function (v) { if (!seen[v]) { seen[v] = 1; q.push(v); } }); } }
+      else if (alg === 'DFS') { var stack = []; (function dfs(u) { seen[u] = 1; ord.push(u); stack.push(u); struct.push(stack.slice()); adj[u].forEach(function (v) { if (!seen[v]) dfs(v); }); stack.pop(); })(0); }
+      else { dist = []; for (k = 0; k < N; k++) dist.push(1e9); dist[0] = 0; var done = {}; for (;;) { var u2 = -1, b = 1e9; for (k = 0; k < N; k++) if (!done[k] && dist[k] < b) { b = dist[k]; u2 = k; } if (u2 < 0) break; done[u2] = 1; ord.push(u2); struct.push(null); adj[u2].forEach(function (v) { if (dist[u2] + w[key2(u2, v)] < dist[v]) dist[v] = dist[u2] + w[key2(u2, v)]; }); } }
+      if (alg === 'DIJKSTRA') { var d0 = []; /* final distances kept in dist */ }
+    }
+    function tent(v) { var best = 1e9; vis.forEach(function (u) { if (adj[u].indexOf(v) !== -1) { var dv = fin[u] + w[key2(u, v)]; if (dv < best) best = dv; } }); return best; }
+    var fin = [];
+    function finals() { fin = []; vis.forEach(function (u) { fin[u] = dist ? dist[u] : 0; }); }
+    function hud() { a.hud('ROUND ' + (round + 1) + '/3 ' + ALG[round] + '   SCORE ' + score + '   MISTAKES ' + mistakes + '/3'); }
+    function start() { build(); phase = 'ask'; perfect = true; hintTxt = ''; watch = false; finals(); hud(); a.eye(WHY[ALG[round]]); }
+    function nextStep() { if (step >= ord.length) { phase = 'round'; pt = 1.6; if (perfect) { score += 30; a.eye('perfect round. +30 bonus. you ARE the algorithm.'); } hud(); return; } phase = 'ask'; }
+    function guess(i) {
+      a.msg(); if (phase !== 'ask' || vis.indexOf(i) !== -1) return; var right = ord[step];
+      if (i === right) { score += 10; flashOk = i; a.beep(600 + step * 40, 0, .06, 'square', .03); } else { mistakes++; perfect = false; flashBad = i; flashOk = right; a.beep(160, 90, .25, 'sawtooth', .05); a.eye(WHY[ALG[round]] + ' (the answer was ' + (right + 1) + ')'); }
+      vis.push(right); step++; finals(); hud(); phase = i === right ? 'ask' : 'reveal'; pt = .9; if (i === right) { setTimeout(function () { flashOk = -1; }, 350); nextStep(); }
+      if (mistakes >= 3) { phase = 'dead'; a.over(score, false, 'three mistakes. the algorithm moves on without you. it always does.'); }
+    }
+    start(); a.msg('TRACE THE ALGORITHM', 'click (or press 1-8) the node the algorithm visits NEXT. H = hint (-5), V = watch it run.');
+    return {
+      pointer: function (x, y) { lx = x; ly = y; },
+      click: function () { for (var i = 0; i < N; i++) if (Math.hypot(lx - nodes[i].x, ly - nodes[i].y) < 20) { guess(i); return; } },
+      key: function (c) { a.msg(); var n = parseInt(c, 10); if (n >= 1 && n <= N) { guess(n - 1); return; }
+        if (c === 'h' && phase === 'ask') { score = Math.max(0, score - 5); var s = struct[step - 1]; hintTxt = ALG[round] === 'DIJKSTRA' ? 'hint: next = smallest tentative distance (shown on the nodes)' : ALG[round] === 'BFS' ? 'queue (front first): ' + struct[step].map(function (x) { return x + 1; }).join(' ') : 'stack (path from root): ' + struct[step - 1].map(function (x) { return x + 1; }).join(' > '); a.eye(hintTxt); hud(); }
+        if (c === 'v' && phase === 'ask') { watch = true; wt = 0; perfect = false; a.eye('watching ' + ALG[round] + ' run. no points for the rest of this round.'); } },
+      update: function (dt) {
+        if (watch) { wt -= dt; if (wt <= 0 && step < ord.length) { vis.push(ord[step]); step++; finals(); flashOk = ord[step - 1]; wt = .6; a.beep(400 + step * 40, 0, .05, 'triangle', .03); setTimeout(function () { flashOk = -1; }, 300); } if (step >= ord.length && watch) { watch = false; nextStep(); } return; }
+        if (phase === 'reveal') { pt -= dt; if (pt <= 0) { flashOk = -1; flashBad = -1; nextStep(); } }
+        else if (phase === 'round') { pt -= dt; if (pt <= 0) { round++; if (round >= 3) { a.over(score, true, 'bfs, dfs, dijkstra. you executed them all in your head. i am humbled. (i am not.)'); phase = 'done'; return; } start(); a.msg(); } }
+      },
+      draw: function () {
+        ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); ctx.fillRect(0, 0, 480, 320); var i, alg = ALG[round]; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.lineWidth = 2; for (i = 0; i < N; i++) adj[i].forEach(function (j) { if (j < i) return; var both = vis.indexOf(i) !== -1 && vis.indexOf(j) !== -1; ctx.strokeStyle = both ? a.C('--cp-neon-cyan', '#00f5ff') : 'rgba(128,128,128,.4)'; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+          if (alg === 'DIJKSTRA') { ctx.fillStyle = a.C('--cp-bg-deep', '#04060a'); var mx = (nodes[i].x + nodes[j].x) / 2, my = (nodes[i].y + nodes[j].y) / 2; ctx.fillRect(mx - 8, my - 8, 16, 16); ctx.fillStyle = a.C('--cp-neon-yellow', '#f7ff00'); ctx.font = 'bold 12px monospace'; ctx.fillText(String(w[key2(i, j)]), mx, my + 1); } });
+        for (i = 0; i < N; i++) { var v = vis.indexOf(i) !== -1, front = !v && vis.some(function (u) { return adj[u].indexOf(i) !== -1; }), n = nodes[i];
+          ctx.fillStyle = flashBad === i ? a.C('--cp-neon-magenta', '#ff2d78') : flashOk === i ? a.C('--cp-neon-green', '#00ff9f') : v ? a.C('--cp-neon-cyan', '#00f5ff') : a.C('--cp-bg-deep', '#04060a'); ctx.beginPath(); ctx.arc(n.x, n.y, 17, 0, 7); ctx.fill();
+          ctx.strokeStyle = front ? a.C('--cp-neon-yellow', '#f7ff00') : v ? a.C('--cp-neon-cyan', '#00f5ff') : 'rgba(128,128,128,.7)'; ctx.lineWidth = front ? 3 : 2; ctx.stroke();
+          ctx.fillStyle = v || flashBad === i || flashOk === i ? a.C('--cp-bg-deep', '#04060a') : a.C('--cp-text-primary', '#e2eaf5'); ctx.font = 'bold 15px monospace'; ctx.fillText(String(i + 1), n.x, n.y + 1);
+          if (alg === 'DIJKSTRA') { var tx = v ? fin[i] : front ? tent(i) : null; if (tx != null) { ctx.fillStyle = v ? a.C('--cp-neon-green', '#00ff9f') : a.C('--cp-neon-yellow', '#f7ff00'); ctx.font = 'bold 12px monospace'; ctx.fillText('d=' + tx, n.x, n.y - 28); } } }
+        ctx.fillStyle = a.C('--cp-neon-magenta', '#ff2d78'); ctx.font = 'bold 14px monospace'; ctx.textAlign = 'left'; ctx.fillText(alg + ' from node 1', 10, 16);
+        ctx.fillStyle = a.C('--cp-text-muted', '#8a9ab8'); ctx.font = '11px monospace'; ctx.fillText('visited: ' + vis.map(function (x) { return x + 1; }).join(' '), 10, 36); ctx.textAlign = 'center'; ctx.fillText(RULE[alg], 240, 308);
+      }
+    };
   }
 
   /* ═════════ UPSIDE DOWN ═════════ */

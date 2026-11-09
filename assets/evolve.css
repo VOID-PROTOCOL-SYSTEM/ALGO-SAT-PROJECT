@@ -1,0 +1,18 @@
+/* MEMO ARCHIVE — neural link evolution: gear that grows with your rank */
+.nl-eye { position: relative; scale: var(--evo, 1); overflow: visible; }
+.nl-gear { position: absolute; left: 0; top: 0; width: 46px; height: 46px; overflow: visible; pointer-events: none; color: var(--nlc, var(--cp-neon-magenta, #ff2d78)); fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.nl-gear .fl { fill: currentColor; stroke: none; }
+.nl-gear text { fill: currentColor; stroke: none; font: 700 5px var(--cp-font-mono, monospace); letter-spacing: .5px; }
+.nl-gear .aura { stroke-dasharray: 3 5; transform-origin: 23px 23px; animation: evo-spin 9s linear infinite; opacity: .8; }
+.nl-gear .spark { fill: currentColor; stroke: none; animation: evo-spark 1.4s ease-in-out infinite; }
+.nl-gear .spark:nth-of-type(2) { animation-delay: .5s; } .nl-gear .spark:nth-of-type(3) { animation-delay: .9s; }
+@keyframes evo-spin { to { transform: rotate(360deg); } }
+@keyframes evo-spark { 0%, 100% { opacity: 0; transform: translateY(2px); } 50% { opacity: 1; transform: translateY(-3px); } }
+.nl-eye[data-evo="6"] { box-shadow: 0 0 20px rgba(255,60,40,.6), 0 0 8px rgba(255,60,40,.5) inset !important; }
+.nl-eye[data-evo="7"] { box-shadow: 0 0 26px rgba(255,210,60,.75), 0 0 12px rgba(255,210,60,.4) inset !important; }
+.nl-eye.evolving { animation: evo-pop 1.3s ease-out; }
+@keyframes evo-pop { 0% { filter: brightness(1); } 20% { filter: brightness(3) saturate(2); scale: 1.5; } 60% { filter: brightness(1.6); scale: 1.2; } 100% { filter: none; } }
+html.gameboy .nl-gear { color: var(--gb0); }
+@media (prefers-reduced-motion: reduce) { .nl-gear .aura, .nl-gear .spark { animation: none; } .nl-eye.evolving { animation: none; } }
+.nl-eye[data-evo="6"] .nl-gear { color: #ff4a3a; }
+.nl-eye[data-evo="7"] .nl-gear { color: #ffd23c; }

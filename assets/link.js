@@ -400,6 +400,7 @@
   function nextRank(xp) { for (var i = 0; i < RANKS.length; i++) if (RANKS[i][0] > xp) return RANKS[i]; return null; }
   function gainXP(n) { var b = rankOf(S.xp)[1]; S.xp += n; var a = rankOf(S.xp)[1]; save(); return b !== a ? ' || PROMOTION: you are now a ' + a.toUpperCase() + '. do not let it go to your head. (let it. a little.)' : ''; }
   FX.gainXP = gainXP;
+  FX.rank = function () { var r = rankOf(S.xp), n = nextRank(S.xp); return { idx: RANKS.indexOf(r), name: r[1], xp: S.xp, next: n ? n[1] : '', nextAt: n ? n[0] : 0 }; };
   function rankLine() { var r = rankOf(S.xp), n = nextRank(S.xp), bar = ''; if (n) { var f = Math.round(10 * (S.xp - r[0]) / (n[0] - r[0])); for (var i = 0; i < 10; i++) bar += i < f ? '#' : '-'; }
     return 'rank: ' + r[1].toUpperCase() + ' // ' + S.xp + ' xp' + (n ? '\n[' + bar + '] ' + (n[0] - S.xp) + ' xp to ' + n[1].toUpperCase() : '\nmax rank. there is nowhere left to climb. touch grass.'); }
   function opens() { var n = 0; Object.keys(S.opened).forEach(function (k) { n += S.opened[k]; }); return n; }
@@ -621,6 +622,7 @@
   function chaosStop() { FX.rain && FX.rain(false); FX.crt && FX.crt(false); FX.thunder && FX.thunder(false); FX.synth && FX.synth(false); }
   function eyeDo(cls, ms) { nl.classList.add(cls); eye.classList.add(cls); setTimeout(function () { nl.classList.remove(cls); eye.classList.remove(cls); }, ms); }
   var RULES2 = [
+    [/\b(evolve|evolution|evolving|my form|your gear|what (do you|are you) (look like|wearing)|your outfit)\b/, function () { return { text: FX.evolveInfo ? FX.evolveInfo() : 'i have not evolved yet. ask me again after the page finishes loading.' }; }],
     [/\b(arcade|mini ?games?|play (snake|pong|breakout))\b/, function () { pending = { yes: function () { return { text: 'cabinet powering up. do not tell the konami police.', action: function () { closeChat(); FX.arcade && FX.arcade(); } }; }, no: 'fine. the code is up up down down b a. i never told you.' }; return { text: 'there is an arcade hidden behind a secret code. i cannot say the code. ...unless you say yes and i look the other way. (yes / no)' }; }],
     [/upside ?down|stranger things/, function () { var on = FX.isUpside && FX.isUpside(); return { text: on ? 'flipping back. the demogorgon sends its regards.' : 'the upside down has a long code. i am not allowed to say it. watch this instead.', action: function () { closeChat(); FX.upsideDown && FX.upsideDown(); } }; }],
     [/game ?boy|memo ?boy|four shades|handheld/, function () { var on = FX.isGameboy && FX.isGameboy(); return { text: on ? 'powering off the handheld.' : 'four shades of green, coming up.', action: function () { closeChat(); FX.gameboy && FX.gameboy(); } }; }],

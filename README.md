@@ -38,8 +38,11 @@ Konami code (or `boss` in the terminal / typed anywhere / "play" in chat) starts
 ## Text adventure: THE MEMO ARCHIVE
 Open it with the Adventure pill, `adventure` / `zork` in the terminal, by typing `adventure` or `xyzzy` anywhere, or by asking the neural link for a text adventure. 16 rooms, 6 puzzles, 5 endings (one of them is the real arcade boss fight), deaths, undo, autosave, hints (`hint`), a live map, and a corruption clock. Click highlighted words to examine them.
 
+## Eye evolution (v9)
+The neural link eye grows with your XP rank: lanyard -> headphones -> antennae -> monocle -> cap -> warden cap -> glitch crown -> golden crown + aura. Chat: `evolve`; terminal: `evolve [1-8|reset]` previews any form (cosmetic only).
+
 ## Secret codes (v8)
-`up up down down b a` -> ARCADE menu (19 games: Snake, Pong, Breakout, Stare Contest, Algo Typist, Flap-Eye, Drift, Bug Hunt, Merge, Pattern Lock, Stacktris, Maze Runner, Dijkstra Dash, Whack-a-Bug, Lights Out, Reaction Test, Lane Crosser, Sort-O-Matic, Tic-Tac-Minimax). Pick with arrows/Enter or 1-9, 0, Q E R T Y U I O P; `K` opens the TROPHY room (21 achievements, 4 hidden, 10 xp each); Esc goes back. One game per day is starred for 2x XP; a score on every machine earns the ARCADE CHAMPION bonus.
+`up up down down b a` -> ARCADE menu (20 games: Snake, Pong, Breakout, Stare Contest, Algo Typist, Flap-Eye, Drift, Bug Hunt, Merge, Pattern Lock, Stacktris, Maze Runner, Dijkstra Dash, Whack-a-Bug, Lights Out, Reaction Test, Lane Crosser, Sort-O-Matic, Tic-Tac-Minimax, Trace the Algorithm). Pick with arrows/Enter or 1-9, 0, Q E R T Y U I O P F; `K` opens the TROPHY room (22 achievements, 4 hidden, 10 xp each); Esc goes back. One game per day is starred for 2x XP; a score on every machine earns the ARCADE CHAMPION bonus.
 `up up down down right left right left b a` -> THE UPSIDE DOWN (page flips, red palette, spores; eye turns villain). Same code again to return.
 `left right left right a b` -> MEMO BOY (game boy 4-shade theme). Same code again to return.
 Phone: tap the logo 7 times for the arcade. Also: terminal `arcade` / `upsidedown` / `gameboy` / `theme gameboy|upside|normal`, or type those words anywhere.
