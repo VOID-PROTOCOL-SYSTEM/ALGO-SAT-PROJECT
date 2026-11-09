@@ -113,3 +113,26 @@ a.chx-melt, small.chx-melt { display: inline-block; }
 /* ghost button (rickroll) */
 .chx-ghost { position: fixed; bottom: 4px; left: 50%; transform: translateX(-50%); z-index: 50; padding: 2px 8px; background: none; border: 1px dashed transparent; color: #39ff14; opacity: .07; font-size: 11px; cursor: pointer; transition: opacity .3s; }
 .chx-ghost:hover { opacity: 1; border-color: #39ff14; text-shadow: 0 0 8px #39ff14; }
+
+/* ── fixes: cyberpunk-marimo.css forces light text on every div/span/p/label and cyan on every button, which broke the light windows ── */
+.cp-box, .cp-box div, .cp-box span, .cp-box p, .cp-box label, .cp-box b { color: #222 !important; }
+.cp-box .cp-head, .cp-box .cp-head b { color: #fff !important; text-transform: none !important; }
+.cp-box .cp-msg { color: #666 !important; }
+.cp-box .cp-msg.bad { color: #c00 !important; }
+.cp-box .cp-t { font-size: 44px !important; }
+.cp-box .cp-go { background: #4a90e2 !important; color: #fff !important; border: 0 !important; font: 600 13px Arial, sans-serif !important; text-transform: none !important; letter-spacing: 0 !important; padding: 8px 18px !important; }
+.dr-win, .dr-win div, .dr-win p, .dr-win b, .dr-win span { color: #000 !important; }
+.dr-win .dr-bar, .dr-win .dr-ic { color: #fff !important; }
+.dr-win .dr-btns button { background: #ece9d8 !important; color: #000 !important; border: 2px outset #fff !important; font: 13px Tahoma, Arial, sans-serif !important; text-transform: none !important; letter-spacing: 0 !important; }
+.dr-win .dr-btns button:hover { background: #dcd8c0 !important; }
+.chx-tag button { background: #ff2bd6 !important; color: #000 !important; border: 0 !important; }
+.ic-box .ic-go { background: #ff2bd6 !important; color: #000 !important; border: 0 !important; font-size: 13px !important; padding: 8px 22px !important; }
+.sd-box .sd-abort { background: #111 !important; color: #9f9 !important; border: 1px solid #9f9 !important; font-size: 13px !important; }
+.chx-boom button { background: #000 !important; color: #39ff14 !important; border: 1px solid #39ff14 !important; font-size: 13px !important; }
+.chx-ghost { background: none !important; color: #39ff14 !important; border: 1px dashed transparent !important; }
+.chx-ghost:hover { border-color: #39ff14 !important; }
+.ht-ok.g { color: #39ff14 !important; }
+.ht-ok.d { color: #ff3b3b !important; }
+.sd-num, .sd-box h2 { color: #ff3b3b !important; }
+.sd-sw .sd-btn { color: #fff !important; }
+.sd-glass { color: #cfeeff !important; }
