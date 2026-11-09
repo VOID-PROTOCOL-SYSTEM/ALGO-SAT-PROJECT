@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TOP GEAR // THE HOLY TRINITY (UNOFFICIAL, UNSERIOUS)</title>
+<style>
+*{box-sizing:border-box}
+:root{--y:#ffd200;--r:#e4002b;--c:#17191d}
+body{margin:0;color:#eee;font:16px/1.5 "Segoe UI",Arial,sans-serif;background:linear-gradient(rgba(10,10,12,.82),rgba(10,10,12,.92)),url(assets/topgear/backdrop.jpg) center/cover fixed,repeating-linear-gradient(90deg,#1b1d22 0 120px,#15171a 120px 240px);transition:filter 2s}
+h1,h2,h3,.imp,button{font-family:Impact,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.04em}
+#tick{background:var(--y);color:#000;overflow:hidden;white-space:nowrap;border-bottom:4px solid #000}
+#tk{display:inline-block;padding:6px 0;font:bold 14px Impact,Arial,sans-serif;animation:tk 60s linear infinite}@keyframes tk{to{transform:translateX(-50%)}}
+header{text-align:center;padding:30px 16px 10px;background:repeating-linear-gradient(-45deg,#111 0 18px,#1a1a1a 18px 36px)}
+h1{margin:0;font-size:clamp(48px,11vw,150px);line-height:.9;color:var(--y);text-shadow:5px 5px 0 #000}h1 b{color:#fff;background:var(--r);padding:0 .15em}
+header p{max-width:680px;margin:8px auto;color:#bbb}
+.hero{height:44vh;min-height:240px;margin:14px auto;max-width:1100px;border:4px solid var(--y);position:relative;overflow:hidden;box-shadow:8px 8px 0 var(--r)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#modes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+button{background:var(--y);color:#000;border:3px solid #000;padding:9px 16px;font-size:16px;cursor:pointer;box-shadow:4px 4px 0 var(--r)}button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--r)}
+button.alt{background:#222;color:var(--y);border-color:var(--y)}
+main{max-width:1100px;margin:0 auto;padding:0 14px 60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+section{background:rgba(23,25,29,.92);border:3px solid #000;outline:3px solid var(--y);padding:16px;position:relative}
+section h2{margin:0 0 8px;color:var(--y);font-size:26px}section.w{grid-column:1/-1}
+.out{min-height:84px;background:#0b0c0e;border-left:6px solid var(--r);padding:10px 12px;margin:10px 0;white-space:pre-wrap}
+input{width:100%;padding:9px;background:#0b0c0e;color:#fff;border:2px solid var(--y);font:16px Arial,sans-serif}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:#101216;border:3px solid var(--y);padding:12px}.card h3{margin:0;font-size:28px;color:#fff}.card small{color:#aaa}
+.st{display:grid;grid-template-columns:78px 1fr;gap:6px;align-items:center;font-size:13px;margin:4px 0}.bar{height:10px;background:#333}.bar i{display:block;height:100%;background:var(--r)}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:4px 6px;border-bottom:1px solid #333;text-align:left}tr.me td{color:#000;background:var(--y)}
+a.back{display:block;text-align:center;padding:30px;color:#888}
+#fx{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50;pointer-events:none;font:900 clamp(60px,16vw,240px) Impact,sans-serif;color:var(--y);text-shadow:8px 8px 0 var(--r),0 0 60px #000;text-align:center;line-height:1}
+body.clk main,body.clk header{animation:sh .1s infinite}@keyframes sh{25%{transform:translate(-3px,2px)}75%{transform:translate(3px,-2px)}}
+body.clk{filter:saturate(1.8) contrast(1.15)}
+body.may{filter:sepia(.55) saturate(.8)}body.may *{transition:all 3s}
+body.ham section{animation:fall 2s ease-in forwards}body.ham section:nth-child(odd){--rot:-7deg}body.ham section:nth-child(even){--rot:6deg}
+@keyframes fall{to{transform:translateY(40px) rotate(var(--rot));opacity:.75}}
+body.ham section:after{content:"\1F525\1F525\1F525";position:absolute;top:-14px;right:10px;font-size:34px;animation:sh .15s infinite}
+</style></head><body>
+<div id="tick"><div id="tk"></div></div>
+<header><h1>TOP <b>GEAR</b></h1><p>an unofficial, unserious fan page about three men, one very long driveway and an unreasonable number of caravans. no cars, feelings or presenters were harmed. several were set on fire.</p>
+<div class="hero" id="hero"></div>
+<div id="modes"><button onclick="mode('clk')">Clarkson mode</button><button onclick="mode('ham')">Hammond mode</button><button onclick="mode('may')">May mode</button><button class="alt" id="snd" onclick="toggleSnd()">sound: off</button></div></header>
+<main>
+<section class="w"><h2>The presenters (Top Trumps edition)</h2><div class="cards" id="cards"></div></section>
+<section><h2>Challenge generator</h2><div>Tonight, a challenge nobody asked for.</div><div class="out" id="chOut">press the button. regret later.</div><button onclick="challenge()">Generate a challenge</button></section>
+<section><h2>Review-o-matic</h2><input id="car" placeholder="type any car (or shed, or caravan)" value="Reliant Robin"><div class="out" id="rvOut"></div><button onclick="review()">Review it</button></section>
+<section><h2>Stig facts</h2><div class="out" id="stOut">some say...</div><button onclick="stig()">Some say</button></section>
+<section><h2>Reasonably priced car</h2><div class="out" id="lapOut">the circuit awaits. so does the grass.</div><button onclick="lap()">Run a lap</button><table id="board"></table></section>
+<section><h2>Cool wall</h2><div class="out" id="cwOut">click verdicts to see where it lands.</div><button onclick="cool()">Judge something</button></section>
+<section><h2>Soundboard (synthesised, officially unlicensed)</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="sfx('rev')">Rev</button><button onclick="sfx('screech')">Tyre screech</button><button onclick="sfx('crash')">Hammond</button><button onclick="sfx('horn')">Horn</button><button onclick="sfx('fail')">Engine fail</button><button onclick="sfx('clap')">Applause</button></div></section>
+</main>
+<a class="back" href="index.html">&larr; back to the memo archive (it has fewer explosions)</a>
+<div id="fx"></div>
+<script src="assets/topgear-sil.js"></script>
+<script>
+function $(i){return document.getElementById(i)}function pick(a){return a[Math.floor(Math.random()*a.length)]}
+$('hero').innerHTML=TGsil()+'<img alt="" onerror="this.remove()" src="assets/topgear/trio.jpg">';
+var NEWS=['BREAKING: HAMMOND HAS CRASHED SOMETHING (AGAIN)','MAY HAS A GENTLE OPINION ABOUT THE CUP HOLDERS','CLARKSON WOULD LIKE MORE POWER, AND ALSO A SANDWICH','THE STIG HAS BEEN SPOTTED NOT BLINKING','A CARAVAN HAS BEEN FOUND WHERE NO CARAVAN SHOULD BE','LOCAL SHED WRONGLY CONVERTED INTO A BOAT','THE COOL WALL REMAINS TRAGICALLY UNCOOL','SPEED LIMITS: A FEW SUGGESTIONS','WARNING: THIS PAGE CONTAINS TRACTORS'];
+var t=NEWS.join('   \u2022   ');$('tk').textContent=t+'   \u2022   '+t;
+var P=[['Jezza',[10,2,3,6],'Believes everything improves with more cylinders. Has never knowingly parked.'],['The Hamster',[7,3,2,10],'Small, brave, flammable. Considers a crash "a learning experience" (the lesson: do not).'],['Captain Slow',[4,10,10,1],'Will reach the destination eventually and have opinions about the route, the wine and the pie.']];
+$('cards').innerHTML=P.map(function(p){var L=['Power','Slowness','Hair','Disaster'];return'<div class="card"><h3>'+p[0]+'</h3><small>'+p[2]+'</small>'+p[1].map(function(v,i){return'<div class="st"><span>'+L[i]+'</span><div class="bar"><i style="width:'+v*10+'%"></i></div></div>'}).join('')+'</div>'}).join('');
+var AC,gain,eng;function ac(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();return AC}
+function tone(f1,f2,d,ty,v,dl){try{var c=ac(),t=c.currentTime+(dl||0),o=c.createOscillator(),g=c.createGain();o.type=ty||'square';o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(Math.max(1,f2),t+d);g.gain.setValueAtTime(v||.1,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d)}catch(e){}}
+function noise(d,v,hp){try{var c=ac(),b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),a=b.getChannelData(0),i;for(i=0;i<a.length;i++)a[i]=Math.random()*2-1;var s=c.createBufferSource(),g=c.createGain(),f=c.createBiquadFilter();f.type='highpass';f.frequency.value=hp||800;s.buffer=b;g.gain.setValueAtTime(v,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+d);s.connect(f);f.connect(g);g.connect(c.destination);s.start()}catch(e){}}
+function sfx(k){if(k=='rev'){tone(40,140,1.2,'sawtooth',.25);tone(45,150,1.2,'square',.1)}else if(k=='screech'){tone(1800,900,.8,'sawtooth',.06);noise(.8,.2,2500)}else if(k=='crash'){noise(.9,.5,200);tone(120,30,.8,'square',.25);tone(900,100,.3,'sawtooth',.1,.05)}else if(k=='horn'){tone(380,380,.7,'square',.12);tone(480,480,.7,'square',.12)}else if(k=='fail'){tone(120,25,1.6,'sawtooth',.25);noise(.5,.15,400)}else{for(var i=0;i<14;i++)noise(.12,.12,3000+Math.random()*3000)}}
+var au=new Audio('assets/topgear/theme.mp3'),use='file',on=false;au.loop=true;au.volume=.55;au.onerror=function(){use='synth'};
+function synthEngine(){var c=ac(),o=c.createOscillator(),l=c.createOscillator(),lg=c.createGain(),g=c.createGain(),f=c.createBiquadFilter();o.type='sawtooth';o.frequency.value=48;l.frequency.value=7;lg.gain.value=9;f.type='lowpass';f.frequency.value=260;g.gain.value=.12;l.connect(lg);lg.connect(o.frequency);o.connect(f);f.connect(g);g.connect(c.destination);o.start();l.start();eng={o:o,l:l}}
+function toggleSnd(){on=!on;$('snd').textContent='sound: '+(on?'on':'off');if(on){var p=au.play();if(p&&p.catch)p.catch(function(){if(!eng)synthEngine()});setTimeout(function(){if(au.error&&!eng)synthEngine()},300)}else{au.pause();if(eng){eng.o.stop();eng.l.stop();eng=null}}}
+function fxText(s,ms){var f=$('fx');f.textContent=s;f.style.display='flex';setTimeout(function(){f.style.display='none'},ms||1400)}
+function mode(m){var b=document.body,was=b.classList.contains(m);b.classList.remove('clk','ham','may');if(was)return;b.classList.add(m);if(m=='clk'){fxText('POWAAAAH',1500);sfx('rev')}if(m=='ham'){fxText('I\u2019M FINE',1500);sfx('crash');setTimeout(function(){b.classList.remove('ham')},7000)}if(m=='may'){fxText('rather nice',2200);tone(262,262,1.4,'sine',.1)}}
+var A=['hovercraft','submarine','motorhome','limousine','ice-cream van','lawnmower racer','floating caravan','pedal-powered tank','car-ferry (single occupancy)'],B=['a garden shed','three fridges','a shopping trolley','an old bath','a vicar\u2019s bicycle','a Reliant Robin','flat-pack wardrobes','one very ambitious hat'],PL=['the Alps','the Thames estuary','the Sahara','a B&Q car park','Death Road in Bolivia','Norfolk (it is flat, they will complain)','the Botswana salt pans','the M25 at rush hour'],CO=['someone insists on narrating','the sat-nav is smug','the budget is \u00a3450','nobody has read the instructions','a surprise caravan appears','the only map is a menu','one of you must stay under 30 mph','it must be done in a dinner jacket'],RS=['Hammond crashes it. May files a polite complaint. Clarkson declares it the best thing ever made.','The Stig wins by not entering.','All three fail magnificently. The audience demands more.','May finishes first, in fairness, and is annoyed nobody noticed.','It sinks. Hammond is fine. It was not his boat.','Clarkson wins on a technicality: he is shouting.'];
+function challenge(){$('chOut').textContent='Build a '+pick(A)+' out of '+pick(B)+', cross '+pick(PL)+', and finish while '+pick(CO)+'.\n\nOutcome: '+pick(RS)}
+var AD=['frightening','surprisingly tidy','a bit of a shed','magnificently pointless','dangerously soft','shouty','vaguely beige'],CL=['has power. So much power. Sorry, what were we talking about? Power.','is the most important car of the decade, or possibly a toaster. It has a lot of power.','sounds like a bag of angry spanners and I would marry it.'],HM=['caught fire. I am fine. It is fine. Everything is fine, but there is a small fire.','is brilliant, and I have already crashed it, and I am sorry.','makes me feel like a small boy who has broken a window.'],MY=['has a lovely cup holder, and that is the point at which I stopped listening.','is, in many ways, rather nice, if you like things being gently adequate.','requires a considered opinion on wine, and I have one.'];
+function review(){var c=$('car').value.trim()||'the car';$('rvOut').textContent='CLARKSON: The '+c+' '+pick(CL)+'\nHAMMOND: The '+c+' '+pick(HM)+'\nMAY: The '+c+' '+pick(MY)+'\n\nVerdict: '+pick(AD)+'.'}
+var SG=['sleeps in his helmet and dreams in lap times','once out-raced a cheetah, then apologised to the cheetah','has a tail, which he sits on to stay aerodynamic','can only turn left, which is why he is so fast','was raised by a family of traffic cones','has never blinked, though it may be a visor thing','reads the manual for fun, then eats it','cannot be photographed, only felt','is sponsored entirely by regret','has a cousin called Stig who is slightly worse at corners'];
+function stig(){$('stOut').textContent='Some say he '+pick(SG)+', and all we know is, he\u2019s called The Stig.'}
+var BD=[['The Stig','shopping trolley (downhill)',71.4],['Hammond','ego (unladen)',88.9],['Captain Slow','sensible hatchback',103.2],['Clarkson','something with too much power',79.1],['a vicar','Reliant Robin (on two wheels)',112.7],['Some man called Dave','a lawnmower',140.5]];
+function ft(s){var m=Math.floor(s/60);return m+':'+(s%60<10?'0':'')+(s%60).toFixed(1)}
+function board(me){var r=BD.concat(me?[me]:[]).sort(function(a,b){return a[2]-b[2]});$('board').innerHTML='<tr><th>#</th><th>who</th><th>time</th></tr>'+r.map(function(x,i){return'<tr'+(x===me?' class="me"':'')+'><td>'+(i+1)+'</td><td>'+x[0]+' ('+x[1]+')</td><td>'+ft(x[2])+'</td></tr>'}).join('')}board();
+var LS=['You clipped the grass at the Chicago. Hammond would be proud.','You braked early, May-style. Respectable.','You hit the tyre wall and called it a feature.','You went wide at Hammerhead. The camera is very close to your face.','A hedgehog won the corner. You lost.'];
+function lap(){var t=65+Math.random()*60;$('lapOut').textContent='Lap time: '+ft(t)+'\n'+pick(LS);board(['You','a reasonably priced car',t])}
+var IT=['a Reliant Robin','a sofa with an engine','a vicar\u2019s beige estate','a tractor (loved by farmers)','an electric kettle on wheels','a Volvo estate with a fun nickname','a hovering shed','the number 73 bus'],WD=['Seriously uncool','Uncool','Cool','Sub zero'],WC=['Clarkson shouts "sub zero", then "I mean uncool", then leaves.','May slowly agrees with Hammond and then regrets it.','Hammond pins it on the wall wrong, falls off the ladder, is fine.','The wall collapses. Nobody remembers who was right.'];
+function cool(){$('cwOut').textContent=pick(IT)+'\n\nVerdict: '+pick(WD)+'.\n'+pick(WC)}
+document.addEventListener('click',function f(){if(!on){toggleSnd()}document.removeEventListener('click',f)},{once:true});
+</script></body></html>

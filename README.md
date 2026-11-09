@@ -89,3 +89,8 @@ Trigger: `random` (1-5 min) / `delay:N` or `delay:A-B` seconds / `idle:N` second
 The link hides itself from the address bar after it loads, is remembered for that tab (so wandering into a notebook and back re-arms it), and fires once per tab session. It waits if an overlay is open or they are typing. Fullscreen pranks (`winupdate`, `crash`) only go fullscreen when the browser allows it; the `click` trigger works best for that.
 Disarm: type `disarm` anywhere, run `disarm`, or open the page with `#sleeper=off`. `sleeper list` shows what is armed; `sleeper panic idle 60` arms one by hand. Esc still leaves every prank. Files: `assets/sleeper.js`, `assets/sleeper.css`.
 
+## Top Gear page (v10.5)
+A yellow button (bottom-left, label keeps changing) -> full-screen trio picture + music -> visor wipe -> `topgear.html`.
+Drop your own files in `assets/topgear/`: `trio.jpg`, `intro.mp3`, `theme.mp3`, `backdrop.jpg`. All optional: without them it shows original SVG silhouettes, a synthesised V8 + fanfare and a synthesised idling engine.
+The page has Top Trumps presenter cards, a challenge generator, review-o-matic, Stig facts, a lap board, the cool wall, Clarkson / Hammond / May page modes and a synthesised soundboard. Files: `topgear.html`, `assets/topgear-entry.js`, `assets/topgear-sil.js`.
+

@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v10.5", "2026-11-09", "top gear sub page: an ever-changing lore-named button, full-screen trio + music, visor wipe into topgear.html (challenge generator, review-o-matic, stig facts, lap board, cool wall, presenter modes, soundboard)"),
     ("v10.4", "2026-11-09", "sleeper mode: arm any prank from a link (#sleeper=panic:idle:90) so it fires later (random / delay / idle / click / scroll), plus a prank link builder (type prank) and disarm"),
     ("v10.3", "2026-11-09", "pranks: fake windows update, crash gallery (bsod / mac / linux / chrome), dodging buttons, reticulating loading messages, bribe the examiner (clicker), algorithm court (type pranks in the terminal)"),
     ("v10.2", "2026-11-09", "panic button: a 30 s fake system breach (red code rain, kernel logs, win95 popup spam, lockdown countdown, blackout, reveal); rickroll rebuilt as RICK ASTLEY OS with a never-gonna-___-you promise manifest, dancers and a real video player (assets/rickroll.mp4)"),
@@ -451,6 +452,8 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/panic.js"></script>
 <script src="assets/pranks.js"></script>
 <script src="assets/sleeper.js"></script>
+<script src="assets/topgear-sil.js"></script>
+<script src="assets/topgear-entry.js"></script>
 </body>
 </html>
 """
