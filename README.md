@@ -55,3 +55,8 @@ It also reacts to: leaving the tab, hitting the page bottom, copying text, resiz
 
 ## File map
 `assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, popups, bug, runner ID, hack, synth, thunder · `assets/link.js` neural link v6 · `assets/arcade.js` + `arcade.css` arcade, upside down, memo boy · `assets/boss.js` boss fight · `assets/fun.css` + `fun3.css` styles.
+
+## Chaos pack (v10)
+Type `chaos` in the terminal for the list. Every toggle is also triggered by typing its name anywhere on the page. `Esc` closes overlays and switches modes off.
+`railgun` click anything to shatter it into canvas particles · `overheat` CPU gauge, click/scroll too fast and the theme goes molten and elements melt · `gravity [up]` everything falls (Esc restores) · `hammer` / `repair` crack the glass · `dvd` bouncing skull that is rigged to hit a corner every 20-40 s (+15 xp) · `destruct` lift the glass cover, flip the switch, 10 s countdown, BOOM (tries `window.close()`, falls back to a fake crash screen with REBOOT) · `rickroll` or the ghost button `RUN_OPTIMIZATION_VCE.sh` (bottom centre, hover to reveal) · `captcha` unwinnable · `loading` Calculating Final VCE Scaled Score... forever · `typer` or `Ctrl+Alt+H` mash any keys to type code · `driver` or triple-click the big title: audio driver error (never touches the mic) · `compile` paste code, get insulted.
+First use of each feature gives neural link XP once. Files: `assets/chaos.js`, `assets/chaos.css`.
