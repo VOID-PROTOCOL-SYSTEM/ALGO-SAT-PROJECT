@@ -634,6 +634,12 @@
       if (/^(mode|persona|personas|personality)/.test(t) || /personas|personalities/.test(t)) return { text: 'personas: ' + PKEYS.join(', ') + '. say "mode pirate" (or "roulette"). current: ' + S.persona + '.' };
       return null; }],
     [/^(done|finished|completed|i did it|did it|report|check( mission)?|mission (done|complete)|reporting in)\b/, doneRule],
+    [/\b(themes|skins)\b|windows ?95|\bwin ?95\b|synthwave|vaporwave|outrun|retrowave|blueprint|\bvhs\b|\bvcr\b|camcorder|film noir|\bnoir\b|tokyo|neon rain|cyberpunk night/, function (m, t) {
+      var map = [[/windows ?95|\bwin ?95\b/, 'win95'], [/synthwave|vaporwave|outrun|retrowave/, 'synth'], [/blueprint/, 'bp'], [/\bvhs\b|\bvcr\b|camcorder/, 'vhs'], [/\bnoir\b/, 'noir'], [/tokyo|neon rain|cyberpunk night/, 'tokyo']], id = null;
+      map.forEach(function (x) { if (!id && x[0].test(t)) id = x[1]; });
+      if (!id) return { text: 'themes: windows 95, synthwave, blueprint, vhs, noir, tokyo night (plus game boy and upside down). say one, or "theme normal". each also has a secret code.' };
+      var on = FX.currentTheme && FX.currentTheme() === id; return { text: on ? 'switching it off.' : 'on it.', action: function () { closeChat(); FX.setTheme && FX.setTheme(id); } }; }],
+
     [/^(skip|reroll|new mission|another (mission|one)|i quit|abort)\b/, function () {
       var cm = curMission(); if (!cm) return null; S.mission = null; S.xp = Math.max(0, S.xp - 5); save(); var m = giveMission();
       return { text: 'skipped. -5 xp. quitters do not get promotions. fine. replacement orders: ' + m.t + ' (+' + m.xp + ' xp)' }; }],

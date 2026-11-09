@@ -38,6 +38,17 @@ Konami code (or `boss` in the terminal / typed anywhere / "play" in chat) starts
 ## Text adventure: THE MEMO ARCHIVE
 Open it with the Adventure pill, `adventure` / `zork` in the terminal, by typing `adventure` or `xyzzy` anywhere, or by asking the neural link for a text adventure. 16 rooms, 6 puzzles, 5 endings (one of them is the real arcade boss fight), deaths, undo, autosave, hints (`hint`), a live map, and a corruption clock. Click highlighted words to examine them.
 
+## Themes (v10) — one at a time; same code again (or `theme normal`) to leave
+| theme | code | also |
+|---|---|---|
+| Windows 95 (boot, taskbar, Start menu, draggable Tip of the Day, Shut Down) | left left right right b a | `win95` |
+| Synthwave sunset (striped sun, grid floor, chrome headings) | down down up up b a | `synthwave` |
+| Blueprint (grid paper, title block, hover = dimension lines) | b b a a left right | `blueprint` |
+| VHS tape (PLAY/SP OSD, tracking band, glitch, date stamp) | a a b b up down | `vhs` |
+| Noir (flashlight follows cursor, blinds, rain, case-file stamp, eye turns noir) | up down up down b a | `noir` |
+| Tokyo night (rain on glass, neon kanji signs) | left up right down b a | `tokyo` |
+All also work as terminal commands, typed words, `theme <name>`, or by telling the eye ("windows 95", "noir"...). Trying all six unlocks a hidden trophy.
+
 ## Eye evolution (v9)
 The neural link eye grows with your XP rank: lanyard -> headphones -> antennae -> monocle -> cap -> warden cap -> glitch crown -> golden crown + aura. Chat: `evolve`; terminal: `evolve [1-8|reset]` previews any form (cosmetic only).
 
@@ -56,13 +67,11 @@ It also reacts to: leaving the tab, hitting the page bottom, copying text, resiz
 ## File map
 `assets/site.js` boot, HUD, palette, hue · `assets/extras.js` rain, sound, terminal, secret words · `assets/fun.js` + `fun2.js` transitions, cursor, skyline, popups, bug, runner ID, hack, synth, thunder · `assets/link.js` neural link v6 · `assets/arcade.js` + `arcade.css` arcade, upside down, memo boy · `assets/boss.js` boss fight · `assets/fun.css` + `fun3.css` styles.
 
-## Chaos pack (v10)
+## Chaos pack (v10.1)
 Type `chaos` in the terminal for the list. Every toggle is also triggered by typing its name anywhere on the page. `Esc` closes overlays and switches modes off.
 `railgun` click anything to shatter it into canvas particles · `overheat` CPU gauge, click/scroll too fast and the theme goes molten and elements melt · `gravity [up]` everything falls (Esc restores) · `hammer` / `repair` crack the glass · `dvd` bouncing skull that is rigged to hit a corner every 20-40 s (+15 xp) · `destruct` lift the glass cover, flip the switch, 10 s countdown, BOOM (tries `window.close()`, falls back to a fake crash screen with REBOOT) · `rickroll` or the ghost button `RUN_OPTIMIZATION_VCE.sh` (bottom centre, hover to reveal) · `captcha` unwinnable · `loading` Calculating Final VCE Scaled Score... forever · `typer` or `Ctrl+Alt+H` mash any keys to type code · `driver` or triple-click the big title: audio driver error (never touches the mic) · `compile` paste code, get insulted.
 First use of each feature gives neural link XP once. Files: `assets/chaos.js`, `assets/chaos.css`.
 
-## TOP GEAR pack (v11)
-Press the green `DO_NOT_PRESS_PRODUCTION_HAZARD.sh` button on the rail (or type `topgear` / `grandtour` anywhere, or `topgear` in the terminal). The page goes black, a picture of the trio fills the screen with "Ambitious but rubbish execution in progress...", then everything re-emerges as MEMO GEAR (or THE GRAND MEMO) with a dashboard along the bottom: speedo (scroll speed), PAGE REVS, SPEEEEED, GARAGE, the Stig's helmet, a Hammond crash counter and a way back. `gear` in the terminal lists every command; `Esc` = the Stig takes the wheel and resets everything.
-Mischief also fires at random every minute or two (caravan, CLARKSON!, "some say...", page revs). Files: `assets/topgear.js`, `assets/topgear.css`.
-Commands: `speed` `slow` `revs` `robin` `hammerhead` `dust` `caravan` `ballpein` `peugeot` `coolwall` `tonight` `clarkson` `billboard` `v8` `backup` `channel` `howhard` `bombshell` `somesay` `gt` `stig` `event` `leave`.
-Optional files (the site works without them; add your own): `assets/topgear/trio.jpg` (loading photo, otherwise a crude drawing), `trio-gt.jpg` (Grand Tour variant), `clarkson.mp3`, `pillock.mp3`, `outro.mp3`. Audio only plays when the Sound pill is on; without clips it falls back to synthesised noises and browser text-to-speech.
+## Panic button + rickroll v2 (v10.2)
+`panic` (terminal), typing `panic`, or the pulsing red **I DON'T KNOW HOW TO CODE** button (bottom-left): ~30 s of fake system breach. Red code rain, escalating kernel logs, Windows-95 error popups (closing one spawns two more), progress bars for absurd crimes, a trace route, a 10 s lockdown countdown with white strobe, then blackout and a reveal that you do know how to code. Nothing real happens: no files, no webcam, no microphone. Voice warnings use the browser's speech synthesis and only play if the neural link sound is on. Esc aborts. Files: `assets/panic.js`, `assets/panic.css`.
+`rickroll` / the ghost button `RUN_OPTIMIZATION_VCE.sh`: a convincing fake answer-key decryption that sticks at 99%, glitches into RICK ASTLEY OS v1987: ASCII quiff, a "never gonna ___ you" promise manifest written about algorithms, dancing ASCII figures on a 113 bpm drum + bass groove, a real video player (drop `rickroll.mp4`, or `.webm`, into `assets/`; if the file is missing it falls back to a fake "blocked" card with a synth groove) and a comment section. Counts how many times you got rolled. The song's lyrics are not reproduced anywhere; only the title and the phrase format are used.

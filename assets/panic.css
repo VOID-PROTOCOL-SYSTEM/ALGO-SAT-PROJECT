@@ -1,0 +1,57 @@
+/* MEMO ARCHIVE — v10.1 panic button styles (cyberpunk-marimo.css forces colours on div/span/p/button, so most colours here are !important) */
+button.pn-btn { position: fixed; left: 14px; bottom: 14px; z-index: 60; padding: 9px 14px !important; background: #b00000 !important; color: #fff !important; border: 2px solid #ff4d4d !important; font: bold 11px ui-monospace, Consolas, monospace !important; letter-spacing: .1em !important; text-transform: uppercase !important; box-shadow: 0 0 14px rgba(255, 0, 0, .7); animation: pn-btnp 1.4s ease-in-out infinite; }
+button.pn-btn:hover { background: #ff1a1a !important; }
+@keyframes pn-btnp { 50% { box-shadow: 0 0 28px rgba(255, 0, 0, 1); transform: scale(1.04); } }
+
+.chx-pn { display: block !important; overflow: hidden; background: #120000 !important; color: #ff4d4d; z-index: 10150; }
+.chx-pn.strobe { animation: pn-strobe .5s steps(1) infinite; }
+@keyframes pn-strobe { 0% { background: #120000; } 50% { background: #3a0000; } }
+.chx-pn.quake { animation: pn-strobe .5s steps(1) infinite, pn-quake .09s linear infinite; }
+@keyframes pn-quake { 0% { transform: translate(0, 0); } 25% { transform: translate(-5px, 4px); } 50% { transform: translate(5px, -4px); } 75% { transform: translate(-4px, -3px); } 100% { transform: translate(0, 0); } }
+.chx-pn.white { animation: pn-white .3s steps(1) infinite, pn-quake .06s linear infinite; }
+@keyframes pn-white { 0% { background: #120000; } 50% { background: #ffdede; } }
+.pn-rain { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; }
+.pn-vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 0, 0, .55) 100%); animation: pn-vig 1s ease-in-out infinite alternate; }
+@keyframes pn-vig { from { opacity: .4; } to { opacity: 1; } }
+.pn-scan { position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .28) 0 2px, transparent 2px 4px); mix-blend-mode: multiply; }
+
+.pn-hd { position: absolute; top: 3vh; left: 0; right: 0; text-align: center; color: #ff2a2a !important; font: bold clamp(34px, 6.5vw, 100px) ui-monospace, Consolas, monospace !important; letter-spacing: .06em !important; text-shadow: -3px 0 #00f0ff, 3px 0 #ff00d0, 0 0 30px #f00 !important; animation: pn-jit .18s steps(2) infinite; text-transform: uppercase; white-space: nowrap; }
+@keyframes pn-jit { 0% { transform: translate(0, 0) skewX(0); } 33% { transform: translate(-6px, 2px) skewX(3deg); } 66% { transform: translate(5px, -3px) skewX(-3deg); } 100% { transform: translate(0, 0); } }
+
+.pn-term { position: absolute; left: 3vw; top: 20vh; bottom: 8vh; width: 58vw; background: rgba(12, 0, 0, .84); border: 2px solid #ff2a2a; box-shadow: 0 0 30px #f00; }
+.chx-pn:not(.side) .pn-term { width: 94vw; }
+.pn-tb { padding: 5px 10px; background: #ff2a2a; color: #000 !important; font: bold 12px ui-monospace, Consolas, monospace !important; letter-spacing: .05em !important; text-transform: none !important; }
+.pn-log { position: absolute; left: 8px; right: 8px; top: 34px; bottom: 6px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; font: 12px/1.35 ui-monospace, Consolas, monospace; }
+.pn-log div { color: #ff6b6b !important; white-space: nowrap; }
+.pn-log div.c { color: #fff !important; background: #b00000; }
+
+.pn-side { position: absolute; right: 3vw; top: 20vh; width: 31vw; bottom: 8vh; display: none; }
+.chx-pn.side .pn-side { display: block; }
+.pn-bar { margin-bottom: 14px; font: 12px ui-monospace, Consolas, monospace; display: grid; grid-template-columns: 1fr auto; gap: 4px; }
+.pn-bar span, .pn-bar em { color: #ff8a8a !important; font-style: normal; text-transform: none !important; }
+.pn-bt { grid-column: 1 / 3; height: 12px; border: 1px solid #ff2a2a; background: #200000; }
+.pn-bt i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(45deg, #ff2a2a 0 6px, #a00 6px 12px); }
+.pn-trace { margin: 10px 0 0; color: #ff9a9a; font: 11px/1.4 ui-monospace, Consolas, monospace; white-space: pre-wrap; }
+
+.pn-cdw { position: absolute; left: 50%; bottom: 10vh; transform: translateX(-50%); display: none; padding: 8px 22px; background: #c00; color: #fff !important; font: bold clamp(28px, 4vw, 56px) ui-monospace, Consolas, monospace !important; letter-spacing: .1em !important; border: 3px solid #fff; animation: pn-jit .12s steps(2) infinite; white-space: nowrap; }
+.chx-pn.cd .pn-cdw { display: block; }
+.pn-esc { position: absolute; left: 50%; bottom: 2vh; transform: translateX(-50%); color: #ff9a9a !important; font: 11px ui-monospace, Consolas, monospace !important; text-transform: none !important; }
+
+.pn-pops { position: absolute; inset: 0; pointer-events: none; }
+.pn-pop { position: absolute; width: 260px; background: #c0c0c0; border: 2px outset #fff; pointer-events: auto; font-family: Tahoma, Arial, sans-serif; box-shadow: 4px 4px 0 rgba(0, 0, 0, .6); }
+.pn-pop * { color: #000 !important; font-family: Tahoma, Arial, sans-serif !important; text-transform: none !important; letter-spacing: 0 !important; }
+.pn-pb { display: flex; justify-content: space-between; padding: 3px 6px; background: #a00000; font-size: 12px; font-weight: bold; }
+.pn-pb, .pn-pb * { color: #fff !important; }
+.pn-px { font-style: normal; cursor: pointer; padding: 0 5px; background: #c0c0c0; }
+.pn-px { color: #000 !important; }
+.pn-pm { display: flex; gap: 10px; align-items: center; padding: 12px; font-size: 12px; }
+.pn-pm b { flex: none; width: 26px; height: 26px; line-height: 26px; text-align: center; border-radius: 50%; background: #d00; font-size: 18px; }
+.pn-pm b { color: #fff !important; }
+
+.chx-pn.dead { background: #000 !important; animation: none !important; transform: none !important; }
+.chx-pn.dead > *:not(.pn-end) { display: none !important; }
+.pn-end { position: absolute; inset: 0; padding: 14vh 10vw; font: 18px/1.7 ui-monospace, Consolas, monospace; overflow: auto; }
+.pn-end div { color: #39ff14 !important; text-shadow: 0 0 6px #39ff14; text-transform: none !important; }
+.pn-row { margin-top: 24px; display: flex; gap: 14px; }
+.pn-end button { padding: 10px 20px !important; background: #000 !important; color: #39ff14 !important; border: 1px solid #39ff14 !important; font: 13px ui-monospace, Consolas, monospace !important; }
+.pn-end button:hover { background: #0a2a0a !important; }

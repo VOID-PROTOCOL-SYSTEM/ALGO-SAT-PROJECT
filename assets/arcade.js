@@ -659,6 +659,7 @@
     { id: 'roast', n: 'ROAST CHAMPION', d: 'beat the eye in a roast battle', t: function () { return nl().won >= 1; } },
     { id: 'upside', n: '???', d: 'enter the upside down', h: 1, t: function () { return !!lget('arc-flag-upside'); } },
     { id: 'gb', n: '???', d: 'power on the handheld', h: 1, t: function () { return !!lget('arc-flag-gameboy'); } },
+    { id: 'themes', n: 'SKIN COLLECTOR', d: 'try all six extra themes', h: 1, t: function () { return ['win95', 'synth', 'bp', 'vhs', 'noir', 'tokyo'].every(function (k) { return !!lget('arc-flag-t-' + k); }); } },
     { id: 'boss', n: 'KING SLAYER', d: 'defeat the glitch king', h: 1, t: function () { return parseInt(lget('boss-wins') || '0', 10) > 0; } },
     { id: 'adv', n: 'ARCHIVIST', d: 'find 5 adventure endings', h: 1, t: function () { return !!(FX.advStats && FX.advStats().endings >= 5); } }
   ];
@@ -745,7 +746,7 @@
     if (flash > 0) { udCx.fillStyle = 'rgba(255,40,20,' + flash + ')'; udCx.fillRect(0, 0, W, H); flash = Math.max(0, flash - .03); } else if (Math.random() < .0015) { flash = .35; beep(70, 40, .5, 'sawtooth', .05); }
   }
   function setUpside(on) {
-    if (on === ud) return; ud = on; if (on && gb) setGB(false);
+    if (on === ud) return; ud = on; if (on && gb) setGB(false); if (on && FX.clearTheme) FX.clearTheme();
     root.classList.toggle('upside', on); if (on) lset('arc-flag-upside', '1'); beep(on ? 110 : 330, on ? 40 : 660, .9, 'sawtooth', .04);
     if (!udCv) { udCv = el('canvas'); udCv.id = 'ud-fx'; document.body.appendChild(udCv); udTitle = el('div', 'ud-title', ''); document.body.appendChild(udTitle); }
     udTitle.textContent = on ? 'THE UPSIDE DOWN' : 'RIGHT SIDE UP'; udTitle.classList.add('show'); setTimeout(function () { udTitle.classList.remove('show'); }, 2600);
@@ -763,7 +764,7 @@
   /* ═════════ MEMO BOY (game boy palette) ═════════ */
   var gb = false, savedHue = 'cyan';
   function setGB(on) {
-    if (on === gb) return; gb = on; if (on && ud) setUpside(false);
+    if (on === gb) return; gb = on; if (on && ud) setUpside(false); if (on && FX.clearTheme) FX.clearTheme();
     if (on) { lset('arc-flag-gameboy', '1');
       var cur0 = $('.swatch.on'); savedHue = (cur0 && cur0.dataset.hue) || 'cyan';
       var b = el('div', 'gb-boot'); b.appendChild(el('div', 'gb-logo', 'MEMO\u2022BOY')); b.appendChild(el('small', '', '\u00A9 MEMO ARCHIVE')); document.body.appendChild(b);

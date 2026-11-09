@@ -194,17 +194,97 @@
     ab.onclick = function () { o.close(); toast('self-destruct aborted. phew.'); };
   }
 
-  /* 7. RUN_OPTIMIZATION_VCE.sh */
+  /* 7. RUN_OPTIMIZATION_VCE.sh — the rickroll, extended edition (no lyrics: title + "never gonna ___ you" format only) */
+  var ROLL_COMMENTS = [
+    ['xX_algo_Xx', 'came here for the VCE optimizer. leaving with a 1987 baritone.'],
+    ['prof_dijkstra', 'this is not a valid shortest path to the answer key.'],
+    ['bug_mascot', 'i have been rolled and i have no regrets (i am a bug)'],
+    ['ant_colony_7', 'followed the pheromone trail. it was a rickroll.'],
+    ['null_pointer', '404: answer key not found. quiff found instead.'],
+    ['ctrl_alt_defeat', 'my teacher rickrolled me with a .sh file. respect.'],
+    ['O_of_n_squared', 'first! (second pass)'],
+    ['kernel_panic_fan', 'the quiff has more uptime than my server'],
+    ['big_O_energy', 'rick never gonna time out'],
+    ['git_blame_me', 'force-pushed this to main. no regrets'],
+    ['halting_problem', 'been watching for 3 hours. cannot tell if i will stop.'],
+    ['stackoverflow_user', 'marked as duplicate of a 1987 song']
+  ];
+  var FACE = [
+    '       .-~~~~~~~-.',
+    '     .~  ~~~~~~~  ~.   <- the quiff',
+    '    /   _       _   \\',
+    '   |   (o)     (o)   |',
+    '   |        ^        |',
+    '    \\     \\___/     /',
+    '     ~.    ---    .~',
+    '       ~-._____.-~',
+    '      .-|  ||  |-.',
+    '     / | TRENCH | \\'
+  ].join('\n');
+  var DANCE = [['  \\o/', '   |', '  / \\'], ['   o/', '  /|', '  / \\'], ['  \\o', '   |\\', '  / \\'], ['  _o_', '   |', '  < >']];
+  function pad(s, n) { return (s + '                    ').slice(0, n); }
+  function dancers(i) {
+    var A = DANCE[i % 4], B = DANCE[(i + 2) % 4], C = DANCE[(i + 1) % 4];
+    return ['       .-*-.        ', '      *  |  *       '].concat(A.map(function (l, k) { return pad(l, 10) + pad(B[k], 10) + pad(C[k], 10); })).concat(['  ~~~~~~~~~~~~~~~~~~~~~~~~~~']).join('\n');
+  }
   function rick() {
-    var dead = false;
-    var o = openOv('chx-rr', '<div class="rr-win"><div class="rr-bar"><span>operator@archive:~</span><i class="rr-x">x</i></div><pre class="rr-pre"></pre></div>', function () { dead = true; });
-    var pre = $('.rr-pre', o.d); $('.rr-x', o.d).onclick = o.close; xp('rick', 5);
-    var L = ['$ sudo ./RUN_OPTIMIZATION_VCE.sh', '[sudo] password for operator: ********', 'loading optimizer core ................. OK', 'calibrating scaled-score heuristics .... OK', 'verifying study-design invariants ....... OK', 'optimizing the unoptimizable ............ 100%', '', '> optimizer result: you have been rickrolled.', '> a certain 1987 chart-topper would play here. you know the one.', '> (lyrics not installed on this machine. copyright is a real thing.)', '', 'press Esc to escape. you cannot escape the rick.'];
+    var dead = false, ivs = [], vid = null;
+    var o = openOv('chx-rr', '<div class="rr-win"><div class="rr-bar"><span>operator@archive:~ &mdash; RUN_OPTIMIZATION_VCE.sh</span><i class="rr-x">x</i></div><div class="rr-body"><pre class="rr-pre"></pre></div></div>', function () { dead = true; ivs.forEach(clearInterval); if (vid) { try { vid.pause(); vid.removeAttribute('src'); while (vid.firstChild) vid.removeChild(vid.firstChild); vid.load(); } catch (e) {} } });
+    var win = $('.rr-win', o.d), body = $('.rr-body', o.d), pre = $('.rr-pre', o.d);
+    $('.rr-x', o.d).onclick = o.close;
+    var rolls = (parseInt(lget('chx-rolls') || '0', 10) || 0) + 1; lset('chx-rolls', String(rolls)); xp('rick', 8);
+    async function typeTo(node, text, d) { for (var c = 0; c < text.length && !dead; c++) { node.textContent += text[c]; if (c % 2 === 0) await wait(d); } node.textContent += '\n'; body.scrollTop = 1e6; }
+    async function prog(label, to, ms) {
+      var base = pre.textContent, t0 = performance.now(), W = 30;
+      while (!dead) { var k = Math.min(1, (performance.now() - t0) / ms), p = Math.round(to * k), f = Math.round(W * p / 100); pre.textContent = base + label + ' [' + '#'.repeat(f) + '.'.repeat(W - f) + '] ' + p + '%'; if (k >= 1) break; await wait(40); }
+      pre.textContent += '\n';
+    }
+    function os() {
+      win.classList.add('rr-big');
+      body.innerHTML = '<div class="rr-os"><div class="rr-left"><pre class="rr-ascii"></pre><h4>RICK ASTLEY OS v1987</h4><pre class="rr-man"></pre><pre class="rr-dance"></pre></div><div class="rr-right"><div class="rr-player"><div class="rr-screen"><video class="rr-vid" controls loop playsinline preload="auto"></video><div class="rr-na"><b>VIDEO UNAVAILABLE</b> &mdash; lyric track blocked (we respect copyright). the vibes are not blocked.<br><small>dev note: put rickroll.mp4 (or .webm) in the assets folder.</small></div><div class="rr-unmute">click the video to unmute</div></div><div class="rr-meta"><b>Never Gonna Give You Up</b><span>1,500,000,000 views + 1 (you)</span></div></div><div class="rr-comments"></div></div></div><div class="rr-foot"><span class="rr-cnt"></span><button class="rr-again">ROLL AGAIN</button><button class="rr-esc">ESCAPE</button></div>';
+      $('.rr-ascii', o.d).textContent = FACE;
+      var man = $('.rr-man', o.d), dn = $('.rr-dance', o.d), screen = $('.rr-screen', o.d), com = $('.rr-comments', o.d), na = $('.rr-na', o.d), um = $('.rr-unmute', o.d), vOK = false, fb = false;
+      vid = $('.rr-vid', o.d);
+      /* the video lives in assets/: rickroll.mp4 first, rickroll.webm as a fallback format */
+      ['assets/rickroll.mp4', 'video/mp4', 'assets/rickroll.webm', 'video/webm'].forEach(function (v, i, a) { if (i % 2) return; var s = document.createElement('source'); s.src = v; s.type = a[i + 1]; vid.appendChild(s); });
+      function fallback() { if (vOK || fb || dead) return; fb = true; vid.style.display = 'none'; na.style.display = 'block'; }
+      vid.lastChild.addEventListener('error', fallback); vid.addEventListener('error', fallback);
+      vid.addEventListener('playing', function () { vOK = true; });
+      vid.addEventListener('volumechange', function () { if (!vid.muted) um.style.display = 'none'; });
+      um.onclick = function () { vid.muted = false; vid.play(); um.style.display = 'none'; };
+      var pr = vid.play();
+      if (pr && pr.catch) pr.catch(function () { if (fb || dead) return; vid.muted = true; var q = vid.play(); if (q && q.catch) q.catch(function () {}); um.style.display = 'block'; });
+      var joke = rolls === 1 ? 'times rolled: 1. welcome to the club.' : rolls < 5 ? 'times rolled: ' + rolls + '. you keep coming back. we respect it.' : 'times rolled: ' + rolls + '. at this point you are the rickroll.';
+      $('.rr-cnt', o.d).textContent = joke;
+      $('.rr-again', o.d).onclick = function () { o.close(); setTimeout(rick, 200); };
+      $('.rr-esc', o.d).onclick = function () { o.close(); toast('escaped. (the rick follows you.)'); };
+      var PM = ['PROMISE MANIFEST  (the title is the only lyric on this machine)', '', '[ VOWED ] never gonna segfault you', '[ VOWED ] never gonna null-pointer you', '[ VOWED ] never gonna off-by-one you', '[ VOWED ] never gonna O(n!) you', '[ VOWED ] never gonna force-push over you', '[ VOWED ] never gonna deprecate you', '[ VOWED ] never gonna merge-conflict you', '[ VOWED ] never gonna ask you to explain the invariant', '[ VOWED ] never gonna ship you without a base case', '[ ERROR ] never gonna stop rolling you (cannot be disabled)'];
+      (async function () { for (var i = 0; i < PM.length && !dead; i++) { await typeTo(man, PM[i], 14); await wait(120); } })();
+      var beat = 0, cm = ROLL_COMMENTS.slice().sort(function () { return Math.random() - 0.5; }), BASS = [55, 55, 65.4, 49];
+      dn.textContent = dancers(0);
+      /* dancers always dance; the synth groove + floating notes only play when there is no real video */
+      ivs.push(setInterval(function () {
+        if (dead) return; beat++;
+        dn.textContent = dancers(beat); win.style.setProperty('--rh', String((beat * 14) % 360));
+        if (!fb) return;
+        tone(140, 45, 0.18, 'sine', 0.08); tone(BASS[beat % 4], BASS[beat % 4] * 0.98, 0.45, 'sawtooth', 0.035);
+        if (beat % 2 === 0) tone(1800, 900, 0.08, 'square', 0.03);
+        tone(7000, 6000, 0.03, 'square', 0.015, 0.265);
+        var n = el('span', 'rr-note', '\u266A'); n.style.left = R(5, 90) + '%'; screen.appendChild(n); setTimeout(function () { n.remove(); }, 2400);
+      }, 531));
+      ivs.push(setInterval(function () {
+        if (dead || !cm.length) return; var c = cm.shift(); cm.push(c);
+        var d = el('div', 'rr-cm', '<b>' + c[0] + '</b> ' + c[1]); com.appendChild(d); while (com.children.length > 6) com.removeChild(com.firstChild);
+      }, 1400));
+    }
     (async function () {
-      for (var i = 0; i < L.length && !dead; i++) {
-        for (var c = 0; c < L[i].length && !dead; c++) { pre.textContent += L[i][c]; await wait(c ? 24 : 320); }
-        pre.textContent += '\n'; pre.parentNode.scrollTop = 1e6;
-      }
+      await typeTo(pre, '$ sudo ./RUN_OPTIMIZATION_VCE.sh', 14); await typeTo(pre, '[sudo] password for operator: ********', 10);
+      await typeTo(pre, 'VCE-OPTIMIZER v3.1 (c) totally-legit labs', 8); await typeTo(pre, 'checking study-design invariants ........ PASS', 8); await typeTo(pre, 'locating memo3 solution key ............ FOUND', 8);
+      await prog('decrypting answer key', 99, 2800); if (dead) return;
+      await wait(900); await typeTo(pre, 'stuck at 99%. classic.', 25); await wait(700);
+      await typeTo(pre, 'ERROR 0x1987: optimizer cannot continue.', 25); await typeTo(pre, 'cause: a promise made in 1987 cannot be broken.', 25); await wait(900); if (dead) return;
+      win.classList.add('rr-glitch'); tone(80, 2000, 0.6, 'sawtooth', 0.05); tone(2000, 80, 0.6, 'square', 0.04, 0.3);
+      await wait(1300); if (dead) return; win.classList.remove('rr-glitch'); os();
     })();
   }
 
@@ -369,7 +449,7 @@
   cmds.driver = run(driver, 'probing audio hardware...');
   cmds.compile = cmds.insult = run(compiler, 'booting insult_bot...');
   cmds.chaos = function () {
-    ['railgun [off]    click anything to vaporise it', 'overheat [off]   cpu gauge: click/scroll too fast and it melts', 'gravity [up]      everything falls (Esc restores)', 'hammer / repair   smash the glass', 'dvd [off]         bouncing skull, corner counter', 'destruct          glass-covered big red switch', 'rickroll          or find the ghost button at the bottom', 'captcha           prove you are human (you will not)', 'loading           final VCE scaled score, calculating', 'typer             or Ctrl+Alt+H: mash keys, look like a hacker', 'driver            or triple-click the big title', 'compile           paste code, receive judgment'].forEach(function (l) { P('  ' + l); });
+    ['railgun [off]    click anything to vaporise it', 'overheat [off]   cpu gauge: click/scroll too fast and it melts', 'gravity [up]      everything falls (Esc restores)', 'hammer / repair   smash the glass', 'dvd [off]         bouncing skull, corner counter', 'destruct          glass-covered big red switch', 'panic             full system-breach meltdown (or the big red button)', 'rickroll          or find the ghost button at the bottom', 'captcha           prove you are human (you will not)', 'loading           final VCE scaled score, calculating', 'typer             or Ctrl+Alt+H: mash keys, look like a hacker', 'driver            or triple-click the big title', 'compile           paste code, receive judgment'].forEach(function (l) { P('  ' + l); });
   };
   var buf = '', WORDS = ['railgun', 'overheat', 'gravity', 'hammer', 'dvd', 'destruct', 'rickroll', 'captcha', 'loading', 'typer', 'driver', 'compile'];
   document.addEventListener('keydown', function (e) {
@@ -377,5 +457,6 @@
     buf = (buf + e.key.toLowerCase()).slice(-12);
     WORDS.forEach(function (w) { if (buf.slice(-w.length) === w) { buf = ''; cmds[w]([]); } });
   });
+  FX.chx = { R: R, wait: wait, tone: tone, xp: xp, el: el, toast: toast, openOv: openOv, skip: skip, stack: stack };
   var gb = el('button', 'chx chx-ghost', 'RUN_OPTIMIZATION_VCE.sh'); gb.onclick = function () { cmds.rickroll([]); }; document.body.appendChild(gb);
 })();

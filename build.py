@@ -56,8 +56,9 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
-    ("v11.0", "2026-11-09", "TOP GEAR pack: the DO_NOT_PRESS_PRODUCTION_HAZARD.sh button hijacks the page into MEMO GEAR (or THE GRAND MEMO) with a dashboard, garage and 20 bits of mischief (type gear in the terminal)"),
-    ("v10.0", "2026-11-09", "chaos pack: railgun, cpu overheat + melt, gravity collapse, glass hammer, dvd skull, self-destruct, rickroll terminal, absurd captcha, infinite loading bar, hacker typer, audio driver error, insult compiler (type chaos in the terminal)"),
+    ("v10.2", "2026-11-09", "panic button: a 30 s fake system breach (red code rain, kernel logs, win95 popup spam, lockdown countdown, blackout, reveal); rickroll rebuilt as RICK ASTLEY OS with a never-gonna-___-you promise manifest, dancers and a real video player (assets/rickroll.mp4)"),
+    ("v10.1", "2026-11-09", "chaos pack: railgun, cpu overheat + melt, gravity collapse, glass hammer, dvd skull, self-destruct, rickroll terminal, absurd captcha, infinite loading bar, hacker typer, audio driver error, insult compiler (type chaos in the terminal)"),
+    ("v10.0", "2026-11-09", "six themes: Windows 95 (taskbar, start menu, draggable tips), Synthwave sunset, Blueprint (live dimension lines), VHS tape (OSD, tracking, glitch), Noir (flashlight + blinds + rain), Tokyo night (rain-on-glass, neon kanji signs); each with a secret code"),
     ("v9.0", "2026-11-08", "eye evolution: 8 forms that grow with your rank (evolve command); arcade: TRACE THE ALGORITHM (bfs/dfs/dijkstra predictor) = 20 games, 22 trophies"),
     ("v8.3", "2026-11-08", "arcade: sort-o-matic + tic-tac-minimax (19 games), trophy room with 21 achievements (4 hidden)"),
     ("v8.2", "2026-11-08", "arcade: +6 games (maze runner, dijkstra dash, whack-a-bug, lights out, reaction test, lane crosser) = 17 total"),
@@ -313,8 +314,9 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="assets/adventure.css">
 <link rel="stylesheet" href="assets/arcade.css">
 <link rel="stylesheet" href="assets/evolve.css">
+<link rel="stylesheet" href="assets/themes.css">
 <link rel="stylesheet" href="assets/chaos.css">
-<link rel="stylesheet" href="assets/topgear.css">
+<link rel="stylesheet" href="assets/panic.css">
 <script>try{if(!sessionStorage.getItem("booted"))document.documentElement.classList.add("booting")}catch(e){}</script>
 </head>
 <body>
@@ -440,8 +442,9 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
 <script src="assets/adventure.js"></script>
 <script src="assets/arcade.js"></script>
 <script src="assets/evolve.js"></script>
+<script src="assets/themes.js"></script>
 <script src="assets/chaos.js"></script>
-<script src="assets/topgear.js"></script>
+<script src="assets/panic.js"></script>
 </body>
 </html>
 """
