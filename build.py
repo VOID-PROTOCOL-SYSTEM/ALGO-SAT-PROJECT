@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v10.7", "2026-11-09", "top gear: catch the stig, caravan apocalypse (and the konami code), hammond crash cam, clarkson rant-o-tron, who would say it quiz"),
     ("v10.6", "2026-11-09", "top gear chaos: no more cropped heads, tilted tape-edged panels, roaming caravans / stig / tractors, speech bubbles, explosions, floating cars, click + cursor fire, draggable cool wall, playable race track, grand tour wheel, presenter modes that rampage"),
     ("v10.5", "2026-11-09", "top gear sub page: an ever-changing lore-named button, full-screen trio + music, visor wipe into topgear.html (challenge generator, review-o-matic, stig facts, lap board, cool wall, presenter modes, soundboard)"),
     ("v10.4", "2026-11-09", "sleeper mode: arm any prank from a link (#sleeper=panic:idle:90) so it fires later (random / delay / idle / click / scroll), plus a prank link builder (type prank) and disarm"),
