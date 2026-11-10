@@ -56,6 +56,7 @@ ABOUT = {
     ],
 }
 CHANGELOG = [
+    ("v10.8", "2026-11-09", "top gear mega update: race v2 (fixed hitboxes, drift, nitro, skid marks, the Stig as a ghost rival, cones), robin simulator, burnout, weather forecast, excuse generator, more events, and a rage-quit meltdown + fake crash + black + fade on the way back to the memo page"),
     ("v10.7", "2026-11-09", "top gear: catch the stig, caravan apocalypse (and the konami code), hammond crash cam, clarkson rant-o-tron, who would say it quiz"),
     ("v10.6", "2026-11-09", "top gear chaos: no more cropped heads, tilted tape-edged panels, roaming caravans / stig / tractors, speech bubbles, explosions, floating cars, click + cursor fire, draggable cool wall, playable race track, grand tour wheel, presenter modes that rampage"),
     ("v10.5", "2026-11-09", "top gear sub page: an ever-changing lore-named button, full-screen trio + music, visor wipe into topgear.html (challenge generator, review-o-matic, stig facts, lap board, cool wall, presenter modes, soundboard)"),
