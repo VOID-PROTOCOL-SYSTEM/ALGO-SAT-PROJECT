@@ -46,7 +46,7 @@ h1{animation:hh 4s ease-in-out infinite}@keyframes hh{50%{transform:rotate(-1.5d
 .fl{position:fixed;bottom:-60px;font-size:36px;pointer-events:none;z-index:2;animation:fl 9s linear forwards}@keyframes fl{to{transform:translateY(-125vh) rotate(720deg)}}
 .run{position:fixed;left:-30vw;z-index:55;font-size:72px;pointer-events:none;animation:rn linear forwards;white-space:nowrap;line-height:1}.run small{display:block;font:bold 16px Impact,sans-serif;color:#ffd200;background:#000;padding:2px 8px}@keyframes rn{to{left:120vw}}
 .bub{position:fixed;z-index:60;max-width:260px;padding:10px 14px;background:#fff;color:#000;border:3px solid #000;border-radius:16px;font:bold 14px Arial,sans-serif;pointer-events:none;box-shadow:5px 5px 0 var(--r);animation:bp 4.2s forwards}@keyframes bp{0%{transform:scale(0) rotate(-8deg)}8%{transform:scale(1.1)}12%{transform:scale(1)}90%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
-#rc{width:100%;max-width:700px;display:block;margin:8px auto;background:#0d4a16;border:4px solid #000;box-shadow:6px 6px 0 var(--r)}
+#rc{width:100%;max-width:1000px;display:block;margin:8px auto;background:#0d4a16;border:4px solid #000;box-shadow:6px 6px 0 var(--r)}
 .wall{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.col{min-height:130px;padding:6px;border:3px dashed #666;font-size:12px;transition:background .2s}.col.ov{background:#333}.col h4{margin:0 0 4px;font:15px Impact,sans-serif;color:#ffd200}.col:nth-child(1){border-color:#7a2a2a}.col:nth-child(4){border-color:#2a7aff}
 .chip{display:inline-block;margin:3px;padding:5px 9px;background:#ffd200;color:#000;cursor:grab;font:bold 13px Arial,sans-serif;transform:rotate(var(--t,0deg));box-shadow:2px 2px 0 #000}#pool{min-height:44px;margin:10px 0}
 .tent{height:84px;margin:0 auto 8px;width:200px;background:repeating-linear-gradient(90deg,#e4002b 0 22px,#fff 22px 44px);clip-path:polygon(50% 0,100% 100%,0 100%);animation:tn 2s ease-in-out infinite alternate}@keyframes tn{to{transform:rotate(3deg) translateX(8px)}}
@@ -56,7 +56,7 @@ h1{animation:hh 4s ease-in-out infinite}@keyframes hh{50%{transform:rotate(-1.5d
 <div id="tick"><div id="tk"></div></div>
 <header><h1>TOP <b>GEAR</b></h1><p>an unofficial, unserious fan page about three men, one very long driveway and an unreasonable number of caravans. no cars, feelings or presenters were harmed. several were set on fire.</p>
 <div class="hero" id="hero"></div>
-<div id="modes"><button onclick="mode('clk')">Clarkson mode</button><button onclick="mode('ham')">Hammond mode</button><button onclick="mode('may')">May mode</button><button onclick="caravans()">Caravan apocalypse</button><button class="alt" id="stg">Stig caught: 0</button><button class="alt" id="snd" onclick="toggleSnd()">sound: off</button></div></header>
+<div id="modes"><button onclick="mode('clk')">Clarkson mode</button><button onclick="mode('ham')">Hammond mode</button><button onclick="mode('may')">May mode</button><button onclick="caravans()">Caravan apocalypse</button><button onclick="shatter()">Railgun mode</button><button onclick="hammerM()">Hammer mode</button><button class="alt" id="stg">Stig caught: 0</button><button class="alt" id="snd" onclick="toggleSnd()">sound: off</button></div></header>
 <main>
 <section class="w"><h2>The presenters (Top Trumps edition)</h2><div class="cards" id="cards"></div></section>
 <section><h2>Challenge generator</h2><div>Tonight, a challenge nobody asked for.</div><div class="out" id="chOut">press the button. regret later.</div><button onclick="challenge()">Generate a challenge</button></section>
@@ -73,6 +73,7 @@ h1{animation:hh 4s ease-in-out infinite}@keyframes hh{50%{transform:rotate(-1.5d
 <section><h2>Reliant Robin simulator</h2><div id="rb" style="height:100px;position:relative;overflow:hidden;background:#0b0c0e;border-left:6px solid #e4002b"><div id="rob" style="position:absolute;left:46%;bottom:4px;font-size:56px;transition:transform .8s">&#128762;</div></div><div class="out" id="rbOut">flips: 0. press the button. gently.</div><button onclick="robin()">Turn left</button></section>
 <section><h2>Burnout (hold the button)</h2><div class="out" id="boOut">hold. release. regret.</div><button id="bo">HOLD FOR SMOKE</button></section>
 <section><h2>Hammond&#39;s excuse generator</h2><div class="out" id="exOut">it was not his fault. it never is.</div><button onclick="excuse()">Excuse me</button></section>
+<section><h2>The Tent: tonight&#39;s guest</h2><div class="out" id="gtOut">the audience is restless. the tent is fine. (it is not fine.)</div><button onclick="guest()">Bring out a guest</button></section>
 <section><h2>Soundboard (synthesised, officially unlicensed)</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="sfx('rev')">Rev</button><button onclick="sfx('screech')">Tyre screech</button><button onclick="sfx('crash')">Hammond</button><button onclick="sfx('horn')">Horn</button><button onclick="sfx('fail')">Engine fail</button><button onclick="sfx('clap')">Applause</button></div></section>
 </main>
 <a class="back" href="index.html">&larr; back to the memo archive (it has fewer explosions)</a>
@@ -131,35 +132,44 @@ CI.forEach(function(t,i){var c=document.createElement('span');c.className='chip'
 var DS=[['Madagascar','the lemurs steal the camera and May lets them'],['Mongolia','no roads. Clarkson says "perfect"'],['Colombia','Hammond picks the scary road, May picks a map'],['Scotland','three men, one midge, no dignity'],['Namibia','sand in places sand should not be'],['Vietnam','a river, a boat, a disagreement'],['Iceland','everything is on fire; Hammond is delighted'],['The Alps','May is worried about the cheese']],wa=0,WC2=['#ffd200','#e4002b','#fff','#ff8a00'];
 (function(){var seg=360/DS.length,g=[];DS.forEach(function(d,i){g.push(WC2[i%4]+' '+i*seg+'deg '+(i+1)*seg+'deg')});var w=$('wheel');w.style.background='conic-gradient('+g.join(',')+')';DS.forEach(function(d,i){var sp=document.createElement('span');sp.textContent=d[0];sp.style.transform='rotate('+(i*seg+seg/2-90)+'deg)';w.appendChild(sp)})})();
 function spin(){var seg=360/DS.length;wa+=1440+Math.floor(Math.random()*360);$('wheel').style.transform='rotate('+wa+'deg)';var i=Math.floor(((360-wa%360)%360)/seg);sfx('rev');setTimeout(function(){$('whOut').textContent='NEXT SPECIAL: '+DS[i][0]+'\n'+DS[i][1];sfx('horn');burst(innerWidth/2,innerHeight/2,25)},4600)}
-// the race v2
-var rc=$('rc'),rx=rc.getContext('2d'),RW=640,RH=360,KK={},car,lapT0,laps=0,q=1,prog=0,rm='drive CLOCKWISE (left from the start). SHIFT = nitro. beat the Stig.',hov=0,skid=[],CAV=[[320,62],[525,200],[120,235]],CON=[[250,305,0],[420,300,0],[560,165,0],[95,150,0]],nit=100,bestL=999,stA=Math.PI/2,stL=0,cd=0;rc.width=RW;rc.height=RH;
-function rreset(){car={x:320,y:295,a:Math.PI,vx:0,vy:0};lapT0=performance.now();q=1;prog=0;nit=100;skid=[]}rreset();
-function onT(x,y){var a=(x-320)/290,b=(y-180)/150,c=(x-320)/170,d=(y-180)/70;return a*a+b*b<1&&c*c+d*d>1}
+// the race v3: a proper circuit (spline track, sectors, chicane, hairpin, Stig ghost)
+var rc=$('rc'),rx=rc.getContext('2d'),RW=960,RH=540,KK={},car,lapT0,laps=0,cum=0,lastI=0,rm='drive the circuit. SHIFT = nitro. beat the Stig.',hov=0,skid=[],nit=100,bestL=999,sg=0,cd=0;rc.width=RW;rc.height=RH;
+var CP=[[480,480],[700,485],[850,450],[910,370],[880,290],[790,250],[700,300],[620,350],[560,300],[600,230],[700,170],[800,120],[760,60],[600,45],[440,70],[330,130],[250,90],[140,70],[70,140],[110,230],[210,250],[250,330],[170,410],[200,490],[330,500]],TR=[],HW=27;
+(function(){var n=CP.length;for(var i=0;i<n;i++){var a=CP[(i+n-1)%n],b=CP[i],c=CP[(i+1)%n],d=CP[(i+2)%n];for(var k=0;k<14;k++){var t=k/14,t2=t*t,t3=t2*t;function cr(q){return .5*((2*b[q])+(-a[q]+c[q])*t+(2*a[q]-5*b[q]+4*c[q]-d[q])*t2+(-a[q]+3*b[q]-3*c[q]+d[q])*t3)}TR.push([cr(0),cr(1)])}}})();
+var N=TR.length;
+function tang(i){var a=TR[i%N],b=TR[(i+3)%N];return Math.atan2(b[1]-a[1],b[0]-a[0])}
+function atI(i,off){var p=TR[i%N],a=tang(i)+Math.PI/2;return[p[0]+Math.cos(a)*off,p[1]+Math.sin(a)*off]}
+var CAV=[60,150,240,300].map(function(i,k){return atI(i,k%2?14:-14)}),CON=[30,110,190,270,330].map(function(i,k){var p=atI(i,k%2?-18:18);return[p[0],p[1],0]}),LB=[[890,300,'The Hairpin of Regret'],[560,330,'Chicago (grass)'],[790,100,'Caravan Corner'],[190,100,'Hammerhead'],[95,330,'Gambon Gulch'],[420,520,'Start / Finish']];
+function near(x,y){var b=1e9,bi=0;for(var i=0;i<N;i++){var d=(TR[i][0]-x)*(TR[i][0]-x)+(TR[i][1]-y)*(TR[i][1]-y);if(d<b){b=d;bi=i}}return[bi,Math.sqrt(b)]}
+function rreset(){car={x:TR[0][0],y:TR[0][1],a:tang(0),vx:0,vy:0};lapT0=performance.now();cum=0;lastI=0;nit=100;skid=[]}rreset();
 function hitC(cx,cy,r){var dx=car.x-cx,dy=car.y-cy,d=Math.hypot(dx,dy);if(d<r&&d>0){var nx=dx/d,ny=dy/d,dt=car.vx*nx+car.vy*ny;car.x=cx+nx*(r+1);car.y=cy+ny*(r+1);if(dt<0){car.vx-=1.7*dt*nx;car.vy-=1.7*dt*ny}car.vx*=.7;car.vy*=.7;return 1}return 0}
 function rpos(x,y){var r=rc.getBoundingClientRect();return[r.left+x*r.width/RW,r.top+y*r.height/RH]}
 rc.onmouseenter=function(){hov=1};rc.onmouseleave=function(){hov=0};
-document.addEventListener('keydown',function(e){KK[e.key.toLowerCase()]=1;if(hov&&(e.key.indexOf('Arrow')==0||e.key==' '))e.preventDefault()});document.addEventListener('keyup',function(e){KK[e.key.toLowerCase()]=0});
-(function step(){var st=(KK.arrowleft||KK.a?-1:0)+(KK.arrowright||KK.d?1:0),sp=Math.hypot(car.vx,car.vy),th=(KK.arrowup||KK.w?.065:0)-(KK.arrowdown||KK.s?.05:0),bo=KK.shift&&nit>0&&th>0;
-car.a+=st*.052*Math.min(1,sp/2);if(bo){th*=2;nit-=.9}else nit=Math.min(100,nit+.1);
+document.addEventListener('keydown',function(e){KK[e.key.toLowerCase()]=1;if(hov&&(e.key.indexOf('Arrow')==0||e.key==' '))e.preventDefault();if(hov&&e.key.toLowerCase()=='r')rreset()});document.addEventListener('keyup',function(e){KK[e.key.toLowerCase()]=0});
+(function step(){var st=(KK.arrowleft||KK.a?-1:0)+(KK.arrowright||KK.d?1:0),sp=Math.hypot(car.vx,car.vy),th=(KK.arrowup||KK.w?.065:0)-(KK.arrowdown||KK.s?.05:0),bo=KK.shift&&nit>0&&th>0,nr=near(car.x,car.y),ni=nr[0],on=nr[1]<HW;
+car.a+=st*.05*Math.min(1,sp/2);if(bo){th*=2;nit-=.9}else nit=Math.min(100,nit+.1);
 car.vx+=Math.cos(car.a)*th;car.vy+=Math.sin(car.a)*th;
 var lx=-Math.sin(car.a),ly=Math.cos(car.a),lat=car.vx*lx+car.vy*ly;car.vx-=lx*lat*.13;car.vy-=ly*lat*.13;
-var on=onT(car.x,car.y),fr=on?.988:.93;car.vx*=fr;car.vy*=fr;
-if(Math.abs(lat)>.9&&on)skid.push({x:car.x,y:car.y,l:220});if(!on&&sp>2&&Math.random()<.02)rm='GRASS. Hammond would be proud.';
+var fr=on?.988:.93;car.vx*=fr;car.vy*=fr;
+if(Math.abs(lat)>.9&&on)skid.push({x:car.x,y:car.y,l:240});if(!on&&sp>2&&Math.random()<.02)rm='GRASS. Hammond would be proud.';
 if(bo&&Math.random()<.02){rm='ENGINE ON FIRE. (Hammond approves.)';var f=rpos(car.x,car.y);burst(f[0],f[1],6,'\ud83d\udd25')}
 car.x=Math.max(8,Math.min(RW-8,car.x+car.vx));car.y=Math.max(8,Math.min(RH-8,car.y+car.vy));
 if(cd>0)cd--;
-CAV.forEach(function(c){if(hitC(c[0],c[1]-2,21)&&cd<=0){cd=30;rm='A CARAVAN. Of course there was a caravan.';sfx('horn')}});
-CON.forEach(function(c){if(!c[2]&&Math.hypot(car.x-c[0],car.y-c[1])<17){c[2]=240;var f=rpos(c[0],c[1]);burst(f[0],f[1],5,'\ud83d\udd36');rm='CONE DOWN. Ten points off. (there are no points)';sfx('crash')}if(c[2]>0)c[2]--});
-stA+=.0185;var sx=320+230*Math.cos(stA),sy=180+110*Math.sin(stA);stL=Math.max(0,Math.floor((stA-Math.PI/2)/(2*Math.PI)));
-if(Math.hypot(car.x-sx,car.y-sy)<22){car.vx*=.5;car.vy*=.5;rm='You hit the Stig. He did not blink.'}
-var ang=Math.atan2(car.y-180,car.x-320),qq=Math.floor(((ang+2*Math.PI)%(2*Math.PI))/(Math.PI/2));
-if(qq===(q+1)%4){q=qq;prog++;if(prog>=4){prog=0;laps++;var lt=(performance.now()-lapT0)/1000*12;lapT0=performance.now();if(lt<bestL)bestL=lt;rm='LAP '+ft(lt)+'. '+pick(LS);board(['You (race)','your driving',lt]);burst(innerWidth/2,innerHeight/2,20);sfx('clap')}}else if(qq===(q+3)%4){q=qq;prog=Math.max(0,prog-1)}
-rx.fillStyle='#0d4a16';rx.fillRect(0,0,RW,RH);rx.fillStyle='#444';rx.beginPath();rx.ellipse(320,180,290,150,0,0,7);rx.fill();rx.fillStyle='#0d4a16';rx.beginPath();rx.ellipse(320,180,170,70,0,0,7);rx.fill();
-rx.strokeStyle='rgba(255,255,255,.35)';rx.setLineDash([10,10]);rx.beginPath();rx.ellipse(320,180,230,110,0,0,7);rx.stroke();rx.setLineDash([]);
+CAV.forEach(function(c){if(hitC(c[0],c[1]-2,22)&&cd<=0){cd=30;rm='A CARAVAN. Of course there was a caravan.';sfx('horn')}});
+CON.forEach(function(c){if(!c[2]&&Math.hypot(car.x-c[0],car.y-c[1])<17){c[2]=300;var f=rpos(c[0],c[1]);burst(f[0],f[1],5,'\ud83d\udd36');rm='CONE DOWN. Ten points off. (there are no points)';sfx('crash')}if(c[2]>0)c[2]--});
+sg+=.46;var sp2=TR[Math.floor(sg)%N],stL=Math.floor(sg/N);
+if(Math.hypot(car.x-sp2[0],car.y-sp2[1])<22){car.vx*=.5;car.vy*=.5;rm='You hit the Stig. He did not blink.'}
+var di=ni-lastI;if(di>N/2)di-=N;if(di<-N/2)di+=N;if(Math.abs(di)<40){cum+=di;lastI=ni}
+if(cum>=N*(laps+1)){laps++;var lt=(performance.now()-lapT0)/1000*6;lapT0=performance.now();if(lt<bestL)bestL=lt;rm='LAP '+ft(lt)+'. '+pick(LS);board(['You (race)','your driving',lt]);burst(innerWidth/2,innerHeight/2,20);sfx('clap')}
+rx.fillStyle='#0d4a16';rx.fillRect(0,0,RW,RH);
+function path(){rx.beginPath();TR.forEach(function(p,i){i?rx.lineTo(p[0],p[1]):rx.moveTo(p[0],p[1])});rx.closePath()}
+rx.lineJoin='round';rx.lineCap='round';rx.strokeStyle='#e8e8e8';rx.lineWidth=HW*2+8;path();rx.stroke();rx.strokeStyle='#444';rx.lineWidth=HW*2;path();rx.stroke();rx.strokeStyle='rgba(255,255,255,.28)';rx.lineWidth=2;rx.setLineDash([12,12]);path();rx.stroke();rx.setLineDash([]);
 skid=skid.filter(function(k){return k.l>0});rx.fillStyle='rgba(0,0,0,.4)';skid.forEach(function(k){k.l--;rx.fillRect(k.x-1,k.y-1,3,3)});
-rx.fillStyle='#fff';rx.fillRect(318,250,4,80);rx.font='30px serif';CAV.forEach(function(c){rx.fillText('\ud83d\ude90',c[0]-15,c[1]+10)});rx.font='20px serif';CON.forEach(function(c){if(!c[2])rx.fillText('\ud83d\udd36',c[0]-10,c[1]+8)});
-rx.font='28px serif';rx.fillText('\ud83e\udd16',sx-14,sy+10);rx.save();rx.translate(car.x,car.y);rx.rotate(car.a);rx.scale(-1,1);rx.fillText('\ud83c\udfce\ufe0f',-15,10);rx.restore();
-rx.fillStyle='#fff';rx.font='14px Arial';rx.fillText(rm,10,20);rx.fillText(ft((performance.now()-lapT0)/1000*12)+'   laps: '+laps+'   Stig laps: '+stL+'   best: '+(bestL<999?ft(bestL):'--')+'   '+Math.round(Math.hypot(car.vx,car.vy)*30)+' mph',10,RH-10);rx.fillStyle='#333';rx.fillRect(10,RH-30,100,6);rx.fillStyle='#e4002b';rx.fillRect(10,RH-30,nit,6);requestAnimationFrame(step)})();
+rx.save();rx.translate(TR[0][0],TR[0][1]);rx.rotate(tang(0)+Math.PI/2);for(var q=0;q<6;q++){rx.fillStyle=q%2?'#000':'#fff';rx.fillRect(-HW+q*(HW/3),-4,HW/3,4);rx.fillStyle=q%2?'#fff':'#000';rx.fillRect(-HW+q*(HW/3),0,HW/3,4)}rx.restore();
+rx.fillStyle='rgba(255,255,255,.55)';rx.font='12px Arial';LB.forEach(function(l){rx.fillText(l[2],l[0]-30,l[1])});
+rx.font='30px serif';CAV.forEach(function(c){rx.fillText('\ud83d\ude90',c[0]-15,c[1]+10)});rx.font='20px serif';CON.forEach(function(c){if(!c[2])rx.fillText('\ud83d\udd36',c[0]-10,c[1]+8)});
+rx.font='28px serif';rx.fillText('\ud83e\udd16',sp2[0]-14,sp2[1]+10);rx.save();rx.translate(car.x,car.y);rx.rotate(car.a);rx.scale(-1,1);rx.fillText('\ud83c\udfce\ufe0f',-15,10);rx.restore();
+rx.fillStyle='#fff';rx.font='15px Arial';rx.fillText(rm,10,22);rx.fillText(ft((performance.now()-lapT0)/1000*6)+'   laps: '+laps+'   Stig laps: '+stL+'   best: '+(bestL<999?ft(bestL):'--')+'   '+Math.round(Math.hypot(car.vx,car.vy)*30)+' mph   (R = reset)',10,RH-12);rx.fillStyle='#333';rx.fillRect(10,RH-34,100,6);rx.fillStyle='#e4002b';rx.fillRect(10,RH-34,nit,6);requestAnimationFrame(step)})();
 
 var sc=0,SQ=['THE STIG: ...','Some say you would never catch him. You just did.','The Stig has filed a complaint with himself.','He let you win. Probably.','Hammond: how did you do that?'];
 function stigRun(){var d=document.createElement('div'),sp=1.6+Math.random()*1.6;d.className='run';d.style.pointerEvents='auto';d.style.cursor='crosshair';d.style.top=(10+Math.random()*75)+'vh';d.style.animationDuration=sp+'s';d.innerHTML='\ud83c\udfc1\ud83e\udd16<small>CATCH THE STIG</small>';d.onclick=function(e){e.stopPropagation();sc++;$('stg').textContent='Stig caught: '+sc;burst(e.clientX,e.clientY,30,'\u2b50');sfx('horn');bubble(pick(SQ));d.remove()};document.body.appendChild(d);setTimeout(function(){d.remove()},sp*1000)}
@@ -200,4 +210,16 @@ o.className='bs';o.innerHTML='<div style="padding:8vh 8vw;font-family:Segoe UI,A
 for(var p=0;p<=100&&!skip;p+=Math.round(1+Math.random()*7)){var e2=$('pxp');if(e2)e2.textContent=Math.min(100,p)+'% complete';await wt(160)}
 fin()})()}
 document.querySelector('a.back').addEventListener('click',leaveSeq);
+
+var GU=['A very confident vicar','A retired traffic cone','Some man called Keith','A slightly famous goose','Your nan','A talking sat-nav','A Reliant Robin enthusiast (alone)','A man who once met Hammond','A sentient caravan'],GA=['crashed on the first corner, entirely on purpose','set the slowest lap in tent history','went wide, went wider, went into the hospitality area','drove perfectly and ruined the segment','took a corner at 3 mph and apologised to it'],GR=['The audience gasps, then claps, then gasps again.','Clarkson laughs so hard he has to leave.','May: I thought it was rather good.','Hammond: I could do that. (he could not)','The tent flaps ominously.'];
+function guest(){var g=pick(GU),t=70+Math.random()*80;$('gtOut').textContent='TONIGHT: '+g+'\nIn the reasonably priced car, they '+pick(GA)+'.\nLap time: '+ft(t)+'\n'+pick(GR);sfx(Math.random()>.5?'clap':'crash');burst(innerWidth/2,innerHeight/3,18)}
+var sh=0,hm=0,hid=[],ck=null;
+function shatter(){sh=!sh;hm=0;bubble(sh?'RAILGUN ARMED. Click things. Esc restores.':'railgun stowed.')}
+function hammerM(){hm=!hm;sh=0;bubble(hm?'HAMMER EQUIPPED. Click to smash the screen. Esc repairs.':'hammer stowed.')}
+function crack(x,y){if(!ck){ck=document.createElement('canvas');ck.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:69;width:100vw;height:100vh';ck.width=innerWidth;ck.height=innerHeight;document.body.appendChild(ck)}var c=ck.getContext('2d');c.strokeStyle='rgba(255,255,255,.85)';c.lineWidth=1.4;for(var i=0;i<9;i++){var a=Math.random()*6.28,px=x,py=y;c.beginPath();c.moveTo(px,py);for(var k=0;k<7;k++){a+=Math.random()*.7-.35;px+=Math.cos(a)*(10+Math.random()*30);py+=Math.sin(a)*(10+Math.random()*30);c.lineTo(px,py)}c.stroke()}}
+document.addEventListener('click',function(e){var t=e.target;if((!sh&&!hm)||t===document.documentElement||t.closest('#modes'))return;e.preventDefault();e.stopPropagation();if(hm){crack(e.clientX,e.clientY);sfx('crash');return}if(t===document.body)return;var r=t.getBoundingClientRect();for(var i=0;i<30;i++)burst(r.left+Math.random()*r.width,r.top+Math.random()*r.height,1,pick(['\ud83d\udca5','\ud83d\udd25','\ud83d\udd29']));t.style.visibility='hidden';hid.push(t);sfx('crash')},true);
+document.addEventListener('keydown',function(e){if(e.key=='Escape'){hid.forEach(function(h){h.style.visibility=''});hid=[];sh=0;hm=0;if(ck){ck.remove();ck=null}}});
+var tl=document.createElement('div');tl.className='out';$('cwOut').after(tl);
+function tally(){var c=document.querySelectorAll('#wall .col');tl.textContent='THE WALL: '+[].map.call(c,function(x,i){return WN[i]+' '+x.querySelectorAll('.chip').length}).join('  |  ')+'\nverdict on you: '+(c[3].querySelectorAll('.chip').length>3?'dangerously cool':c[0].querySelectorAll('.chip').length>4?'tragically uncool':'sensible')}
+$('wall').addEventListener('drop',function(){setTimeout(tally,0)});tally();
 </script></body></html>
